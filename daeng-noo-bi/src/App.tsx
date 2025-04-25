@@ -1,4 +1,4 @@
-import './App.css'
+import './App.scss'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home/Home'
 import NotFound from './pages/NotFound/NotFound'
@@ -8,6 +8,7 @@ import Theme from './pages/Theme/Theme'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
 import Favorites from './pages/Favorites/Favorites'
+import Footer from './components/Footer/Footer'
 
 
 function App() {
