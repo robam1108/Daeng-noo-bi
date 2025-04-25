@@ -1,0 +1,39 @@
+/* === 기본 CSS 리셋 === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: "Pretendard";
+}
+
+body {
+  line-height: 1.5;
+  background-color: #fff;
+  color: #000;
+}
+
+img, picture, video, svg {
+  display: block;
+  max-width: 100%;
+}
+
+button, input, textarea, select {
+  font: inherit;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}

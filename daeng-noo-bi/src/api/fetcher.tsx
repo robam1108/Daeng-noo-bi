@@ -1,5 +1,4 @@
 const API_KEY = import.meta.env.VITE_TOUR_API_KEY;
-console.log("실제 API_KEY:", API_KEY);
 const BASE_URL = 'https://apis.data.go.kr/B551011';
 
 export async function fetchTourAPI(
@@ -8,16 +7,15 @@ export async function fetchTourAPI(
   params: Record<string, string>
 ) {
   const commonParams = {
+    ...params,
     ServiceKey: API_KEY,
     MobileOS: 'ETC',
     MobileApp: 'PetTourApp',
     _type: 'json',
-    ...params,
   };
 
   const queryString = new URLSearchParams(commonParams).toString();
   const url = `${BASE_URL}/${service}/${operation}?${queryString}`;
-  console.log("요청 URL:", url); 
 
   try {
     const response = await fetch(url);
