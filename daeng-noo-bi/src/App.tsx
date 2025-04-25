@@ -1,13 +1,13 @@
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
-import Home from './pages/Home'
-import NotFound from './pages/NotFound'
-import Region from './pages/Region'
-import Popular from './pages/Popular'
-import Theme from './pages/Theme'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import Favorites from './pages/Favorites'
+import Home from './pages/Home/Home'
+import NotFound from './pages/NotFound/NotFound'
+import Region from './pages/Region/Region'
+import Popular from './pages/Popular/Popular'
+import Theme from './pages/Theme/Theme'
+import Login from './pages/Login/Login'
+import Signup from './pages/Signup/Signup'
+import Favorites from './pages/Favorites/Favorites'
 
 
 function App() {
