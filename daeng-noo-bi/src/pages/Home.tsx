@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom"
-import PetTravelList from "../components/PetTrevelList";
 
 export default function Home() {
     const nav = useNavigate();
@@ -7,7 +6,6 @@ export default function Home() {
     return (
         <div>
             Home
-            <PetTravelList/>
             <button onClick={() => nav(`/login`)}>login</button>
             <button onClick={() => nav(`/signup`)}>signup</button>
             <button onClick={() => nav(`/favorites/${id}`)}>favorites</button>
