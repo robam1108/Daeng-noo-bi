@@ -1,4 +1,4 @@
-import './App.css'
+import './App.scss'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home/Home'
 import NotFound from './pages/NotFound/NotFound'
@@ -9,6 +9,7 @@ import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
 import Favorites from './pages/Favorites/Favorites'
 import Navbar from './components/Navbar/Navbar'
+
 
 
 function App() {
