@@ -3,6 +3,7 @@ import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
+import parser from '@typescript-eslint/parser';
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -27,5 +28,14 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
     },
+    languageOptions: {
+      parser,
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+    "prefer-const": ["error", {
+      "destructuring": "any",
+      "ignoreReadBeforeAssign": false
+    }]
   },
 )
