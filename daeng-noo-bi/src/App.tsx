@@ -21,7 +21,7 @@ function App() {
         <Route path='/theme' element={<Theme />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/login/:id' element={<Favorites />} />
+        <Route path='/favorites/:id' element={<Favorites />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </>

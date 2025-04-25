@@ -1,18 +1,18 @@
 import { useNavigate } from "react-router-dom"
-import Map from "../api/Map"
 
 export default function Home() {
     const nav = useNavigate();
+    var id = 1;
     return (
         <div>
             Home
             <button onClick={() => nav(`/login`)}>login</button>
-            <button>signup</button>
-            <button>favorites</button>
-            <button>popular</button>
-            <button>region</button>
-            <button>theme</button>
-            <Map latitude={35.1587} longitude={129.1604} />
+            <button onClick={() => nav(`/signup`)}>signup</button>
+            <button onClick={() => nav(`/favorites/${id}`)}>favorites</button>
+            <button onClick={() => nav(`/popular`)}>popular</button>
+            <button onClick={() => nav(`/region`)}>region</button>
+            <button onClick={() => nav(`/theme`)}>theme</button>
+
         </div>
     )
 };
