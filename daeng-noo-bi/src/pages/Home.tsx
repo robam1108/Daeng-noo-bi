@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import Map from "../api/Map"
-import PetTravelList from "../components/PetTrevelList"
+import PetTravelList from "../components/PetTrevelList";
 
 export default function Home() {
     const nav = useNavigate();
@@ -15,7 +14,6 @@ export default function Home() {
             <button onClick={() => nav(`/popular`)}>popular</button>
             <button onClick={() => nav(`/region`)}>region</button>
             <button onClick={() => nav(`/theme`)}>theme</button>
-
         </div>
     )
 };
