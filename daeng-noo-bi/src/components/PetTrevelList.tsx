@@ -21,22 +21,20 @@ function PetTravelList() {
 
   return (
     
-    <section className="p-6 max-w-7xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-6 text-center">반려동물 동반 가능한 관광지</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <section>
+      <h2>반려동물 동반 가능한 관광지</h2>
+      <div>
         {places.map((place) => (
           <div
             key={place.contentid}
-            className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
           >
             <img
-              src={place.firstimage || 'https://via.placeholder.com/300x200?text=No+Image'}
+              src={place.firstimage || 'https://placehold.co/300x200?text=No+Image'}
               alt={place.title}
-              className="w-full h-48 object-cover"
             />
-            <div className="p-4">
-              <h3 className="text-lg font-bold">{place.title}</h3>
-              <p className="text-sm text-gray-600">{place.addr1 || '주소 정보 없음'}</p>
+            <div>
+              <h3>{place.title}</h3>
+              <p>{place.addr1 || '주소 정보 없음'}</p>
             </div>
           </div>
         ))}
