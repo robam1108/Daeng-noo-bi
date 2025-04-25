@@ -8,12 +8,14 @@ import Theme from './pages/Theme/Theme'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
 import Favorites from './pages/Favorites/Favorites'
+import Navbar from './components/Navbar/Navbar'
 
 
 function App() {
 
   return (
     <>
+      <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/popular' element={<Popular />} />
