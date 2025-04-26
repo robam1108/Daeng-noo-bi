@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 export default function Home() {
     const nav = useNavigate();
     var id = 1;
+
     return (
         <div>
             Home
@@ -13,5 +14,6 @@ export default function Home() {
             <button onClick={() => nav(`/region`)}>region</button>
             <button onClick={() => nav(`/theme`)}>theme</button>
         </div>
+
     )
 };
