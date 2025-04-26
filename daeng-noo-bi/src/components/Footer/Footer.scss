@@ -1,0 +1,32 @@
+$font-color: #328E6E;
+$background-color: #E1EEBC;
+
+.Footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    background-color: $background-color;
+    color: $font-color;
+
+}
+
+.Footer>div {
+    padding: 10px 20px;
+}
+
+.producer-link {
+    margin-left: auto;
+}
+
+.producer-link>p {
+    display: flex;
+    gap: 5px;
+
+}
+
+.producer-link>p>a,
+.producer-link>p>a:visited {
+    text-decoration-line: none;
+    color: $font-color;
+}
