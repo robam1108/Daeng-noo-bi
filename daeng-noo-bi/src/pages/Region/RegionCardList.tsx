@@ -13,7 +13,7 @@ const RegionCardList = ({
       {places.map((place, index) => (
         <div
           key={place.contentid || index}
-          ref={index === places.length - 1 ? lastCardRef : null} // ✅ 마지막 카드에만 ref 걸기
+          ref={index === places.length - 1 ? lastCardRef : null}
         >
           <RegionCard place={place} />
         </div>

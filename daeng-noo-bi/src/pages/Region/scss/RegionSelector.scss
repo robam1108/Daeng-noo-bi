@@ -1,18 +1,60 @@
 .region-selector {
   display: flex;
-  // width: 100%;
-  height: 200px;
   align-items: center;
-  justify-content:space-between;
-  padding: 0px 300px;
+  justify-content: space-between;
+  padding: 60px 350px 20px 350px;
   background-color: #E1EEBC;
 
-  button{
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: #67AE6E;
-    color: #fff;
-    // outline: 2px solid red;
+  .region-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    .region-icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-image: url('../../../assets/icon_area.png'); 
+      background-size: auto 1800%; 
+      background-repeat: no-repeat;
+      background-position: center top;
+      background-color: #67AE6E;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+      }
+    }
+
+    &.active {
+      .region-icon{
+        outline: 3px solid #328E6E;
+        transform: scale(1.1);
+      }
+      .region-name {
+      color: #328E6E;
+      }
+    }
+
+    .region-name {
+      font-size: 20px;
+      color: #000;
+      font-weight: 500;
+      text-align: center;
+    }
   }
+  .seoul .region-icon { background-position: center 0%; }
+  .incheon .region-icon { background-position: center 6.25%; }
+  .daejeon .region-icon { background-position: center 12.5%; }
+  .daegu .region-icon { background-position: center 18.75%; }
+  .busan .region-icon { background-position: center 31.25%; }
+  .ulsan .region-icon { background-position: center 37.5%; }
+  .gyeonggi  .region-icon { background-position: center 25%; }
+  .gwangju  .region-icon { background-position: center 43.75%; }
+  .gangwon .region-icon { background-position: center 50%; }
+  .sejong .region-icon { background-position: center 100%; }
 }

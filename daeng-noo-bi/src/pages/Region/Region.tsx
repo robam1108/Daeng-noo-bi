@@ -8,6 +8,7 @@ import {
 } from "./regionAPI";
 import { REGION_CODES } from "./regionConstants";
 import "./scss/Region.scss";
+import { throttle } from "../../utils/throttle";
 
 const Region = () => {
   const [selectedRegion, setSelectedRegion] = useState(1); // 기본값: 서울
@@ -20,13 +21,17 @@ const Region = () => {
     (region) => region.code === selectedRegion
   );
 
-  // ✅ 초기/지역 변경시
+  const throttledLoadMore = throttle(() => {
+    setPage((prev) => prev + 1);
+  }, 1500);
+
+  // 초기/지역 변경시
   useEffect(() => {
     setPlaces([]);
     setPage(1);
   }, [selectedRegion]);
 
-  // ✅ 페이지 번호 변할 때마다 로딩
+  // 페이지 번호 변할 때마다 로딩
   useEffect(() => {
     const loadPlaces = async () => {
       setLoading(true);
@@ -47,7 +52,7 @@ const Region = () => {
         })
       );
 
-      // ✅ 압축 끝날 때까지 기다리고 나서, 한 번에 9개 추가
+      // 압축 끝날 때까지 기다리고 나서, 한 번에 9개 추가
       setPlaces((prev) => [...prev, ...placesWithFinalImage.slice(0, 9)]);
       setLoading(false);
     };
@@ -55,7 +60,7 @@ const Region = () => {
     loadPlaces();
   }, [page, selectedRegion]);
 
-  // ✅ 스크롤 감지
+  // 스크롤 감지
   const lastCardRef = useCallback(
     (node: any) => {
       if (loading) return;
@@ -63,7 +68,7 @@ const Region = () => {
 
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-          setPage((prev) => prev + 1);
+          throttledLoadMore();
         }
       });
 
