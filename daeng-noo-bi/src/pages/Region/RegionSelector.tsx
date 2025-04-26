@@ -1,5 +1,5 @@
-import { REGION_CODES } from './regionConstants';
-import './scss/RegionSelector.scss';
+import { REGION_CODES } from "./regionConstants";
+import "./scss/RegionSelector.scss";
 
 const RegionSelector = ({
   selected,
@@ -9,13 +9,17 @@ const RegionSelector = ({
   onChange: (code: number) => void;
 }) => (
   <div className="region-selector">
-    {REGION_CODES.map(region => (
+    {REGION_CODES.map((region) => (
       <button
         key={region.code}
-        className={selected === region.code ? 'active' : ''}
+        className={`region-button ${region.className} ${
+          selected === region.code ? "active" : ""
+        }`}
         onClick={() => onChange(region.code)}
+        aria-label={region.name}
       >
-        {region.name}
+        <div className="region-icon" />
+        <span className="region-name">{region.name}</span>
       </button>
     ))}
   </div>

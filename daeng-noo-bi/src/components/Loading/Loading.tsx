@@ -1,9 +1,9 @@
-import "./Loding.scss"
+import "./Loding.scss";
 
 export default function Loding() {
-    return (
-        <div className="Loding">
-            <div className="spinner" />
-        </div>
-    )
+  return (
+    <div className="Loding">
+      <div className="spinner" />
+    </div>
+  );
 }
