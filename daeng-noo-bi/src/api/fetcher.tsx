@@ -1,5 +1,6 @@
 const API_KEY = import.meta.env.VITE_TOUR_API_KEY;
-const BASE_URL = 'https://apis.data.go.kr/B551011';
+// const BASE_URL = 'https://apis.data.go.kr/B551011';
+const BASE_URL = '/api';
 
 export async function fetchTourAPI(
   service: string,
@@ -31,6 +32,6 @@ export async function fetchTourAPI(
     return json.response?.body?.items?.item ?? [];
   } catch (error) {
     console.error(`API 호출 실패: ${operation}`, error);
-    return [];
+    throw error;
   }
 }
