@@ -1,0 +1,23 @@
+.region-page {
+  width: 100%;
+  align-items: center;
+  padding-bottom: 30px;
+  // outline: 2px solid blue;
+  h2{
+    font-size: 3rem;
+    font-weight: 500;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    // outline: 2px solid red;
+  }
+  .load-more-container{
+    text-align: center;
+    margin-top: 30px;
+    button{
+      color: #7c7c7c;
+    }
+  }
+}

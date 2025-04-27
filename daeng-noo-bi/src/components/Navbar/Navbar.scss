@@ -37,18 +37,23 @@ nav{
     .menu{
       display: flex;
       gap: 100px;
-
+      margin-left: -75px;
+      transition: color 0.3s;
+      
       a {
         color: #000;
         &:hover {
-          color: #67AE6E; 
+          // color: #67AE6E;
+          color: #787878;
         }
-        .dimmed {
-          color: #858585;
-        }
+      }
+
+      .dimmed {
+        // color: #858585;
       }
       .active {
         color: #328E6E;
+        // font-weight: bold;
       }
     }
   }
