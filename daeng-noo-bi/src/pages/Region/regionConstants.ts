@@ -9,4 +9,11 @@ export const REGION_CODES = [
   { name: '세종', code: 8, className: 'sejong' },
   { name: '경기', code: 31, className: 'gyeonggi' },
   { name: '강원', code: 32, className: 'gangwon' },
+  { name: '충북', code: 33, className: 'chungbuk' },
+  { name: '충남', code: 34, className: 'chungnam' },
+  { name: '전북', code: 35, className: 'jeonbuk' },
+  { name: '전남', code: 36, className: 'jeonnam' },
+  { name: '경북', code: 37, className: 'gyeongbuk' },
+  { name: '경남', code: 38, className: 'gyeongnam' },
+  { name: '제주', code: 39, className: 'jeju' },
 ];

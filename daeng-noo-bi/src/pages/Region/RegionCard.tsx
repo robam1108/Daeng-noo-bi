@@ -1,33 +1,13 @@
 import "./scss/RegionCard.scss";
 import { useEffect, useState, useRef } from "react";
-import { compressImageFromUrl } from "../../utils/compressImageFromUrl";
 
 const RegionCard = ({ place }: { place: any }) => {
-  const [imageUrl, setImageUrl] = useState(place.finalImage);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [isCompressing, setIsCompressing] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const compressAndSetImage = async () => {
-      try {
-        const compressedUrl = await compressImageFromUrl(place.finalImage);
-        setImageUrl(compressedUrl);
-      } catch (error) {
-        console.error("이미지 압축 실패:", error);
-      } finally {
-        setIsCompressing(false); // ✅ 압축 끝나면 blur 해제
-      }
-    };
-
-    if (place.finalImage) {
-      compressAndSetImage();
-    }
-  }, [place.finalImage]);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsVisible(true); // ✅ 부드럽게 등장시킴
+      setIsVisible(true);
     }, 100);
 
     return () => clearTimeout(timer);
@@ -38,10 +18,9 @@ const RegionCard = ({ place }: { place: any }) => {
       ref={cardRef}
       className={`card ${isVisible ? "show" : ""}`}
       style={{
-        backgroundImage: `url(${imageUrl})`,
+        backgroundImage: `url(${place.finalImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        filter: isCompressing ? "blur(10px)" : "none",
       }}
     >
       <div className="info">
