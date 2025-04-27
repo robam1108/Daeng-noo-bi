@@ -1,19 +1,33 @@
-import { useNavigate } from "react-router-dom"
+import Map from "../../components/Map"
 
 export default function Home() {
-    const nav = useNavigate();
-    var id = 1;
 
     return (
         <div>
-            Home
-            <button onClick={() => nav(`/login`)}>login</button>
-            <button onClick={() => nav(`/signup`)}>signup</button>
-            <button onClick={() => nav(`/favorites/${id}`)}>favorites</button>
-            <button onClick={() => nav(`/popular`)}>popular</button>
-            <button onClick={() => nav(`/region`)}>region</button>
-            <button onClick={() => nav(`/theme`)}>theme</button>
-        </div>
+            <Map address="서울 송파구 잠실동 40-1" />
+            {/* <RandomSpotBanner /> */}
+            <div>
+                <div>
+                    <p>인기 여행지</p>
+                    <p>반려동물과 함께하는 인기 여행지</p>
+                </div>
+                {/* <PopularspotList />  */}
+            </div>
+            <div>
+                <div>
+                    <p>지역별 여행지</p>
+                    <p>이번엔 어디로 가볼까요?</p>
+                </div>
+                {/* <LegionList /> */}
+            </div>
+            <div>
+                <div>
+                    <p>키워드 여행지</p>
+                    <p>키워드로 만나는 우리만의 여행</p>
+                </div>
+                {/* <categoryList /> */}
+            </div>
 
+        </div>
     )
 };
