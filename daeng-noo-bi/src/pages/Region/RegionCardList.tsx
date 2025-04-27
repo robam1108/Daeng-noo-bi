@@ -1,20 +1,11 @@
 import RegionCard from "./RegionCard";
 import "./scss/RegionCardList.scss";
 
-const RegionCardList = ({
-  places,
-  lastCardRef,
-}: {
-  places: any[];
-  lastCardRef: (node: any) => void;
-}) => {
+const RegionCardList = ({ places }: { places: any[] }) => {
   return (
     <div className="card-list">
       {places.map((place, index) => (
-        <div
-          key={place.contentid || index}
-          ref={index === places.length - 1 ? lastCardRef : null}
-        >
+        <div key={place.contentid || index}>
           <RegionCard place={place} />
         </div>
       ))}

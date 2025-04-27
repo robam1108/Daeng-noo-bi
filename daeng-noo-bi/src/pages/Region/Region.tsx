@@ -1,91 +1,122 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState } from "react";
 import RegionSelector from "./RegionSelector";
 import RegionCardList from "./RegionCardList";
-import {
-  fetchPetFriendlyPlacesByRegion,
-  fetchDetailImage,
-  filterHighQualityImages,
-} from "./regionAPI";
+import { fetchPetFriendlyPlacesByRegion, RawPlace } from "./regionAPI";
+import { fetchDetailImage } from "../../api/datailAPI";
 import { REGION_CODES } from "./regionConstants";
+import { FALLBACK_IMAGES } from "../../constants/fallbackImages";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+
 import "./scss/Region.scss";
-import { throttle } from "../../utils/throttle";
 
-const Region = () => {
-  const [selectedRegion, setSelectedRegion] = useState(1); // 기본값: 서울
-  const [places, setPlaces] = useState<any[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const observer = useRef<IntersectionObserver | null>(null);
+interface Place extends RawPlace {
+  finalImage: string;
+}
 
-  const selectedRegionData = REGION_CODES.find(
-    (region) => region.code === selectedRegion
-  );
+export default function Region() {
+  const [selectedRegion, setSelectedRegion] = useState<number>(1);
+  const [places, setPlaces] = useState<Place[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const throttledLoadMore = throttle(() => {
-    setPage((prev) => prev + 1);
-  }, 1500);
+  const regionName = REGION_CODES.find((r) => r.code === selectedRegion)?.name;
 
-  // 초기/지역 변경시
+  // 지역 바뀌면 초기화
   useEffect(() => {
     setPlaces([]);
     setPage(1);
+    setHasMore(true);
+    setError(null);
   }, [selectedRegion]);
 
-  // 페이지 번호 변할 때마다 로딩
+  // 데이터 로드
   useEffect(() => {
     const loadPlaces = async () => {
       setLoading(true);
+      setError(null);
+      try {
+        const rawData = await fetchPetFriendlyPlacesByRegion(
+          selectedRegion,
+          page
+        );
+        // rawData가 배열인지, 요소가 null/undefined인지 필터링
+        const validData = Array.isArray(rawData)
+          ? rawData.filter((p): p is RawPlace => !!p)
+          : [];
 
-      const data = await fetchPetFriendlyPlacesByRegion(selectedRegion, page);
+        // 이미지 보완
+        const enriched: Place[] = await Promise.all(
+          validData.map(async (p) => {
+            // 1. API 첫 응답 이미지 시도
+            let img = p.firstimage || p.firstimage2;
+            const fallback = FALLBACK_IMAGES[p.title];
+            // 2. 없으면 detailAPI 시도
+            if (!img) {
+              const detail = await fetchDetailImage(p.contentid);
+              img = detail.imageUrl;
+            }
 
-      const placesWithImages = data.filter(
-        (place: any) => place.firstimage || place.firstimage2
-      );
+            // 3. 그래도 없으면 placeholder
+            // const final = img ?? "/images/no-image.png";
+            // console.log(
+            //   `[Region] contentId=${p.contentid}, finalImage=`,
+            //   final
+            // );
 
-      const placesWithFinalImage = await Promise.all(
-        placesWithImages.map(async (place: any) => {
-          return {
-            ...place,
-            finalImage:
-              place.firstimage || place.firstimage2 || "/images/no-image.png",
-          };
-        })
-      );
+            return {
+              ...p,
+              finalImage: img || fallback || "/images/no-image.png",
+            };
+          })
+        );
 
-      // 압축 끝날 때까지 기다리고 나서, 한 번에 9개 추가
-      setPlaces((prev) => [...prev, ...placesWithFinalImage.slice(0, 9)]);
-      setLoading(false);
+        setPlaces((prev) => [...prev, ...enriched]);
+
+        if (validData.length === 0) {
+          setHasMore(false);
+        }
+      } catch (e: any) {
+        console.error("Region 로딩 에러:", e);
+        setError(e.message || "데이터 로딩 중 에러가 발생했습니다.");
+      } finally {
+        setLoading(false);
+      }
     };
 
     loadPlaces();
-  }, [page, selectedRegion]);
+  }, [selectedRegion, page]);
 
-  // 스크롤 감지
-  const lastCardRef = useCallback(
-    (node: any) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          throttledLoadMore();
-        }
-      });
-
-      if (node) observer.current.observe(node);
-    },
-    [loading]
-  );
+  const handleLoadMore = () => {
+    if (!loading && hasMore) {
+      setPage((prev) => prev + 1);
+    }
+  };
 
   return (
     <div className="region-page">
       <RegionSelector selected={selectedRegion} onChange={setSelectedRegion} />
-      <h2>{selectedRegionData?.name}</h2>
-      <RegionCardList places={places} lastCardRef={lastCardRef} />
+      <h2>{regionName}</h2>
+
+      {error && <div className="error">⚠️ {error}</div>}
+
+      <RegionCardList places={places} />
 
       {loading && <div className="loading">로딩 중...</div>}
+
+      {!loading && hasMore && (
+        <button className="load-more-button" onClick={handleLoadMore}>
+          <p>더보기</p>
+          <FontAwesomeIcon icon={faCaretDown as IconProp} />
+        </button>
+      )}
+
+      {!loading && !hasMore && places.length > 0 && (
+        <div className="end-message">마지막 여행지까지 모두 불러왔습니다.</div>
+      )}
     </div>
   );
-};
-
-export default Region;
+}
