@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, } from "react";
+import { useLocation } from "react-router-dom";
 import RegionSelector from "./RegionSelector";
 import RegionCardList from "./RegionCardList";
 import { fetchPetFriendlyPlacesByRegion, RawPlace } from "./regionAPI";
@@ -11,17 +12,24 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 import "./scss/Region.scss";
 
+interface LocationState {
+  initialRegion?: number;
+}
+
 interface Place extends RawPlace {
   finalImage: string;
 }
 
 export default function Region() {
-  const [selectedRegion, setSelectedRegion] = useState<number>(1);
+  const location = useLocation();
+  const initialRegion = (location.state as LocationState)?.initialRegion ?? 1;
+  const [selectedRegion, setSelectedRegion] = useState<number>(initialRegion);
   const [places, setPlaces] = useState<Place[]>([]);
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
 
   const regionName = REGION_CODES.find((r) => r.code === selectedRegion)?.name;
 
