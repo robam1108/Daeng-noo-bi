@@ -1,49 +1,37 @@
 import { fetchTourAPI } from '../../api/fetcher';
 
-export const fetchPetFriendlyPlacesByRegion = async (areaCode: number, page: number = 1) => {
+export const PAGE_SIZE = 9;
+
+export interface RawPlace {
+  contentid: string;
+  title: string;
+  firstimage?: string;
+  firstimage2?: string;
+  // …기타 필드…
+}
+
+/**
+ * areaCode, page로 반려동물 여행지 원본 데이터  (raw) 9개를 가져옴
+ */
+export async function fetchPetFriendlyPlacesByRegion(
+  areaCode: number,
+  page: number = 1
+): Promise<RawPlace[]> {
   const params = {
-    areaCode: String(areaCode),
+    numOfRows: String(PAGE_SIZE),
     pageNo: String(page),
-    numOfRows: '9',
+    arrange: "P",
+    areaCode: String(areaCode),
   };
 
-  return await fetchTourAPI('KorPetTourService', 'areaBasedList', params); 
-};
+  const result = await fetchTourAPI("KorPetTourService", "areaBasedList", params);
 
-export const fetchDetailImage = async (contentId: number) => {
-  const params = {
-    contentId: String(contentId),
-  };
-  return await fetchTourAPI('KorPetTourService', 'detailImage', params);
-};
-
-
-export const filterHighQualityImages = (urls: string[]): Promise<string | null> => {
-  return new Promise((resolve) => {
-    if (!urls.length) return resolve(null);
-
-    let checked = 0;
-
-    for (const url of urls) {
-      const img = new Image();
-      img.src = url.startsWith('http') ? url.replace('http://', 'https://') : url;
-
-      img.onload = () => {
-        checked++;
-
-        if (img.width >= 600 && img.height >= 400 && img.width <= 1200 && img.height <= 1000) {  // 원하는 해상도 기준
-          resolve(img.src);  // 고화질이면 바로 리턴
-        } else if (checked === urls.length) {
-          resolve(null);  // 다 체크했는데 없으면 null
-        }
-      };
-
-      img.onerror = () => {
-        checked++;
-        if (checked === urls.length) {
-          resolve(null);
-        }
-      };
-    }
-  });
-};
+  // result가 배열이면 그대로, 아니면 단일 객체를 배열로
+  if (Array.isArray(result)) {
+    return result;
+  }
+  if (result) {
+    return [result];
+  }
+  return [];
+}
