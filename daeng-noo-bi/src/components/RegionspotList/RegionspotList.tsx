@@ -4,7 +4,7 @@ import RegionSelector from "../../pages/Region/RegionSelector";
 
 
 
-const RegionList = () => {
+const RegionspotList = () => {
     const nav = useNavigate();
     const [selectedRegion, setSelectedRegion] = useState<number>(1);
 
@@ -20,4 +20,4 @@ const RegionList = () => {
     )
 }
 
-export default RegionList
+export default RegionspotList
