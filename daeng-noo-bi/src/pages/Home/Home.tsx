@@ -1,7 +1,10 @@
 import "./Home.scss"
+import { useState } from "react";
 import RandomSpotBanner from "../../components/RandomSpotBanner/RandomSpotBanner"
+import RegionList from "../../components/RegionList/RegionList";
 
 export default function Home() {
+
 
     return (
         <div className="Home">
@@ -19,8 +22,7 @@ export default function Home() {
                     <h2 className="home-title">지역별 여행지</h2>
                     <p className="home-subtitle">이번엔 어디로 가볼까요?</p>
                 </div>
-                <div className="home-content"></div>{/* 임시 */}
-                {/* <LegionList /> */}
+                <RegionList />
             </section>
             <section className="home-section home-section--category">
                 <div className="home-header">

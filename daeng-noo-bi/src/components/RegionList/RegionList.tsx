@@ -1,0 +1,23 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import RegionSelector from "../../pages/Region/RegionSelector";
+
+
+
+const RegionList = () => {
+    const nav = useNavigate();
+    const [selectedRegion, setSelectedRegion] = useState<number>(1);
+
+    const handleChange = (code: number) => {
+        setSelectedRegion(code);
+        nav("/region", { state: { initialRegion: code } });
+    };
+
+    return (
+        <div>
+            <RegionSelector selected={selectedRegion} onChange={handleChange} />
+        </div>
+    )
+}
+
+export default RegionList
