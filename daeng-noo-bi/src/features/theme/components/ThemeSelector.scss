@@ -21,6 +21,7 @@
     overflow: hidden;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     transition: all 0.3s ease;
     transform-origin: center bottom;
 
@@ -49,6 +50,6 @@
     &.healing { background-image: url('https://img2.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202406/21/speaktravel/20240621140000946yvnv.jpg');}
     &.adventure {background-image: url('https://img0.yna.co.kr/etc/inner/KR/2016/12/08/AKR20161208117400054_01_i_P4.jpg');}
     &.culture {background-image: url('https://tong.visitkorea.or.kr/cms/resource/84/3083584_image2_1.JPG');}
-    &.food {background-image: url('https://health.chosun.com/site/data/img_dir/2024/01/02/2024010202095_0.jpg'); background-position: center -60px;}
+    &.food {background-image: url('https://health.chosun.com/site/data/img_dir/2024/01/02/2024010202095_0.jpg'); background-position: center -40px;}
   }
 }
