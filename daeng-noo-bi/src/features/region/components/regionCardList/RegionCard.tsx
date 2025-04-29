@@ -1,4 +1,4 @@
-import "./scss/RegionCard.scss";
+import "./RegionCard.scss";
 import { useEffect, useState, useRef } from "react";
 
 const RegionCard = ({ place }: { place: any }) => {

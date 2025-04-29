@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchUser } from "./../api/UserApi";
-import { User } from "./../types/User";
+import { User } from "../shared/types/User";
 
 export function useUser(userId: string) {
     const [user, setUser] = useState<User | null>(null);

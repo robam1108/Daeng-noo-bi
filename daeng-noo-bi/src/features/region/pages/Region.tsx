@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import RegionSelector from "./RegionSelector";
-import RegionCardList from "./RegionCardList";
-import { fetchPetFriendlyPlacesByRegion, RawPlace } from "./regionAPI";
-import { fetchDetailImage } from "../../api/datailAPI";
-import { REGION_CODES } from "./regionConstants";
-import { FALLBACK_IMAGES } from "../../constants/fallbackImages";
+import RegionSelector from "../components/regionSelector/RegionSelector";
+import RegionCardList from "../components/regionCardList/RegionCardList";
+import { fetchPetFriendlyPlacesByRegion, RawPlace } from "../api/regionAPI";
+import { fetchDetailImage } from "../../../shared/api/datailAPI";
+import { REGION_CODES } from "../constants/regionConstants";
+import { FALLBACK_IMAGES } from "../../../shared/constants/fallbackImages";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";

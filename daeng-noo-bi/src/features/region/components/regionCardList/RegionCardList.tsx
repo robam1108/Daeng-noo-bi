@@ -1,5 +1,5 @@
 import RegionCard from "./RegionCard";
-import "./scss/RegionCardList.scss";
+import "./RegionCardList.scss";
 
 const RegionCardList = ({ places }: { places: any[] }) => {
   return (

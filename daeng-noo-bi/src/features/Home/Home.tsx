@@ -1,4 +1,4 @@
-import Map from "../../components/Map"
+import Map from "../placeDetail/Map"
 
 export default function Home() {
 
