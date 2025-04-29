@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { geocodeAddress, Coords } from "./../api/NaverMapApi"
+import { geocodeAddress, Coords } from "../../shared/api/NaverMapApi"
 
 interface MapProps {
     address: string;

@@ -1,4 +1,4 @@
-import { fetchTourAPI } from '../../api/fetcher';
+import { fetchTourAPI } from '../../../shared/api/fetcher';
 
 export const PAGE_SIZE = 9;
 
