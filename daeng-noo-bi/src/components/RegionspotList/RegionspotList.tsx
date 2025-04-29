@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import RegionSelector from "../../pages/Region/RegionSelector";
+import RegionSelector from "../../features/region/components/regionSelector/RegionSelector";
 
 
 
