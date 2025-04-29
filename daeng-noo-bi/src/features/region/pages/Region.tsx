@@ -8,8 +8,9 @@ import { FALLBACK_IMAGES } from "../../../shared/constants/fallbackImages";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { useLocation } from "react-router-dom";
 
-import "./scss/Region.scss";
+import "./Region.scss";
 
 interface LocationState {
   initialRegion?: number;

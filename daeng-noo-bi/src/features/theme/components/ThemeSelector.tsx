@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThemeInfo, THEMES } from '../constants/themeConstants';
-import './scss/ThemeSelector.scss';
+import './ThemeSelector.scss';
 
 interface Props {
   selectedTheme: ThemeInfo['key'];

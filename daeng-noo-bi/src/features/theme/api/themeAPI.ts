@@ -1,6 +1,6 @@
-import { fetchTourAPI } from '../../api/fetcher';
-import { PAGE_SIZE, RawPlace } from '../Region/regionAPI';
-import { ThemeKey, themeMap } from './themeConstants';
+import { fetchTourAPI } from '../../../shared/api/fetcher';
+import { PAGE_SIZE, RawPlace } from '../../region/api/regionAPI';
+import { ThemeKey, themeMap } from '../constants/themeConstants';
 
 /**
  * 테마별 장소 조회 (KorPetTourService - typeBasedList)

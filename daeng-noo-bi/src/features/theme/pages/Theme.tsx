@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import ThemeSelector from './ThemeSelector';
+import ThemeSelector from '../components/ThemeSelector';
 // import ThemeCardList from './ThemeCardList';
-import { fetchPlacesByTheme } from './themeAPI';
-import { ThemeKey } from './themeConstants';
-import type { RawPlace } from '../Region/regionAPI';
+import { fetchPlacesByTheme } from '../api/themeAPI';
+import { ThemeKey } from '../constants/themeConstants';
+import type { RawPlace } from '../../region/api/regionAPI';
 // import './Theme.scss';
 
 export default function Theme() {
