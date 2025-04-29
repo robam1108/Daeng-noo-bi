@@ -1,0 +1,39 @@
+.random-spot-banner {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: end;
+        text-align: center;
+        padding: 0 20px;
+        color: #fff;
+
+        .loading-text {
+            font-size: 1.2rem;
+        }
+
+        .spot-name {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .spot-description {
+            font-size: 1rem;
+            line-height: 1.4;
+            max-width: 80%;
+            padding-bottom: 20px;
+        }
+    }
+}

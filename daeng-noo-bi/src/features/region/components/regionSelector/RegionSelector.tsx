@@ -35,9 +35,8 @@ const RegionSelector = ({ selected, onChange }: RegionSelectorProps) => {
           {REGION_CODES.map((region) => (
             <SwiperSlide key={region.code}>
               <button
-                className={`region-button ${region.className} ${
-                  selected === region.code ? "active" : ""
-                }`}
+                className={`region-button ${region.className} ${selected === region.code ? "active" : ""
+                  }`}
                 onClick={() => onChange(region.code)}
                 aria-label={region.name}
               >

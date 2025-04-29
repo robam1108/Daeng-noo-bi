@@ -3,13 +3,11 @@
   "compilerOptions": {
     // 1) 출력물 없이 타입 검사만
     "noEmit": true,
-
     // 2) 모듈/타깃 설정
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
-
     // 3) 라이브러리
     "lib": [
       "ES2020",
@@ -17,33 +15,27 @@
       "DOM",
       "DOM.Iterable"
     ],
-
     // 4) 엄격 모드 & 검사 옵션
-    "composite": true,
     "strict": true,
     "skipLibCheck": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-
     // 5) Vite 번들링과 TS 확장자 허용
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-
     // 6) 클래스 필드용 (Vue나 React의 데코레이터 등)
     "useDefineForClassFields": true,
-
     // 7) 빌드 정보 캐싱 (optional)
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo"
   },
-
   // 프로젝트 전체에서 타입 검사를 할 경로
   "include": [
-    "src",               // React 소스
+    "src", // React 소스
     "src/**/*",
-    "vite.d.ts",   // 사용자 정의 타입
-    "vite.config.ts"     // Vite 설정 파일
+    "vite.d.ts", // 사용자 정의 타입
+    "vite.config.ts" // Vite 설정 파일
   ]
 }

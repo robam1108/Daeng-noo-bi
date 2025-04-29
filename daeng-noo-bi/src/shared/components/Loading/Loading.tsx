@@ -1,6 +1,6 @@
-import "./Loding.scss";
+import "./Loading.scss";
 
-export default function Loding() {
+export default function Loading() {
   return (
     <div className="Loding">
       <div className="spinner" />
