@@ -33,7 +33,7 @@ export async function fetchTourAPI(
       ...params,
     }).toString();
     const url = `${BASE_URL}/${service}/${operation}?${qs}`;
-
+    console.log('[fetchTourAPI] URL:', url);
     try {
       const res = await fetch(url);
       const ct = res.headers.get("Content-Type") || "";
