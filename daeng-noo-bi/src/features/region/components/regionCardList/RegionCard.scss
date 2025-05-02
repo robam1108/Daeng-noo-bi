@@ -29,8 +29,8 @@
   }
   
   &.show {
-    transform: translateY(0); // ✅ show 클래스 붙으면 제자리
-    opacity: 1; // ✅ 완전 보이게
+    transform: translateY(0);
+    opacity: 1; 
   }
 
   .info {

@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./features/Home/pages/Home";
 import NotFound from "./features/NotFound/NotFound";
 import Region from "./features/region/pages/Region";
-import Popular from "./features/Popular/Popular";
+import Popular from "./features/Popular/pages/Popular";
 import Theme from "./features/theme/pages/Theme";
 import Login from "./features/Login/Login";
 import Signup from "./features/Signup/Signup";
