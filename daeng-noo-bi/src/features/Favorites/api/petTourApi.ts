@@ -7,8 +7,12 @@ export interface PlaceDetail {
     contentId: string;     // 콘텐츠 고유 ID (필수)
     title?: string;        // 제목
     addr1?: string;        // 대표 주소
+    addr2?: string;
     firstimage?: string;   // 대표 이미지 URL
     firstimage2?: string;  // 추가 이미지 URL (API에 포함돼 있으면)
+    overview?: string;
+    tel?: string;
+    homepage?: string;
 }
 
 /**
@@ -27,7 +31,7 @@ export async function fetchPlaceDetail(
         const items = await fetchTourAPI('KorPetTourService', 'detailCommon', {
             contentId: contentId,        // 필수: 콘텐츠 ID  // 필수:
             defaultYN: 'Y',   // 기본정보는 생략 (필요 없으면 N)
-            overviewYN: 'N',  // 개요 생략
+            overviewYN: 'Y',  // 개요 생략
             addrinfoYN: 'Y',  // 주소만 가져오기
             firstImageYN: 'Y',// 첫 번째 이미지 URL
             // API 문서에 따라 secondImageYN 옵션이 있다면 추가 요청
@@ -50,8 +54,12 @@ export async function fetchPlaceDetail(
             contentId: raw.contentid,
             title: raw.title,
             addr1: raw.addr1,
+            addr2: raw.addr2,
             firstimage: raw.firstimage,
             firstimage2: (raw as any).firstimage2, // API에 따라 없을 수도 있음
+            tel: raw.tel,
+            overview: raw.overview,
+            homepage: raw.homepage,
         };
         return detali;
     } catch (e) {
