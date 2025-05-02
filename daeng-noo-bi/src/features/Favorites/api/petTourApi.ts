@@ -1,4 +1,4 @@
-import { fetchTourAPI } from '../../../api/fetcher';
+import { fetchTourAPI } from '../../../shared/api/fetcher';
 
 /**
  * 화면에 최소한으로 표시할 장소 요약 정보 타입
