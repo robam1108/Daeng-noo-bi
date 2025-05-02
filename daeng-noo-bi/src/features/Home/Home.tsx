@@ -1,7 +1,7 @@
 import "./Home.scss"
-import RandomSpotBanner from "../components/RandomSpotBanner/RandomSpotBanner"
-import PopularspotList from "../components/PopularspotList/PopularspotList";
-import RegionspotList from "../components/RegionspotList/RegionspotList";
+import RandomSpotBanner from "./components/RandomSpotBanner/RandomSpotBanner"
+import PopularspotList from "./components/PopularspotList/PopularspotList";
+import RegionspotList from "./components/RegionspotList/RegionspotList";
 
 export default function Home() {
 
