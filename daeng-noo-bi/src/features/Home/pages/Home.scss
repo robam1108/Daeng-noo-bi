@@ -1,0 +1,57 @@
+$color-title: #fff;
+$color-subtitle: #666;
+$color-title-bg: black;
+$spacing-xs: 8px;
+$spacing-sm: 16px;
+$spacing-md: 32px;
+$section-gap: 60px;
+
+
+.Home {
+    display: flex;
+    flex-direction: column;
+    gap: $section-gap;
+    align-items: center;
+}
+
+.home-section {
+    display: flex;
+    flex-direction: column;
+}
+
+// 추가 커스터마이징
+.home-section--popular {}
+
+.home-section--region {}
+
+.home-section--category {}
+
+.home-header {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    margin-bottom: $spacing-sm;
+    align-items: center;
+}
+
+.home-title {
+    display: inline-block;
+    width: fit-content;
+    padding: $spacing-xs $spacing-sm; // 위아래: 8px, 좌우: 16px
+    font-size: 1rem;
+    color: $color-title;
+    background-color: $color-title-bg;
+    border-radius: 15px 15px 15px 0;
+    margin: 0;
+}
+
+.home-subtitle {
+    font-size: 1.3rem;
+    color: $color-subtitle;
+    margin: 0;
+}
+
+.home-content {
+    height: 300px;
+
+}
