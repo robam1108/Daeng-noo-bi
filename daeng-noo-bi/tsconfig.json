@@ -34,6 +34,7 @@
   // 프로젝트 전체에서 타입 검사를 할 경로
   "include": [
     "src", // React 소스
+    "src/**/*",
     "vite.d.ts", // 사용자 정의 타입
     "vite.config.ts" // Vite 설정 파일
   ]

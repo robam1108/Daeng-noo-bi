@@ -1,7 +1,7 @@
 // RegionSelector.tsx
 // import "swiper/swiper-bundle.css";
-import { REGION_CODES } from "./regionConstants";
-import "./scss/RegionSelector.scss";
+import { REGION_CODES } from "../../constants/regionConstants";
+import "./RegionSelector.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { Swiper, SwiperSlide } from "swiper/react";
