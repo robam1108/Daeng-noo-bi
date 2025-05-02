@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
-import type { RawPlace } from '../../region/api/regionAPI';
-import './ThemeCard.scss';
+import React, { useEffect, useState, useRef } from "react";
+import type { RawPlace } from "../../../region/api/regionAPI";
+import "./ThemeCard.scss";
 
 // RawPlace에 finalImage, addr1을 추가한 타입
 export interface Place extends RawPlace {
@@ -20,11 +20,11 @@ const ThemeCard: React.FC<{ place: Place }> = ({ place }) => {
   return (
     <div
       ref={cardRef}
-      className={`theme-card ${isVisible ? 'show' : ''}`}
+      className={`theme-card ${isVisible ? "show" : ""}`}
       style={{
         backgroundImage: `url(${place.finalImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       <div className="info">

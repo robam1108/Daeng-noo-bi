@@ -1,7 +1,7 @@
-import React from 'react';
-import type { Place } from './ThemeCard';
-import ThemeCard from './ThemeCard';
-import './ThemeCardList.scss';
+import React from "react";
+import type { Place } from "./ThemeCard";
+import ThemeCard from "./ThemeCard";
+import "./ThemeCardList.scss";
 
 // Region과 동일하게 .card-list 클래스 사용
 const ThemeCardList: React.FC<{ places: Place[] }> = ({ places }) => (
