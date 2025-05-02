@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ThemeSelector from "../components/ThemeSelector";
-import ThemeCardList from "../components/ThemeCardList";
+import ThemeSelector from "../components/ThemeSelector/ThemeSelector";
+import ThemeCardList from "../components/themeCardList/ThemeCardList";
 import { fetchPlacesByTheme, Place } from "../api/themeAPI";
 import { ThemeKey, themeMap } from "../constants/themeConstants";
 import "./Theme.scss";
