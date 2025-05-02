@@ -4,7 +4,7 @@ import { fetchTourAPI } from '../../../shared/api/fetcher';
  * 화면에 최소한으로 표시할 장소 요약 정보 타입
  */
 export interface PlaceDetail {
-    contentid: string;     // 콘텐츠 고유 ID (필수)
+    contentId: string;     // 콘텐츠 고유 ID (필수)
     title?: string;        // 제목
     addr1?: string;        // 대표 주소
     firstimage?: string;   // 대표 이미지 URL
@@ -24,17 +24,19 @@ export async function fetchPlaceDetail(
 ): Promise<PlaceDetail | null> {
     try {
         // 1) API 호출: detailCommon
-        const items = await fetchTourAPI('KorService', 'detailCommon', {
-            contentId,        // 필수: 콘텐츠 ID
-            defaultYN: 'N',   // 기본정보는 생략 (필요 없으면 N)
+        const items = await fetchTourAPI('KorPetTourService', 'detailCommon', {
+            contentId: contentId,        // 필수: 콘텐츠 ID  // 필수:
+            defaultYN: 'Y',   // 기본정보는 생략 (필요 없으면 N)
             overviewYN: 'N',  // 개요 생략
             addrinfoYN: 'Y',  // 주소만 가져오기
-            telYN: 'N',       // 전화번호 생략
             firstImageYN: 'Y',// 첫 번째 이미지 URL
             // API 문서에 따라 secondImageYN 옵션이 있다면 추가 요청
             // secondImageYN: 'Y',
-            _type: 'json',
         });
+
+        // 디버깅용 로그
+        // console.log('[fetchPlaceDetail] 요청 파라미터:', { contentId });
+        // console.log('[fetchPlaceDetail] API 응답 items:', items);
 
         // 2) API가 배열로 주기도, 단일 객체로 주기도 하므로 처리
         const raw = Array.isArray(items) ? items[0] : items;
@@ -45,7 +47,7 @@ export async function fetchPlaceDetail(
 
         // 3) PlaceDetail 형태로 매핑
         const detali: PlaceDetail = {
-            contentid: raw.contentid,
+            contentId: raw.contentid,
             title: raw.title,
             addr1: raw.addr1,
             firstimage: raw.firstimage,

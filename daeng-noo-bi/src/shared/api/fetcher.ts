@@ -13,7 +13,7 @@ function getNextApiKey() {
   return key;
 }
 
-const BASE_URL = "https://apis.data.go.kr/B551011";
+const BASE_URL = "/api";
 
 export async function fetchTourAPI(
   service: string,
