@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import type { RawPlace } from '../../api/regionAPI';
-import './RegionCard.scss';
+import type { RawPlace } from '../../region/api/regionAPI';
+import './ThemeCard.scss';
 
 // RawPlace에 finalImage, addr1을 추가한 타입
 export interface Place extends RawPlace {
@@ -8,7 +8,7 @@ export interface Place extends RawPlace {
   addr1: string;
 }
 
-const RegionCard: React.FC<{ place: Place }> = ({ place }) => {
+const ThemeCard: React.FC<{ place: Place }> = ({ place }) => {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -20,7 +20,7 @@ const RegionCard: React.FC<{ place: Place }> = ({ place }) => {
   return (
     <div
       ref={cardRef}
-      className={`card ${isVisible ? 'show' : ''}`}
+      className={`theme-card ${isVisible ? 'show' : ''}`}
       style={{
         backgroundImage: `url(${place.finalImage})`,
         backgroundSize: 'cover',
@@ -35,4 +35,4 @@ const RegionCard: React.FC<{ place: Place }> = ({ place }) => {
   );
 };
 
-export default RegionCard;
+export default ThemeCard;

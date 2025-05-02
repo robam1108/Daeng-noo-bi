@@ -1,12 +1,12 @@
 .theme-selector-wrapper {
   width: 100vw;
-  padding: 2rem 17rem 1rem 17rem;
+  padding: 1.5rem 17rem 2rem 17rem;
   background-color: #E1EEBC;
   display: flex;
   flex-wrap: nowrap;   
   justify-content: center;
   gap: clamp(0.5rem, 2vw, 2rem);
-  outline: 2px solid red;
+  // outline: 2px solid red;
   overflow: hidden;  
 
   .theme-selector-button {
@@ -47,9 +47,12 @@
       }
     }
 
-    &.healing { background-image: url('https://img2.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202406/21/speaktravel/20240621140000946yvnv.jpg');}
-    &.adventure {background-image: url('https://img0.yna.co.kr/etc/inner/KR/2016/12/08/AKR20161208117400054_01_i_P4.jpg');}
+    &.nature { background-image: url('https://img2.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202406/21/speaktravel/20240621140000946yvnv.jpg');}
+    &.adventure {background-image: url('https://mblogthumb-phinf.pstatic.net/MjAyNDAxMTBfNDUg/MDAxNzA0ODY0OTYyOTI4.uzCPZVsqGwncaSb0KdbK4UZTfXzEKk3k4yl6nrmr2Ocg.SVyDULPmAb7eQ0wfRwX-0toQ-FLCzb77V8Ymm55ywkkg.JPEG.981jeju/SDIM0831.jpg?type=w800'); background-position: -55px center;}
     &.culture {background-image: url('https://tong.visitkorea.or.kr/cms/resource/84/3083584_image2_1.JPG');}
+    &.shopping {background-image: url('https://image.fnnews.com/resource/media/image/2016/06/28/201606281657147348_l.jpg');}
+    &.accommodation {background-image: url('https://images.mypetlife.co.kr/content/uploads/2021/06/16124810/43f39621-7.png');}
     &.food {background-image: url('https://health.chosun.com/site/data/img_dir/2024/01/02/2024010202095_0.jpg'); background-position: center -40px;}
+    
   }
 }

@@ -33,11 +33,11 @@ export async function fetchTourAPI(
       ...params,
     }).toString();
     const url = `${BASE_URL}/${service}/${operation}?${qs}`;
-
+    // console.log('[fetchTourAPI] URL:', url);
     try {
       const res = await fetch(url);
       const ct = res.headers.get("Content-Type") || "";
-      // console.log("[fetchTourAPI] 요청 URL:", url);
+      // console.log("[fetchTourAPI] ◀️ HTTP", res.status, res.statusText);
 
       if (!ct.includes("application/json")) {
         const text = await res.text();
@@ -54,6 +54,7 @@ export async function fetchTourAPI(
       }
 
       const json = await res.json();
+      // console.log("[fetchTourAPI] ◀️ JSON 응답 전체:", JSON.stringify(json, null, 2));
       return json.response?.body?.items?.item ?? [];
     } catch (e) {
       console.error(`[fetchTourAPI] 네트워크 오류 (키=${ServiceKey}):`, e);
