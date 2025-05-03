@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { PlaceDetail } from '../api/petTourApi';
+import { PlaceDetail } from '../../../shared/api/petTourApi';
 import './FavoritesList.scss';
 
 interface Props {

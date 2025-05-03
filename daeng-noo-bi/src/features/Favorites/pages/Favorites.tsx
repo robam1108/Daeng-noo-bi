@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTestAuth } from '../../../shared/context/TestAuthContext';
 import FavoritesList from '../components/FavoritesList';
-import { fetchPlaceDetail, PlaceDetail } from '../api/petTourApi';
+import { fetchPlaceDetail, PlaceDetail } from '../../../shared/api/petTourApi';
 import './Favorites.scss';
 
 export default function Favorites() {
@@ -42,7 +42,7 @@ export default function Favorites() {
     if (loading) return <p className="loading">로딩 중…</p>;
 
     return (
-        <div className="favorites-page">
+        <div className="Favorites">
             <h2>'{user.id}'님이 찜한 장소</h2>
             <FavoritesList places={places} />
         </div>
