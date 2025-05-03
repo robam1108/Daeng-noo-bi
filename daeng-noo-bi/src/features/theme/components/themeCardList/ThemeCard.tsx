@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
-import type { RawPlace } from '../../api/regionAPI';
-import './RegionCard.scss';
 import { Link } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from "react";
+import type { RawPlace } from "../../../region/api/regionAPI";
+import "./ThemeCard.scss";
 
 // RawPlace에 finalImage, addr1을 추가한 타입
 export interface Place extends RawPlace {
@@ -9,27 +9,26 @@ export interface Place extends RawPlace {
   addr1: string;
 }
 
-const RegionCard: React.FC<{ place: Place }> = ({ place }) => {
+const ThemeCard: React.FC<{ place: Place }> = ({ place }) => {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 100);
-
+    const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
-  }, []);
+  }, [place]);
 
   return (
-    <Link to={`/place/${place.contentid}`}>
+    <Link
+      to={`/place/${place.contentid}`}
+    >
       <div
         ref={cardRef}
-        className={`card ${isVisible ? 'show' : ''}`}
+        className={`theme-card ${isVisible ? "show" : ""}`}
         style={{
           backgroundImage: `url(${place.finalImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
         <div className="info">
@@ -41,4 +40,4 @@ const RegionCard: React.FC<{ place: Place }> = ({ place }) => {
   );
 };
 
-export default RegionCard;
+export default ThemeCard;
