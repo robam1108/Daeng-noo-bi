@@ -1,4 +1,10 @@
-export const REGION_CODES = [
+export interface RegionInfo {
+  name: string;        
+  code: number;        
+  className: string;  
+}
+
+export const REGION_CODES: RegionInfo[] = [
   { name: '서울', code: 1, className: 'seoul' },
   { name: '인천', code: 2, className: 'incheon' },
   { name: '대전', code: 3, className: 'daejeon' },
@@ -17,3 +23,9 @@ export const REGION_CODES = [
   { name: '경남', code: 38, className: 'gyeongnam' },
   { name: '제주', code: 39, className: 'jeju' },
 ];
+
+export const regionMap: Record<number, RegionInfo> =
+  REGION_CODES.reduce((acc, info) => {
+    acc[info.code] = info;
+    return acc;
+  }, {} as Record<number, RegionInfo>);

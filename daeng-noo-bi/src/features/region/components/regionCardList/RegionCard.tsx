@@ -3,6 +3,7 @@ import type { RawPlace } from '../../api/regionAPI';
 import './RegionCard.scss';
 import { Link } from 'react-router-dom';
 
+
 // RawPlace에 finalImage, addr1을 추가한 타입
 export interface Place extends RawPlace {
   finalImage: string;
@@ -14,12 +15,9 @@ const RegionCard: React.FC<{ place: Place }> = ({ place }) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 100);
-
+    const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
-  }, []);
+  }, [place]);
 
   return (
     <Link to={`/place/${place.contentid}`}>

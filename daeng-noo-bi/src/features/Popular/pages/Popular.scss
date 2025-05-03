@@ -1,0 +1,39 @@
+.popular-page {
+  width: 100%;
+  align-items: center;
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .popular-title{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    // outline: 2px solid red;
+    
+    h1{
+      font-family: 'GmarketSansMedium';
+      font-size: 3.5rem;
+      font-weight: 500;
+      .pointColor{
+        color: #328E6E;
+      }
+    }
+    p{
+      font-size: 1.3rem;
+      font-weight: 400;
+    }
+  }
+
+  .loading{
+    display: flex;
+    justify-content: center;
+    color: #7c7c7c;
+  }
+
+
+}

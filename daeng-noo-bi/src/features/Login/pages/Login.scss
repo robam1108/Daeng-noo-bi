@@ -1,0 +1,64 @@
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+
+  .login-form {
+    width: 400px;
+    padding-top: 10vh;
+    display: flex;
+    flex-direction: column;
+    
+    .login-title {
+      font-family: 'GmarketSansMedium';
+      text-align: center;
+      font-size: 3.5rem;
+      margin-bottom: 24px;
+      color: #333;
+    }
+    
+    .login-input {
+      height: 45px;
+      padding: 0 12px;
+      margin-bottom: 25px;
+      font-size: 16px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+    }
+    
+    .btn {
+      height: 45px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 12px;
+    
+      &.login {
+        background-color: #000;
+        color: #fff;
+      }
+    
+      &.signup{
+        background-color: #666;
+        color: #fff;
+      }
+    
+      &.social {
+        background-color: #ddd;
+        color: #555;
+      }
+    }
+
+    .error-text {
+      min-height: 1.5em; 
+      color: #e74c3c;
+      font-size: 14px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+  }
+}
+

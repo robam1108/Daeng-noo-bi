@@ -1,48 +1,106 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
-import { browserLocalPersistence, getAuth, setPersistence, onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+// src/context/AuthContext.tsx
+
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  User as FirebaseUser,
+} from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 
-// AuthProvider가 받을 Props 타입
-interface AuthProviderProps {
-    children: ReactNode;
-}
-
 export interface AuthUser {
-    id: string;
-    email: string;
-    favorites?: string[];
+  id: string;
+  email: string;
+  favorites?: string[];
+  nickname?: string;
 }
 
-export const AuthContext = createContext<AuthUser | null>(null);
+interface AuthContextType {
+  user: AuthUser | null;
+  signup: (email: string, password: string, nickname: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType | null>(null);
+
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-    const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const auth = getAuth();
 
-    useEffect(() => {
-        const auth = getAuth();
-        // 로그인 상태 localStorage에 유지
-        setPersistence(auth, browserLocalPersistence).catch(() => {
-            console.warn("Persistence 설정 실패");
-        })
+  useEffect(() => {
+    setPersistence(auth, browserLocalPersistence).catch(() => {
+      console.warn("Persistence 설정 실패");
+    });
 
-        const unsubscribe = onAuthStateChanged(auth, async (fbUser: FirebaseUser | null) => {
-            if (fbUser) {
-                // Firestore에서 찜목록 가져오기
-                const favSnap = await getDoc(doc(db, "users", fbUser.uid));
-                const favorites = favSnap.exists() ? favSnap.data().favorites || [] : [];
-                // Context에 저장
-                setUser({ id: fbUser.uid, email: fbUser.email!, favorites });
-            } else {
-                // 로그아웃 시 Context 초기화
-                setUser(null);
-            }
-        });
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      async (fbUser: FirebaseUser | null) => {
+        if (fbUser) {
+          // Firestore 에서 즐겨찾기 + 닉네임 불러오기
+          const userSnap = await getDoc(doc(db, "users", fbUser.uid));
+          const data = userSnap.exists() ? userSnap.data() : {};
+          setUser({
+            id: fbUser.uid,
+            email: fbUser.email!,
+            favorites: (data.favorites as string[]) || [],
+            nickname: (data.nickname as string) || "",
+          });
+        } else {
+          setUser(null);
+        }
+      }
+    );
+    return () => unsubscribe();
+  }, [auth]);
 
-        // 언마운트 시 리스너 해제
-        return () => unsubscribe();
-    }, []);
+  // 회원가입: Auth 생성 후 Firestore 에 프로필 저장
+  const signup = async (email: string, password: string, nickname: string) => {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    // Firestore 'users' 컬렉션에 document 생성
+    await setDoc(doc(db, "users", cred.user.uid), {
+      email,
+      nickname,
+      favorites: [] as string[],
+    });
+    // onAuthStateChanged 가 자동으로 Context 에 반영합니다.
+  };
 
+  const login = async (email: string, password: string) => {
+    await signInWithEmailAndPassword(auth, email, password);
+  };
 
-    return <AuthContext.Provider value={user}> {children} </AuthContext.Provider>;
+  const logout = async () => {
+    await firebaseSignOut(auth);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, signup, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = (): AuthContextType => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
+    throw new Error("useAuth는 AuthProvider 내부에서만 호출할 수 있습니다.");
+  }
+  return ctx;
 };
