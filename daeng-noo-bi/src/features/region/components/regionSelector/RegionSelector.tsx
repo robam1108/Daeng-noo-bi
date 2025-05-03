@@ -14,7 +14,7 @@ interface RegionSelectorProps {
 }
 
 const RegionSelector = ({ selected, onChange }: RegionSelectorProps) => {
-  console.log("🔸 RegionSelector 렌더링, selected =", selected);
+  // console.log("🔸 RegionSelector 렌더링, selected =", selected);
   return (
     <div className="region-selector-wrapper">
       <div className="region-selector">
@@ -35,8 +35,9 @@ const RegionSelector = ({ selected, onChange }: RegionSelectorProps) => {
           {REGION_CODES.map((region) => (
             <SwiperSlide key={region.code}>
               <button
-                className={`region-button ${region.className} ${selected === region.code ? "active" : ""
-                  }`}
+                className={`region-button ${region.className} ${
+                  selected === region.code ? "active" : ""
+                }`}
                 onClick={() => onChange(region.code)}
                 aria-label={region.name}
               >
