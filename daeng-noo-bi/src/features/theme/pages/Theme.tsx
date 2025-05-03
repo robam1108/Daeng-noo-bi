@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ThemeSelector from "../components/ThemeSelector/ThemeSelector";
 import ThemeCardList from "../components/themeCardList/ThemeCardList";
-import { fetchPlacesByTheme, Place } from "../api/themeAPI";
+import type { Place } from "../api/themeAPI";
 import { ThemeKey, themeMap } from "../constants/themeConstants";
+import { getCachedTheme } from "../../../shared/api/cacheAPI";
 import "./Theme.scss";
 
 export default function Theme() {
@@ -15,7 +16,7 @@ export default function Theme() {
 
   const themeTitle = themeMap[selectedTheme].title;
 
-  // 테마 변경 시 초기화
+  // 테마 변경 시 초기 상태 리셋
   useEffect(() => {
     setPlaces([]);
     setPage(1);
@@ -23,30 +24,31 @@ export default function Theme() {
     setError(null);
   }, [selectedTheme]);
 
-  // 데이터 로드
+  // 데이터 로드 (캐시 우선)
   useEffect(() => {
     const loadPlaces = async () => {
       setLoading(true);
       setError(null);
+
       try {
-        const data = await fetchPlacesByTheme(selectedTheme, page);
-        // console.log(
-        //   "🟢 fetchPlacesByTheme →",
-        //   selectedTheme,
-        //   "page",
-        //   page,
-        //   "returned",
-        //   data
-        // );
+        // getCachedTheme: Firestore 캐시에서 읽거나, 없으면 외부 API 호출
+        const data = await getCachedTheme(selectedTheme, page);
+
+        // 기존 데이터 뒤에 붙이기
         setPlaces((prev) => [...prev, ...data]);
-        if (data.length === 0) setHasMore(false);
+
+        // 받아온 데이터가 0개면 더 불러올 데이터가 없다고 판단
+        if (data.length === 0) {
+          setHasMore(false);
+        }
       } catch (e: any) {
         console.error("Theme 로딩 에러:", e);
-        setError(e.message || "데이터 로딩 중 에러가 발생했습니다.");
+        setError("데이터 로딩 중 에러가 발생했습니다.");
       } finally {
         setLoading(false);
       }
     };
+
     loadPlaces();
   }, [selectedTheme, page]);
 
