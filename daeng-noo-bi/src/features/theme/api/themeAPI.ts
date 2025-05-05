@@ -112,20 +112,51 @@ const pageItems = uniq.slice(
   page * PAGE_SIZE
 );
 
-  // 4) addr1 및 finalImage 보완
-  const enriched: Place[] = pageItems.map(p => {
-    // areaBasedList에서 내려온 addr1 또는 addr2 사용, 없으면 '주소 정보 없음'
-    const addr1 = p.addr1 || p.addr2 || '주소 정보 없음';
-
-    // 이미지 우선순위: firstimage → firstimage2 → FALLBACK_IMAGES → placeholder
+// 6) 이미지·주소 보완(detailCommon 호출 포함)
+const enriched: Place[] = await Promise.all(
+  pageItems.map(async (p) => {
+    // 6-1) 이미지 보완
     const finalImage =
       p.firstimage ||
       p.firstimage2 ||
       FALLBACK_IMAGES[p.title] ||
       '/images/no-image.png';
 
-    return { ...p, addr1, finalImage };
-  });
+    // 6-2) 주소 보완: 이미 addr1/addr2가 있으면 그대로, 없으면 detailCommon 호출
+    let addr = p.addr1 || p.addr2 || '';
+    if (!addr) {
+      try {
+        const commonRes = await fetchTourAPI(
+          'KorPetTourService',
+          'detailCommon',
+          {
+            contentId:    p.contentid,
+            defaultYN:    'Y',
+            firstImageYN: 'Y',
+            mapInfoYN:    'Y',
+            _type:        'json',
+          }
+        );
+        const arr = Array.isArray(commonRes)
+          ? commonRes
+          : commonRes
+            ? [commonRes]
+            : [];
+        addr = arr[0]?.addr1 || arr[0]?.addr2 || '';
+      } catch {
+        // 실패해도 빈 문자열 유지
+      }
+    }
+    // 없으면 기본 메시지
+    if (!addr) addr = '주소 정보 없음';
 
-  return enriched;
+    return {
+      ...p,
+      finalImage,
+      addr1: addr,
+    };
+  })
+);
+
+return enriched;
 }

@@ -29,7 +29,7 @@
     // 6) 클래스 필드용 (Vue나 React의 데코레이터 등)
     "useDefineForClassFields": true,
     // 7) 빌드 정보 캐싱 (optional)
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo"
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
   },
   // 프로젝트 전체에서 타입 검사를 할 경로
   "include": [

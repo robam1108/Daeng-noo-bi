@@ -50,49 +50,46 @@ export async function fetchPetFriendlyPlacesByRegion(
   // 3) 이미지 및 주소 보완
   const enriched: Place[] = await Promise.all(
     rawPlaces.map(async (p) => {
-      // 이미지 보완: firstimage → firstimage2 → detailImage → fallback
+      // 1) 이미지 보완 (기존대로)
       let img = p.firstimage || p.firstimage2 || '';
       if (!img) {
         const imgRes = await fetchTourAPI(
           'KorPetTourService',
           'detailImage',
-          {
-            contentId: p.contentid,
-            imageYN: 'Y',
-            subImageYN: 'Y',
-            _type: 'json',
-          }
+          { contentId: p.contentid, imageYN: 'Y', subImageYN: 'Y', _type: 'json' }
         );
-        const items = Array.isArray(imgRes) ? imgRes : imgRes ? [imgRes] : [];
+        const items = Array.isArray(imgRes) ? imgRes
+                    : imgRes ? [imgRes]
+                    : [];
         img = items[0]?.imageUrl || '';
       }
 
-      // 주소 보완: detailCommon
-      const commonRes = await fetchTourAPI(
-        'KorPetTourService',
-        'detailCommon',
-        {
-          contentId: p.contentid,
-          defaultYN: 'Y',
-          firstImageYN: 'Y',
-          mapInfoYN: 'Y',
-          _type: 'json',
+      // 2) 주소 보완: 우선 p.addr1 / p.addr2 사용
+      let addr = (p as any).addr1 || (p as any).addr2 || '';
+      if (!addr) {
+        // p.addr1/addr2가 없을 때만 detailCommon 호출
+        try {
+          const commonRes = await fetchTourAPI(
+            'KorPetTourService',
+            'detailCommon',
+            { contentId: p.contentid, defaultYN: 'Y', firstImageYN: 'Y', mapInfoYN: 'Y', _type: 'json' }
+          );
+          const arr = Array.isArray(commonRes) ? commonRes
+                    : commonRes ? [commonRes]
+                    : [];
+          addr = arr[0]?.addr1 || arr[0]?.addr2 || '';
+        } catch {
+          // 실패해도 그냥 넘어감
         }
-      );
-      const commonItems = Array.isArray(commonRes)
-        ? commonRes
-        : commonRes
-        ? [commonRes]
-        : [];
-      const addr1 = commonItems[0]?.addr1 || '주소 정보 없음';
+      }
+      if (!addr) addr = '주소 정보 없음';
 
       return {
         ...p,
         finalImage: img || FALLBACK_IMAGES[p.title] || '/images/no-image.png',
-        addr1,
+        addr1:      addr,
       };
     })
   );
-
   return enriched;
 }
