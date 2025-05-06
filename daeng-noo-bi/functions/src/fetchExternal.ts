@@ -1,10 +1,8 @@
 import { fetchTourAPI } from '../../src/shared/api/fetcher';
 import { FALLBACK_IMAGES } from '../../src/shared/constants/fallbackImages';
 
-/** 한 페이지당 아이템 수 */
 export const PAGE_SIZE = 9;
 
-/** API 원본 필드 타입 */
 export interface RawPlace {
   contentid:      string;
   contenttypeid?: string;
@@ -17,16 +15,13 @@ export interface RawPlace {
   readcount?:     string;
 }
 
-/** 보완된 UI용 타입 */
 export interface Place extends RawPlace {
   finalImage: string;
   addr1:      string;
 }
 
-/** 지역 코드 리스트 (전국) */
 const REGION_CODES = [1,2,3,4,5,6,7,8,31,32,33,34,35,36,37,38,39] as const;
 
-/** 테마 키 타입 */
 type ThemeKey =
   | 'nature'
   | 'culture'
@@ -35,13 +30,11 @@ type ThemeKey =
   | 'food'
   | 'accommodation';
 
-/** 테마별 구성 정보 */
 interface ThemeConfig {
   contentTypeId: string;
   cat1Filter?:   string;
 }
 
-/** 테마별 호출 설정 */
 const themeConfigMap: Record<ThemeKey, ThemeConfig[]> = {
   nature:       [{ contentTypeId: '12', cat1Filter: 'A01' }],
   culture:      [
@@ -66,9 +59,7 @@ const themeConfigMap: Record<ThemeKey, ThemeConfig[]> = {
   ],
 };
 
-/**
- * 전국 인기 페이지 캐시 갱신용 헬퍼
- */
+// 인기별 페이지 캐시 갱신용
 export async function fetchPopularPlacesFromAPI(page = 1): Promise<Place[]> {
   const result = await fetchTourAPI(
     'KorPetTourService',
@@ -101,9 +92,7 @@ export async function fetchPopularPlacesFromAPI(page = 1): Promise<Place[]> {
   }));
 }
 
-/**
- * 지역별 페이지 캐시 갱신용 헬퍼
- */
+// 지역별 페이지 캐시 갱신용
 export async function fetchRegionPlacesFromAPI(
   areaCode: number,
   page = 1
@@ -187,9 +176,8 @@ export async function fetchRegionPlacesFromAPI(
   return enriched;
 }
 
-/**
- * 테마별 페이지 캐시 갱신용 헬퍼
- */
+
+// 테마별 페이지 캐시 갱신용
 export async function fetchThemePlacesFromAPI(
   theme: ThemeKey,
   page = 1

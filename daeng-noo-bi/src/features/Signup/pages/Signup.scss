@@ -30,8 +30,12 @@
     }
     
     .email-row {
-      display: flex;
-      margin-bottom: 5px;
+
+      .emailInputWrap, .verifyWrap{
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
 
       .email-input {
         height: 45px;
@@ -44,9 +48,9 @@
         margin-right: 8px;
       }
 
-      .duplicate-btn {
-        width: 80px;
-        background-color: #6C6C6C;
+      .auth-btn{
+        width: 110px;
+        background-color: #328E6E;
         color: #fff;
         height: 45px;
         border: none;
@@ -54,6 +58,61 @@
         font-size: 15px;
         cursor: pointer;
       }
+
+
+      .verifyWrap{
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+
+        .verify-group{
+          display: flex;
+          height: 45px;
+          padding: 0 12px;
+          font-size: 16px;
+          border: 2px solid #ccc;
+          border-radius: 5px;
+          box-sizing: border-box;
+          flex: 1;
+          margin-right: 8px;
+          align-items: center;
+
+          .verify-input{
+            // display: flex;
+            // align-items: center;
+          }
+
+          .verify-timer{
+            width: 50px;
+            color:#328E6E;
+          }
+        }
+        .verify-btn{
+          width: 110px;
+          background-color: #328E6E;
+          color: #fff;
+          height: 45px;
+          border: none;
+          border-radius: 5px;
+          font-size: 15px;
+          cursor: pointer;
+  
+          &:disabled {
+            background-color: #ccc;     
+            color: #888;                
+            cursor: not-allowed;        
+          }
+          
+        }
+
+
+
+
+      }
+
+
+
+
     }
 
     .dup-msg {
@@ -78,12 +137,14 @@
       font-size: 15px;
       cursor: pointer;
       margin-bottom: 12px;
-    }
-
-    
-    .signup-btn {
       background-color: #000;
       color: #fff;
+
+    }
+
+    .signup-btn.disabled{
+      background-color: #c0c0c0;
+      cursor: not-allowed;
     }
 
     .error-text {
