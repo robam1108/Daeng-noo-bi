@@ -45,11 +45,16 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.4);
-            /* 반투명 배경으로 가독성 확보 */
+            /* 이미지와 자연스럽게 섞이는 그라데이션 */
+            background: linear-gradient(to top,
+                    rgba(0, 0, 0, 0.6) 0%,
+                    rgba(0, 0, 0, 0.0) 100%);
             color: #fff;
-            padding: 8px;
+            padding: 12px;
             box-sizing: border-box;
+            /* 카드의 둥근 모서리 아래쪽만 적용 */
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
 
             h3 {
                 margin: 0;
@@ -65,21 +70,46 @@
     }
 
     .delete-button {
-        display: none;
         position: absolute;
         top: 8px;
         right: 8px;
-        background: #e74c3c;
-        border: none;
-        color: #fff;
-        padding: 4px 8px;
-        border-radius: 4px;
+        width: 32px;
+        height: 32px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: scale(0.8);
+        transition:
+            opacity 0.2s ease,
+            transform 0.2s ease,
+            background 0.2s ease,
+            color 0.2s ease;
         cursor: pointer;
-        font-size: 0.85rem;
         z-index: 2;
+
+        /* FontAwesomeIcon이 currentColor를 쓰도록 강제 */
+        svg {
+            fill: currentColor;
+        }
+
+        /* 기본 아이콘 색 (쓰레기통 빨강) */
+        color: #616161;
+
+        &:hover {
+            /* 배경을 살짝 더 밝게 */
+            background: rgba(255, 255, 255, 0.95);
+            /* 아이콘 색은 톤 다운된 빨강으로 */
+            color: #000000;
+            /* 살짝 키우면 더 눌러보기 좋은 크기로 보입니다 */
+            transform: scale(1);
+        }
     }
 
     &:hover .delete-button {
-        display: block;
+        opacity: 1;
+        transform: scale(1);
     }
 }

@@ -1,37 +1,36 @@
 import "./Home.scss"
-import RandomSpotBanner from "../components/RandomSpotBanner/RandomSpotBanner"
-import PopularspotList from "../components/PopularspotList/PopularspotList";
-import RegionspotList from "../components/RegionspotList/RegionspotList";
+import Banner from "../components/Banner/Banner";
+import PopularspotList from "../components/PopularspotList";
+import RegionspotList from "../components/RegionspotList";
+import ThemespotList from "../components/ThemespotList";
 
 export default function Home() {
 
 
     return (
         <div className="Home">
-            <RandomSpotBanner />
-            <section className="home-section home-section--popular">
-                <div className="home-header">
-                    <h2 className="home-title">인기 여행지</h2>
-                    <p className="home-subtitle">반려동물과 함께하는 인기 여행지</p>
-                </div>
-                <PopularspotList />
-            </section>
-            <section className="home-section home-section--region">
+            <Banner />
+            <section className="home-section section-region">
                 <div className="home-header">
                     <h2 className="home-title">지역별 여행지</h2>
-                    <p className="home-subtitle">이번엔 어디로 가볼까요?</p>
+                    <h2 className="home-subtitle">이번엔 어디로 가볼까요?</h2>
                 </div>
                 <RegionspotList />
             </section>
-            <section className="home-section home-section--category">
+            <section className="home-section section-category">
                 <div className="home-header">
-                    <h2 className="home-title">키워드 여행지</h2>
-                    <p className="home-subtitle">키워드로 만나는 우리만의 여행</p>
+                    <h2 className="home-title">테마 여행지</h2>
+                    <h2 className="home-subtitle">힐링부터 모험까지 반려견과 함께</h2>
                 </div>
-                <div className="home-content"></div>{/* 임시 */}
-                {/* <CategoryList /> */}
+                <ThemespotList />
             </section>
-
+            <section className="home-section section-popular">
+                <div className="home-header">
+                    <h2 className="home-title">인기 여행지</h2>
+                    <h2 className="home-subtitle">반려동물과 함께하는 인기 여행지</h2>
+                </div>
+                <PopularspotList />
+            </section>
         </div>
     )
 };
