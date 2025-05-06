@@ -1,15 +1,23 @@
 // src/pages/LoginPage.tsx
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../shared/context/AuthContext";
+import { auth } from "../../../firebase"; // Firebase 설정 경로 확인
+import { getFunctions, httpsCallable } from "firebase/functions";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithCustomToken,
+} from "firebase/auth";
+import { loginWithKakao, initKakao } from "../../../shared/utils/kakao";
+
 import "./Login.scss";
 
 const LoginPage: React.FC = () => {
   const nav = useNavigate();
   const { login } = useAuth();
 
-  // 1) ref 선언
   const emailRef = useRef<HTMLInputElement | null>(null);
   const pwRef = useRef<HTMLInputElement | null>(null);
 
@@ -17,11 +25,14 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    initKakao();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    // 2) 빈 값 검사
     if (!email.trim()) {
       emailRef.current?.focus();
       setError("이메일을 입력해주세요.");
@@ -33,7 +44,6 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    // 3) 이메일 형식 검사
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!pattern.test(email.trim())) {
       emailRef.current?.focus();
@@ -41,7 +51,6 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    // 4) 실제 로그인
     try {
       const userCredential = await login(email.trim(), password);
       console.log("🎉 로그인 성공:", userCredential);
@@ -57,6 +66,41 @@ const LoginPage: React.FC = () => {
       } else {
         setError("로그인 중 오류가 발생했습니다.");
       }
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError(null);
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log("🎉 구글 로그인 성공:", result.user);
+      nav("/");
+    } catch (err: any) {
+      console.error("Google Login Error ▶", err.code, err.message);
+      setError("구글 로그인 중 오류가 발생했습니다.");
+    }
+  };
+
+  const handleKakaoLogin = async () => {
+    try {
+      const kakaoUid = await loginWithKakao();
+
+      const functions = getFunctions();
+      const kakaoAuthFn = httpsCallable<
+        { kakaoUid: string },
+        { token: string }
+      >(functions, "kakaoAuth");
+
+      const result = await kakaoAuthFn({ kakaoUid });
+      const firebaseToken = result.data.token;
+
+      await signInWithCustomToken(auth, firebaseToken);
+      console.log("🎉 Firebase 로그인 성공!");
+      nav("/");
+    } catch (err) {
+      console.error("카카오 로그인 실패:", err);
     }
   };
 
@@ -110,8 +154,17 @@ const LoginPage: React.FC = () => {
         <button type="button" className="btn signup" onClick={onClickSignup}>
           회원가입
         </button>
-        <button type="submit" className="btn social">
-          연동 로그인
+
+        <button
+          type="button"
+          className="btn google"
+          onClick={handleGoogleLogin}
+        >
+          Google 계정으로 로그인
+        </button>
+
+        <button type="button" className="btn kakao" onClick={handleKakaoLogin}>
+          kakao 계정으로 로그인
         </button>
       </form>
     </div>
