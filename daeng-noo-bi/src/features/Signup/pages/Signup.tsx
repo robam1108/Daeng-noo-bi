@@ -1,218 +1,315 @@
-// src/pages/SignupPage.tsx
-
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { useAuth } from "../../../shared/context/AuthContext";
 
 import "./Signup.scss";
 
+type FieldKey = "nickname" | "email" | "password" | "confirm";
+
+// 커스텀 훅으로 ref 관리
+function useFieldRefs<T extends Record<string, any>>() {
+  const refs = useRef<Partial<Record<keyof T, HTMLInputElement | null>>>({});
+  const setRef = (key: keyof T) => (el: HTMLInputElement | null) => {
+    refs.current[key] = el;
+  };
+  return {
+    refs: refs.current as Record<keyof T, HTMLInputElement | null>,
+    setRef,
+  };
+}
+
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
-  const authClient = getAuth();
-  const { signup, logout } = useAuth();
+  const { sendVerificationCode, signup } = useAuth();
 
-  // refs
-  const nicknameRef = useRef<HTMLInputElement | null>(null);
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
-  const confirmRef = useRef<HTMLInputElement | null>(null);
+  // 모든 input refs
+  const { refs: fieldRefs, setRef } =
+    useFieldRefs<Record<FieldKey, HTMLInputElement>>();
 
-  // state
+  // 입력 값 상태
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+
+  // 인증 코드 상태
+  const [verificationCode, setVerificationCode] = useState("");
+  const [generatedCode, setGeneratedCode] = useState("");
+  const [timeLeft, setTimeLeft] = useState(0);
+
+  // 플래그 상태
+  const [isMailSent, setIsMailSent] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const [isExpired, setIsExpired] = useState(false);
+
+  // 메시지 상태
   const [error, setError] = useState<string | null>(null);
+  const [dupMsg, setDupMsg] = useState<string | null>(null);
+  const [dupType, setDupType] = useState<"success" | "error" | null>(null);
 
-  const [emailChecked, setEmailChecked] = useState(false);
-  const [emailAvailable, setEmailAvailable] = useState(false);
-  const [dupMsg, setDupMsg] = useState("");
+  // 타이머 포맷 (MM:SS)
+  const formatTime = (sec: number) =>
+    `${String(Math.floor(sec / 60)).padStart(2, "0")}:
+${String(sec % 60).padStart(2, "0")}`;
 
-  const handleDuplicateCheck = async () => {
+  // 이메일 인증 요청
+  const handleEmailVerificationRequest = async () => {
     setError(null);
+    setDupMsg(null);
+    setIsExpired(false);
 
-    // 1) 빈 값 검사
     if (!email.trim()) {
-      emailRef.current?.focus();
+      fieldRefs.email?.focus();
       setDupMsg("이메일을 입력해주세요.");
-      setEmailChecked(false);
-      setEmailAvailable(false);
+      setDupType("error");
       return;
     }
-
-    // 2) 이메일 형식 검사
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email.trim())) {
-      emailRef.current?.focus();
-      setDupMsg("유효한 이메일 주소를 입력해주세요.");
-      setEmailChecked(false);
-      setEmailAvailable(false);
+      fieldRefs.email?.focus();
+      setDupMsg("유효한 이메일을 입력해주세요.");
+      setDupType("error");
       return;
     }
-
-    // 3) Firestore에서 중복 조회
     try {
       const q = query(
         collection(db, "users"),
         where("email", "==", email.trim())
       );
       const snap = await getDocs(q);
-
-      if (snap.empty) {
-        setEmailAvailable(true);
-        setDupMsg("사용 가능한 이메일입니다.");
-      } else {
-        setEmailAvailable(false);
-        setDupMsg("중복된 이메일입니다. 다른 이메일을 사용해주세요.");
+      if (!snap.empty) {
+        fieldRefs.email?.focus();
+        setDupMsg("이미 가입된 이메일입니다.");
+        setDupType("error");
+        return;
       }
-      setEmailChecked(true);
-    } catch (err) {
-      console.error(err);
-      setDupMsg("⚠️ 이메일 확인 중 오류가 발생했습니다.");
-      setEmailChecked(false);
-      setEmailAvailable(false);
+    } catch {
+      setError("이메일 중복 확인 중 오류가 발생했습니다.");
+      return;
+    }
+
+    const code = String(Math.floor(1000 + Math.random() * 9000));
+    setGeneratedCode(code);
+    try {
+      await sendVerificationCode(email.trim(), code);
+      setIsMailSent(true);
+      setTimeLeft(300);
+      setDupMsg("인증 코드를 발송했습니다.");
+      setDupType("success");
+    } catch {
+      setError("인증 메일 발송 실패");
     }
   };
 
+  // 타이머
+  useEffect(() => {
+    if (!isMailSent || isVerified) return;
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setIsMailSent(false);
+          setIsExpired(true);
+          setDupMsg("인증 시간이 만료되었습니다. 다시 요청해주세요.");
+          setDupType("error");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [isMailSent, isVerified]);
+
+  // 코드 확인
+  const handleVerifyCode = () => {
+    if (verificationCode === generatedCode) {
+      setIsVerified(true);
+      setError(null);
+      setDupMsg("이메일 인증이 완료되었습니다.");
+      setDupType("success");
+    } else {
+      setDupMsg("인증 코드가 일치하지 않습니다.");
+      setDupType("error");
+    }
+  };
+
+  // 폼 제출
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setDupMsg(null);
+    setDupType(null);
 
-    // 1) 검증 룰 목록
-    type ValidationRule = {
-      cond: boolean;
-      ref: React.RefObject<HTMLInputElement | null>;
-      msg: string;
-    };
-
-    const validations: ValidationRule[] = [
-      {
-        cond: !nickname.trim(),
-        ref: nicknameRef,
-        msg: "닉네임을 입력해주세요.",
-      },
-      { cond: !email, ref: emailRef, msg: "이메일을 입력해주세요." },
-      { cond: !password, ref: passwordRef, msg: "비밀번호를 입력해주세요." },
-      { cond: !confirm, ref: confirmRef, msg: "비밀번호 확인을 입력해주세요." },
-      {
-        cond: password.length < 6,
-        ref: passwordRef,
-        msg: "비밀번호는 최소 6자 이상이어야 합니다.",
-      },
-      {
-        cond: password !== confirm,
-        ref: confirmRef,
-        msg: "비밀번호가 일치하지 않습니다.",
-      },
-      {
-        cond: !emailChecked,
-        ref: emailRef,
-        msg: "이메일 중복확인이 필요합니다.",
-      },
-      {
-        cond: !emailAvailable,
-        ref: emailRef,
-        msg: "사용 가능한 이메일을 입력해주세요.",
-      },
-    ];
-
-    // 2) 순회하면서 첫 번째 실패 항목에 포커스 및 에러 설정
-    for (const { cond, ref, msg } of validations) {
-      if (cond) {
-        ref.current?.focus();
-        setError(msg);
-        return;
-      }
+    // 순서: 닉네임 → 이메일 빈칸 → 이메일 형식 → 인증 → 비밀번호 → 비밀번호 길이 → 재입력 → 일치
+    if (!nickname.trim()) {
+      fieldRefs.nickname?.focus();
+      setError("닉네임을 입력해주세요.");
+      return;
+    }
+    if (!email.trim()) {
+      fieldRefs.email?.focus();
+      setError("이메일을 입력해주세요.");
+      return;
+    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email.trim())) {
+      fieldRefs.email?.focus();
+      setError("유효한 이메일을 입력해주세요.");
+      return;
+    }
+    if (!isVerified) {
+      fieldRefs.email?.focus();
+      setError("이메일 인증이 필요합니다.");
+      return;
+    }
+    if (!password.trim()) {
+      fieldRefs.password?.focus();
+      setError("비밀번호를 입력해주세요.");
+      return;
+    }
+    if (password.length < 6) {
+      fieldRefs.password?.focus();
+      setError("비밀번호는 최소 6글자 이상이어야 합니다.");
+      return;
+    }
+    if (!confirm.trim()) {
+      fieldRefs.confirm?.focus();
+      setError("비밀번호 재입력을 입력해주세요.");
+      return;
+    }
+    if (password !== confirm) {
+      fieldRefs.confirm?.focus();
+      setError("비밀번호가 일치하지 않습니다.");
+      return;
     }
 
-    // 3) 실제 회원가입
     try {
-      await signup(email, password, nickname);
-      await logout();
+      await signup(email.trim(), password, nickname.trim());
+      alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
       navigate("/login");
     } catch (err: any) {
-      // 에러별 분기처리
-      const code = err.code;
-      if (code === "auth/weak-password") {
-        passwordRef.current?.focus();
-        setError("비밀번호는 최소 6자 이상이어야 합니다.");
-      } else if (code === "auth/email-already-in-use") {
-        emailRef.current?.focus();
-        setError("이미 사용 중인 이메일입니다.");
-      } else if (code === "auth/invalid-email") {
-        emailRef.current?.focus();
-        setError("유효한 이메일 주소를 입력해주세요.");
+      console.error(err);
+      const code = err.code || "";
+      const msg = err.message || "";
+      if (code === "auth/weak-password" || msg.includes("6 characters")) {
+        fieldRefs.password?.focus();
+        setError("비밀번호는 최소 6글자 이상이어야 합니다.");
       } else {
-        setError("회원가입 중 예상치 못한 오류가 발생했습니다.");
+        setError(msg || "회원가입 중 오류가 발생했습니다.");
       }
     }
   };
 
   return (
     <div className="signup-page">
-      <form className="signup-form" onSubmit={handleSubmit}>
+      <form className="signup-form" onSubmit={handleSubmit} noValidate>
         <h1 className="signup-title">회원가입</h1>
-        <p className="error-text">{error ?? "\u00A0"}</p>
+        <p id="error-text" className="error-text" role="alert">
+          {error ?? "\u00A0"}
+        </p>
 
+        {/* 닉네임 */}
         <input
-          ref={nicknameRef}
+          ref={setRef("nickname")}
           type="text"
           className="signup-input"
           placeholder="닉네임"
+          required
+          aria-describedby="error-text"
+          aria-invalid={!!error}
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
         />
 
+        {/* 이메일 + 인증 */}
         <div className="email-row">
-          <input
-            ref={emailRef}
-            type="email"
-            className="email-input"
-            placeholder="이메일"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setEmailChecked(false);
-              setEmailAvailable(false);
-              setDupMsg("");
-            }}
-          />
-          <button
-            type="button"
-            className="duplicate-btn"
-            onClick={handleDuplicateCheck}
-          >
-            중복확인
-          </button>
+          <div className="emailInputWrap">
+            <input
+              ref={setRef("email")}
+              type="email"
+              className="email-input"
+              placeholder="이메일"
+              required
+              aria-describedby="error-text"
+              aria-invalid={!!error}
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setDupMsg(null);
+                setDupType(null);
+              }}
+            />
+            <button
+              type="button"
+              className="auth-btn"
+              onClick={handleEmailVerificationRequest}
+              disabled={isMailSent || isVerified}
+            >
+              {isExpired ? "인증코드 재발송" : "인증코드 발송"}
+            </button>
+          </div>
+          <div className="verifyWrap">
+            <div className="verify-group">
+              <input
+                type="text"
+                className="verify-input"
+                placeholder="인증코드를 입력해주세요."
+                aria-describedby="dup-msg"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                maxLength={4}
+                disabled={!isMailSent || isVerified}
+              />
+              {isMailSent && !isVerified && (
+                <span className="verify-timer">{formatTime(timeLeft)}</span>
+              )}
+            </div>
+            <button
+              type="button"
+              className="verify-btn"
+              onClick={handleVerifyCode}
+              disabled={
+                !isMailSent || isVerified || verificationCode.length < 4
+              }
+            >
+              확인
+            </button>
+          </div>
         </div>
-        <p
-          className={`dup-msg ${emailAvailable ? "available" : "unavailable"}`}
-        >
-          {dupMsg}
+        <p id="dup-msg" className={`dup-msg ${dupType ?? ""}`}>
+          {dupMsg ?? "\u00A0"}
         </p>
 
+        {/* 비밀번호 */}
         <input
-          ref={passwordRef}
+          ref={setRef("password")}
           type="password"
           className="signup-input"
           placeholder="비밀번호"
+          required
+          aria-describedby="error-text"
+          aria-invalid={!!error}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <input
-          ref={confirmRef}
+          ref={setRef("confirm")}
           type="password"
           className="signup-input"
           placeholder="비밀번호 재입력"
+          required
+          aria-describedby="error-text"
+          aria-invalid={!!error}
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
         />
 
-        <button type="submit" className="signup-btn">
+        <button
+          type="submit"
+          className={`signup-btn ${!isVerified ? "disabled" : ""}`}
+        >
           회원가입
         </button>
       </form>

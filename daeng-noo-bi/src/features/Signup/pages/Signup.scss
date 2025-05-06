@@ -1,101 +1,160 @@
+// Signup.scss
 .signup-page {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  background-color: #f9f9f9;
+  background: #f9f9f9;
 
+  /* form */
   .signup-form {
     width: 400px;
     padding-top: 10vh;
     display: flex;
     flex-direction: column;
+  }
 
-    .signup-title {
-      font-family: 'GmarketSansMedium';
-      text-align: center;
-      font-size: 3.5rem;
-      margin-bottom: 24px;
-      color: #333;
+  /* title */
+  .signup-title {
+    font-family: 'GmarketSansMedium';
+    text-align: center;
+    font-size: 3.5rem;
+    margin-bottom: 24px;
+    color: #333;
+  }
+
+  /* 공통 input */
+  .signup-input {
+    height: 45px;
+    padding: 0 12px;
+    margin-bottom: 25px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+
+    &:focus{
+      border-color: #67AE6E;
     }
-    
-    .signup-input {
-      height: 45px;
-      padding: 0 12px;
-      margin-bottom: 25px;
-      font-size: 16px;
-      border: 2px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-    
-    .email-row {
+  }
+
+  /* 이메일 row */
+  .email-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0px;
+    width: 100%;
+
+  > div {
+    display: flex;
+    width: 100%;      // ← 추가: 부모 폭 꽉 채우기
+  }
+
+    .emailInputWrap {
       display: flex;
-      margin-bottom: 5px;
+      flex: 1;
+      margin-right: 8px;
 
       .email-input {
-        height: 45px;
-        padding: 0 12px;
-        font-size: 16px;
-        border: 2px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
+        @extend .signup-input;
         flex: 1;
         margin-right: 8px;
       }
 
-      .duplicate-btn {
-        width: 80px;
-        background-color: #6C6C6C;
-        color: #fff;
+      .auth-btn {
+        width: 110px;
         height: 45px;
+        background: #67AE6E;
+        color: #fff;
         border: none;
         border-radius: 5px;
         font-size: 15px;
         cursor: pointer;
+
+        &:disabled {
+          background: #ccc;
+          color: #888;
+          cursor: not-allowed;
+        }
       }
     }
 
-    .dup-msg {
-      min-height: 1.2em;
-      margin-bottom: 12px;  
-      font-size: 14px;
-      line-height: 1.2em;
-      text-align: center;
-    
-      &.available {
-        color: #67AE6E;
+    .verifyWrap {
+      display: flex;
+      margin-bottom: 5px;
+
+      .verify-group {
+        display: flex;
+        align-items: center;
+        @extend .signup-input;
+        flex: 1;
+        margin-right: 8px;
+        margin-bottom: 0px;
+
+        .verify-input {
+          flex: 1;
+          border: none; /* 이미 부모에서 border 있음 */
+          outline: none;
+        }
+
+        .verify-timer {
+          width: 50px;
+          color: #328E6E;
+          text-align: center;
+        }
       }
-      &.unavailable {
-        color: #e74c3c;
+
+      .verify-btn {
+        width: 110px;
+        height: 45px;
+        background: #67AE6E;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 15px;
+        cursor: pointer;
+
+        &:disabled {
+          background: #ccc;
+          color: #888;
+          cursor: not-allowed;
+        }
       }
     }
-    
-    .signup-btn {
-      height: 45px;
-      border: none;
-      border-radius: 5px;
-      font-size: 15px;
-      cursor: pointer;
-      margin-bottom: 12px;
-    }
-
-    
-    .signup-btn {
-      background-color: #000;
-      color: #fff;
-    }
-
-    .error-text {
-      min-height: 1.5em; 
-      color: #e74c3c;
-      font-size: 14px;
-      margin-bottom: 12px;
-      text-align: center;
-    }
-
   }
 
+  /* 인증코드 확인 메세지 */
+  .dup-msg {
+    min-height: 1.2em;
+    margin-bottom: 12px;
+    font-size: 14px;
+    text-align: center;
+
+    &.success   { color: #67AE6E; }
+    &.error { color: #e74c3c; }
+  }
+
+  /* 회원가입 버튼 */
+  .signup-btn {
+    @extend .signup-input;
+    background: #67AE6E;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+
+    &.disabled, &:disabled {
+      background: #c0c0c0;
+      cursor: not-allowed;
+    }
+  }
+
+  /* 에러 텍스트 */
+  .error-text {
+    min-height: 1.5em;
+    color: #e74c3c;
+    font-size: 14px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
 }
-
-
