@@ -17,7 +17,6 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-
 import {
   getFunctions,
   connectFunctionsEmulator,
@@ -46,14 +45,13 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  // 1) Firebase Auth
   const auth = getAuth();
-  // 2) Functions 인스턴스 얻기
   const functions = getFunctions();
 
-  // 3) 개발 모드면 로컬 에뮬레이터에 연결
-  if (import.meta.env.MODE !== "production") {
+  const isDev = import.meta.env.MODE !== "production";
+  if (isDev) {
     connectFunctionsEmulator(functions, "localhost", 5001);
+    console.log(`[DEV] Firebase Functions Emulator 연결됨`);
   }
 
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -65,11 +63,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       if (fbUser) {
-        const userSnap = await getDoc(doc(db, "users", fbUser.uid));
-        const data = userSnap.exists() ? userSnap.data() : {};
+        const snap = await getDoc(doc(db, "users", fbUser.uid));
+        const data = snap.exists() ? snap.data() : {};
         setUser({
           id: fbUser.uid,
-          email: fbUser.email!,
+          email: fbUser.email || "",
           favorites: (data.favorites as string[]) || [],
           nickname: (data.nickname as string) || "",
         });
@@ -77,18 +75,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(null);
       }
     });
+
     return () => unsubscribe();
   }, [auth]);
 
-  // 인증 코드 발송 (httpsCallable 사용)
   const sendVerificationCode = async (email: string, code: string) => {
-    const isDev = import.meta.env.MODE !== "production";
     if (isDev) {
-      // 이 콘솔 메시지가 보이면, 인증 코드 로직이 정상 동작 중
       console.log(`[DEV] sendVerificationCode → ${email}: ${code}`);
       return;
     }
-
     const fn = httpsCallable<
       { email: string; code: string },
       { success: boolean }
@@ -99,35 +94,32 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  // 회원가입
   const signup = async (email: string, password: string, nickname: string) => {
+    // signup 호출 시 이미 email verified 상태라고 가정
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     await setDoc(doc(db, "users", cred.user.uid), {
       email,
       nickname,
       favorites: [] as string[],
+      isVerified: true, // 이미 인증된 이메일
     });
     await firebaseSignOut(auth);
   };
 
-  // 로그인
   const login = async (email: string, password: string) => {
     const cred = await signInWithEmailAndPassword(auth, email, password);
-    if (!cred.user.emailVerified) {
+    const snap = await getDoc(doc(db, "users", cred.user.uid));
+    const data = snap.exists() ? snap.data() : {};
+    if (!data?.isVerified) {
       await firebaseSignOut(auth);
-      throw new Error("이메일 인증이 필요합니다. 메일함을 확인해주세요.");
-    }
-    const userDoc = await getDoc(doc(db, "users", cred.user.uid));
-    if (!userDoc.exists()) {
-      await setDoc(doc(db, "users", cred.user.uid), {
-        email,
-        nickname: "",
-        favorites: [],
-      });
+      const err = new Error(
+        "이메일 인증이 필요합니다. 메일함을 확인해주세요."
+      ) as any;
+      err.code = "auth/email-not-verified";
+      throw err;
     }
   };
 
-  // 로그아웃
   const logout = async () => {
     await firebaseSignOut(auth);
   };

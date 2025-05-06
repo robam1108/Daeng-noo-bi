@@ -43,7 +43,8 @@ const LoginPage: React.FC = () => {
 
     // 4) 실제 로그인
     try {
-      await login(email.trim(), password);
+      const userCredential = await login(email.trim(), password);
+      console.log("🎉 로그인 성공:", userCredential);
       nav("/");
     } catch (err: any) {
       console.error("Login Error ▶", err.code, err.message);
@@ -65,7 +66,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="login-page">
-      <form className="login-form" onSubmit={handleSubmit}>
+      <form className="login-form" noValidate onSubmit={handleSubmit}>
         <h1 className="login-title">로그인</h1>
 
         <p className="error-text">{error ?? "\u00A0"}</p>
@@ -73,6 +74,7 @@ const LoginPage: React.FC = () => {
         <input
           ref={emailRef}
           type="email"
+          autoComplete="email"
           className="login-input"
           placeholder="이메일"
           value={email}
@@ -88,11 +90,17 @@ const LoginPage: React.FC = () => {
         <input
           ref={pwRef}
           type="password"
+          autoComplete="current-password"
           className="login-input"
           placeholder="비밀번호"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          onInvalid={(e) => {
+            e.preventDefault();
+            pwRef.current?.focus();
+            setError("비밀번호를 입력해주세요.");
+          }}
         />
 
         <button type="submit" className="btn login">
