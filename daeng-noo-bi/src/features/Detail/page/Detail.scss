@@ -12,8 +12,10 @@
 
         img {
             width: 100%;
-            height: auto; // 원본 비율 유지
+            height: 500px; // 원본 비율 유지
             object-fit: cover; // 영역에 맞춰 잘림 없이 채움
+            object-position: center;
+            /* 잘릴 때 중앙 부분이 보이도록 */
             border-radius: 0.5rem;
         }
     }
@@ -72,23 +74,39 @@
             /* 버튼 박스 */
             .btn-box {
                 display: flex;
-                gap: 0.5rem;
+                gap: 0.7rem;
                 justify-content: flex-end;
+                margin-top: 2rem;
 
                 button {
-                    width: 2.5rem;
-                    height: 2.5rem;
-                    border: 1px solid #ccc;
-                    border-radius: 50%;
-                    background: transparent;
+                    background: none;
+                    border: 2px solid currentColor; // 텍스트 색과 같은 테두리
+                    border-radius: 50%; // 원형 테두리
+                    width: 36px; // 가로 세로 고정해서 완전한 원으로
+                    height: 36px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
+
+                    transition:
+                        color 0.2s ease,
+                        border-color 0.2s ease,
+                        background 0.2s ease,
+                        transform 0.2s ease;
                     cursor: pointer;
-                    transition: background 0.2s;
+                    font-size: 20px;
+
+                    &.HeartButton {
+                        color: #e74c3c; // 기본 아이콘 색
+                    }
+
+                    &.share-button {
+                        color: #43bc4f; // 기본 아이콘 색
+                    }
 
                     &:hover {
-                        background: #f5f5f5;
+                        transform: scale(1.1); // 살짝 키워도 좋습니다
+                        border-color: currentColor; // 테두리 색도 currentColor 유지
                     }
                 }
             }

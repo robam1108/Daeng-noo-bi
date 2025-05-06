@@ -1,13 +1,10 @@
-$font-color: #fff;
-$background-color: black;
-
 .Footer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
-    background-color: $background-color;
-    color: $font-color;
+    border-top: 2px solid #328E6E;
+    padding-top: 30px;
 
 }
 
@@ -28,5 +25,4 @@ $background-color: black;
 .producer-link>p>a,
 .producer-link>p>a:visited {
     text-decoration-line: none;
-    color: $font-color;
 }

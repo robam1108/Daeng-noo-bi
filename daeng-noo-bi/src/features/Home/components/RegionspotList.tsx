@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import RegionSelector from "../../../region/components/regionSelector/RegionSelector";
+import RegionSelector from "../../region/components/regionSelector/RegionSelector";
 
 
 
@@ -14,7 +14,7 @@ const RegionspotList = () => {
     };
 
     return (
-        <div>
+        <div className="RegionspotList">
             <RegionSelector selected={selectedRegion} onChange={handleChange} />
         </div>
     )

@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { PlaceDetail } from '../../../shared/api/petTourApi';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import './FavoritesList.scss';
 
 interface Props {
@@ -40,7 +42,7 @@ export default function FavoritesList({ places, onDelete }: Props) {
                             if (onDelete) onDelete(place.contentId);
                         }}
                     >
-                        삭제
+                        <FontAwesomeIcon icon={faTrash} />
                     </button>
                 </div>
             ))}

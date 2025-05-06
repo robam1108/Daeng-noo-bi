@@ -5,11 +5,15 @@ import { fetchPlaceDetail, PlaceDetail } from "../../../shared/api/petTourApi"
 import Map from "../../Detail/components/Map"
 import Error from "../../../shared/components/Error/Error"
 import Loading from "../../../shared/components/Loading/Loading"
+import HeartButton from "../components/HeartButton"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLink } from "@fortawesome/free-solid-svg-icons"
 import "./Detail.scss";
 
 interface DetailState {
     place?: PlaceDetail
 }
+
 
 export default function Detail() {
     const user = useTestAuth();
@@ -28,6 +32,7 @@ export default function Detail() {
     useEffect(() => {
         if (initialPlace) {
             console.log('state로 넘어온 데이터가 있으므로 fetch 생략');
+            setLoading(false);
             return;
         }
 
@@ -94,8 +99,8 @@ export default function Detail() {
                             : <p className="value">없음</p>}
                     </div>
                     <div className="btn-box">
-                        <button>찜</button>
-                        <button>공유</button>
+                        <HeartButton contentId={contentId!} userFavorites={user.favorites} onToggleFavorite={() => { }} />
+                        <button className="share-button"><FontAwesomeIcon icon={faLink} /></button>
                     </div>
                 </div>
             </div>
