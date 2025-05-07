@@ -1,6 +1,3 @@
-$font-color: #fff;
-$background-color: black;
-
 .Footer {
     display: flex;
     flex-direction: row;
@@ -10,7 +7,7 @@ $background-color: black;
     background-color: #fff;
     padding: 10px 20px;
     color: #333;
-
+}
     .producer-link {
         margin-left: auto;
 
@@ -19,14 +16,12 @@ $background-color: black;
             gap: 5px;
             justify-content: center;
             align-items: center;
-        }  
-    
-        .producer-link a:hover,
-        .producer-link a:focus {
-        text-decoration: underline;
-        opacity: 0.8;
-        }
-
+          a:hover,
+          a:focus {
+          opacity: 0.8;
+          }
+        } 
+      
         .github-icon{
             margin-right: 4px;
             font-size: 1em;

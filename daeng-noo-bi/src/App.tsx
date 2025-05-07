@@ -10,6 +10,7 @@ import Signup from "./features/Signup/pages/Signup";
 import Favorites from "./features/Favorites/pages/Favorites";
 import Navbar from "./shared/components/Navbar/Navbar";
 import Footer from "./shared/components/Footer/Footer";
+import Detail from "./features/Detail/page/Detail";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/place/:contentId" element={<Detail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

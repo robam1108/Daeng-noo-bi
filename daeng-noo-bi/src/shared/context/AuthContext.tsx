@@ -1,5 +1,5 @@
 // shared/context/AuthContext.tsx
-import React, {
+import {
   createContext,
   ReactNode,
   useContext,
@@ -17,7 +17,14 @@ import {
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import {
   getFunctions,
@@ -39,6 +46,8 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
+  addFavorite: (contentId: string) => Promise<void>;
+  removeFavorite: (contentId: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -135,20 +144,64 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const userRef = doc(db, "users", fbUser.uid);
     const snap = await getDoc(userRef);
 
-    if (!snap.exists()) {
-      await setDoc(userRef, {
-        email: fbUser.email,
-        nickname: "", // 초기값, 추후 입력 유도 가능
-        favorites: [],
-        isVerified: true, // 구글은 이메일 인증 불필요
-      });
-    }
-
+    await setDoc(
+      userRef,
+      {
+        email: fbUser.email || "",
+        nickname: fbUser.displayName || "",
+        favorites: snap.exists() ? (snap.data().favorites as string[]) : [],
+        isVerified: true,
+      },
+      { merge: true }
+    );
+    setUser({
+      id: fbUser.uid,
+      email: fbUser.email || "",
+      nickname: fbUser.displayName || "",
+      favorites: snap.exists() ? (snap.data().favorites as string[]) : [],
+    });
     // 상태는 onAuthStateChanged에서 자동 반영됨
   };
 
   const logout = async () => {
     await firebaseSignOut(auth);
+  };
+
+  // 찜 추가
+  const addFavorite = async (contentId: string) => {
+    if (!auth.currentUser) throw new Error("로그인이 필요합니다.");
+    const uid = auth.currentUser.uid;
+    const userDoc = doc(db, "users", uid);
+
+    await updateDoc(userDoc, { favorites: arrayUnion(contentId) });
+
+    // 로컬 상태도 즉시 반영
+    setUser(
+      (prev) =>
+        prev && {
+          ...prev,
+          favorites: prev.favorites?.includes(contentId)
+            ? prev.favorites
+            : [...(prev.favorites || []), contentId],
+        }
+    );
+  };
+
+  // 찜 제거
+  const removeFavorite = async (contentId: string) => {
+    if (!auth.currentUser) throw new Error("로그인이 필요합니다.");
+    const uid = auth.currentUser.uid;
+    const userDoc = doc(db, "users", uid);
+
+    await updateDoc(userDoc, { favorites: arrayRemove(contentId) });
+
+    setUser(
+      (prev) =>
+        prev && {
+          ...prev,
+          favorites: prev.favorites?.filter((id) => id !== contentId) || [],
+        }
+    );
   };
 
   return (
@@ -160,6 +213,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         login,
         logout,
         loginWithGoogle,
+        addFavorite,
+        removeFavorite,
       }}
     >
       {children}
