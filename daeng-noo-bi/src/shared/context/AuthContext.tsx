@@ -1,6 +1,5 @@
 // shared/context/AuthContext.tsx
 import {
-  main
   createContext,
   ReactNode,
   useContext,

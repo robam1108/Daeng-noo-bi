@@ -1,20 +1,25 @@
 import { PlaceDetail } from '../../../shared/api/petTourApi';
-import HeartButton from '../components/HeartButton';
+import { PlaceImage } from '../api/fetchImages';
+import { DetailIntroResponse } from '../api/fetchDetailIntro';
+import ActionButtons from './ActionButtons/ActionButtons';
 import Map from '../components/Map';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink } from "@fortawesome/free-solid-svg-icons"
+import IntroSection from './IntroSection';
+import ImageGallery from './ImageGallery/ImageGallery';
 
 interface Props {
     place: PlaceDetail;
+    images: PlaceImage[];
+    intro: DetailIntroResponse;
     isFavorited: boolean;
     onToggleFavorite: () => void;
 }
 
-export default function DetailView({ place, isFavorited, onToggleFavorite }: Props) {
+const DetailView = ({ place, images, intro, isFavorited, onToggleFavorite }: Props) => {
+
     return (
         <div className="PlaceDetail">
             <div className="detail-img-section">
-                <img src={place.finalImage} alt={place.title} />
+                <ImageGallery images={images} titleImgUrl={place!.finalImage!} />
             </div>
             <div className="detail-info-section">
                 <div className="info1">
@@ -23,22 +28,12 @@ export default function DetailView({ place, isFavorited, onToggleFavorite }: Pro
                     <p>{place!.overview}</p>
                 </div>
                 <div className="info2">
-                    <div className="tel">
-                        <p className="label">전화번호 : </p>
-                        {place!.tel ? <p className="value">{place!.tel}</p> : <p className="value">없음</p>}
-                    </div>
-                    <div className="homepage">
-                        <p className="label">홈페이지 :</p>
-                        {place!.homepage ?
-                            <div className="value" dangerouslySetInnerHTML={{ __html: place!.homepage! }} />
-                            : <p className="value">없음</p>}
-                    </div>
+                    <IntroSection intro={intro} tel={place!.tel!} homepage={place!.homepage!} />
                     <div className="btn-box">
-                        <HeartButton
+                        <ActionButtons
                             isActive={isFavorited}
-                            onClick={onToggleFavorite}
+                            onToggleFavorite={onToggleFavorite}
                         />
-                        <button className="share-button"><FontAwesomeIcon icon={faLink} /></button>
                     </div>
                 </div>
             </div>
@@ -46,3 +41,4 @@ export default function DetailView({ place, isFavorited, onToggleFavorite }: Pro
         </div>
     );
 }
+export default DetailView

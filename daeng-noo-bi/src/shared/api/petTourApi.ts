@@ -6,6 +6,7 @@ import { FALLBACK_IMAGES } from '../constants/fallbackImages';
  */
 export interface PlaceDetail {
     contentId: string;          // 콘텐츠 고유 ID
+    contentTypeId: string;      // 관광타입 ID
     title?: string;             // 제목
     addr1?: string;             // 대표 주소
     addr2?: string;             // 추가 주소
@@ -31,7 +32,8 @@ export async function fetchPlaceDetail(
     try {
         // 1) API 호출: detailCommon
         const items = await fetchTourAPI('KorPetTourService', 'detailCommon', {
-            contentId: contentId,        // 필수: 콘텐츠 ID  // 필수:
+            contentId,        // 필수: 콘텐츠 ID
+            // contentTypeId,
             defaultYN: 'Y',   // 기본정보는 생략 (필요 없으면 N)
             overviewYN: 'Y',  // 개요 생략
             addrinfoYN: 'Y',  // 주소만 가져오기
@@ -61,6 +63,7 @@ export async function fetchPlaceDetail(
         // 4) PlaceDetail 형태로 매핑
         const detail: PlaceDetail = {
             contentId: raw.contentid,
+            contentTypeId: raw.contenttypeid,
             title: raw.title,
             addr1: raw.addr1,
             addr2: raw.addr2,

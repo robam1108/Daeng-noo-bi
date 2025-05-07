@@ -1,6 +1,8 @@
 import { useLocation, useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { fetchPlaceDetail, PlaceDetail } from "../../../shared/api/petTourApi"
+import { fetchDetailIntro, DetailIntroResponse } from "../api/fetchDetailIntro"
+import { fetchPlaceImage, PlaceImage } from "../api/fetchImages"
 import { useFavorites } from "../../../shared/hooks/useFavorites"
 import Error from "../../../shared/components/Error/Error"
 import Loading from "../../../shared/components/Loading/Loading"
@@ -20,6 +22,8 @@ export default function Detail() {
     const { contentId } = useParams<{ contentId: string }>();
     const initialPlace = (location.state as DetailState)?.place;
     const [place, setPlace] = useState<PlaceDetail | null>(initialPlace ?? null);
+    const [intro, setIntro] = useState<DetailIntroResponse | null>(null);
+    const [imgs, setImgs] = useState<PlaceImage[] | null>(null)
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
 
@@ -57,15 +61,29 @@ export default function Detail() {
         const loadDetail = async () => {
             try {
                 const detail = await fetchPlaceDetail(contentId);
-                console.log('fetchPlaceDetail 실행');
                 if (detail) {
                     setPlace(detail);
                 } else {
-                    console.log('해당 여행지 정보를 찾을 수 없습니다.'); 4
+                    console.log('fetchPlaceDetail 오류, 해당 여행지 정보를 찾을 수 없습니다.');
+                    setError(true);
+                }
+
+                const imgs = await fetchPlaceImage(contentId);
+                if (imgs) {
+                    setImgs(imgs);
+                }
+
+                // contentTypeId가 준비된 후 intro 가져오기
+                const intro = await fetchDetailIntro(contentId, detail!.contentTypeId);
+                console.log(`contentTypeId: ${detail!.contentTypeId}`);
+                if (intro) {
+                    setIntro(intro);
+                } else {
+                    console.log('fetchDetailIntro 오류, 해당 여행지 정보를 찾을 수 없습니다.'); 4
                     setError(true);
                 }
             } catch (e: any) {
-                console.error('fetchPlaceDetail 에러:', e);
+                console.error('loadDetail 에러:', e);
                 setError(true);
             } finally {
                 setLoading(false);
@@ -78,11 +96,11 @@ export default function Detail() {
     if (loading) return <Loading />;
     if (error) return <Error />;
 
-    console.log(place);
-
     return (
         <DetailView
             place={place!}
+            intro={intro!}
+            images={imgs!}
             isFavorited={isFavorite(contentId!)}
             onToggleFavorite={handleToggle}
         />
