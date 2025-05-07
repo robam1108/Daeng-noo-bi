@@ -1,16 +1,12 @@
 // src/pages/LoginPage.tsx
-
+const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY!;
+const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI!;
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../shared/context/AuthContext";
 import { auth } from "../../../firebase"; // Firebase 설정 경로 확인
 import { getFunctions, httpsCallable } from "firebase/functions";
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  signInWithCustomToken,
-} from "firebase/auth";
-import { loginWithKakao, initKakao } from "../../../shared/utils/kakao";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 import "./Login.scss";
 
@@ -24,10 +20,6 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    initKakao();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,25 +75,12 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const handleKakaoLogin = async () => {
-    try {
-      const kakaoUid = await loginWithKakao();
-
-      const functions = getFunctions();
-      const kakaoAuthFn = httpsCallable<
-        { kakaoUid: string },
-        { token: string }
-      >(functions, "kakaoAuth");
-
-      const result = await kakaoAuthFn({ kakaoUid });
-      const firebaseToken = result.data.token;
-
-      await signInWithCustomToken(auth, firebaseToken);
-      console.log("🎉 Firebase 로그인 성공!");
-      nav("/");
-    } catch (err) {
-      console.error("카카오 로그인 실패:", err);
-    }
+  const handleKakaoLogin = () => {
+    const url = new URL("https://kauth.kakao.com/oauth/authorize");
+    url.searchParams.set("client_id", KAKAO_REST_API_KEY);
+    url.searchParams.set("redirect_uri", REDIRECT_URI);
+    url.searchParams.set("response_type", "code");
+    window.location.href = url.toString();
   };
 
   const onClickSignup = () => {
@@ -161,10 +140,6 @@ const LoginPage: React.FC = () => {
           onClick={handleGoogleLogin}
         >
           Google 계정으로 로그인
-        </button>
-
-        <button type="button" className="btn kakao" onClick={handleKakaoLogin}>
-          kakao 계정으로 로그인
         </button>
       </form>
     </div>
