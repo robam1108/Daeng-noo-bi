@@ -13,11 +13,14 @@ const ImageGallery = ({ images, titleImgUrl }: Props) => {
     // images가 null인 경우 빈 배열로 처리
     const safeImages = useMemo(() => images ?? [], [images]);
 
-    // allImages 배열 준비 (대표 + 추가)
-    const allImages = useMemo(
-        () => [titleImgUrl, ...safeImages.map(img => img.originimgurl || '')].filter(Boolean),
-        [titleImgUrl, safeImages]
-    );
+    // 대표 이미지 + 추가 이미지 URL, 중복 제거
+    const allImages = useMemo(() => {
+        const urls = [
+            titleImgUrl,
+            ...safeImages.map(img => img.originimgurl || ''),
+        ].filter(Boolean);
+        return Array.from(new Set(urls));
+    }, [titleImgUrl, safeImages]);
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const total = allImages.length;
