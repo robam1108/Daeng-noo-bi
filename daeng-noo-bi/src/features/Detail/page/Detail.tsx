@@ -1,10 +1,12 @@
-import { useLocation, useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { fetchPlaceDetail, PlaceDetail } from "../../../shared/api/petTourApi";
-import { useFavorites } from "../../../shared/hooks/useFavorites";
-import Error from "../../../shared/components/Error/Error";
-import Loading from "../../../shared/components/Loading/Loading";
-import DetailView from "../components/DetailView";
+import { useLocation, useParams, useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { fetchPlaceDetail, PlaceDetail } from "../../../shared/api/petTourApi"
+import { fetchDetailIntro, DetailIntroResponse } from "../api/fetchDetailIntro"
+import { fetchPlaceImage, PlaceImage } from "../api/fetchImages"
+import { useFavorites } from "../../../shared/hooks/useFavorites"
+import Error from "../../../shared/components/Error/Error"
+import Loading from "../../../shared/components/Loading/Loading"
+import DetailView from "../components/DetailView"
 import "./Detail.scss";
 import { doc, setDoc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../../firebase";
@@ -14,13 +16,15 @@ interface DetailState {
 }
 
 export default function Detail() {
-  const nav = useNavigate();
-  const location = useLocation();
-  const { contentId } = useParams<{ contentId: string }>();
-  const initialPlace = (location.state as DetailState)?.place;
-  const [place, setPlace] = useState<PlaceDetail | null>(initialPlace ?? null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
+    const nav = useNavigate();
+    const location = useLocation();
+    const { contentId } = useParams<{ contentId: string }>();
+    const initialPlace = (location.state as DetailState)?.place;
+    const [place, setPlace] = useState<PlaceDetail | null>(initialPlace ?? null);
+    const [intro, setIntro] = useState<DetailIntroResponse | null>(null);
+    const [imgs, setImgs] = useState<PlaceImage[] | null>(null)
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
 
   // 즐겨찾기 훅: 상태 조회, 추가·삭제 함수
   const { user, isFavorite, toggleFavorite } = useFavorites();
@@ -69,12 +73,37 @@ export default function Detail() {
       return;
     }
 
-    if (!contentId) {
-      console.log("유효한 constentId가 없습니다.");
-      setError(true);
-      setLoading(false);
-      return;
-    }
+        const loadDetail = async () => {
+            try {
+                const detail = await fetchPlaceDetail(contentId);
+                if (detail) {
+                    setPlace(detail);
+                } else {
+                    console.log('fetchPlaceDetail 오류, 해당 여행지 정보를 찾을 수 없습니다.');
+                    setError(true);
+                }
+
+                const imgs = await fetchPlaceImage(contentId);
+                if (imgs) {
+                    setImgs(imgs);
+                }
+
+                // contentTypeId가 준비된 후 intro 가져오기
+                const intro = await fetchDetailIntro(contentId, detail!.contentTypeId);
+                console.log(`contentTypeId: ${detail!.contentTypeId}`);
+                if (intro) {
+                    setIntro(intro);
+                } else {
+                    console.log('fetchDetailIntro 오류, 해당 여행지 정보를 찾을 수 없습니다.'); 4
+                    setError(true);
+                }
+            } catch (e: any) {
+                console.error('loadDetail 에러:', e);
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
+        };
 
     const loadDetail = async () => {
       try {
@@ -97,16 +126,14 @@ export default function Detail() {
     loadDetail();
   }, [initialPlace, contentId]);
 
-  if (loading) return <Loading />;
-  if (error) return <Error />;
-
-  console.log(place);
-
-  return (
-    <DetailView
-      place={place!}
-      isFavorited={isFavorite(contentId!)}
-      onToggleFavorite={handleToggle}
-    />
-  );
+    return (
+        <DetailView
+            place={place!}
+            intro={intro!}
+            images={imgs!}
+            isFavorited={isFavorite(contentId!)}
+            onToggleFavorite={handleToggle}
+        />
+    )
 }
+
