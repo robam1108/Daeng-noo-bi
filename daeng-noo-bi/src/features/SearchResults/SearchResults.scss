@@ -1,0 +1,42 @@
+.SearchResults {
+  width: 100%;
+  padding: 2rem;
+  align-items: center;
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .SearchResult-title{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    
+    h1{
+      
+      font-family: 'GmarketSansMedium';
+      font-size: 3.5rem;
+      font-weight: 500;
+  
+      .pointColor{
+        color: #328E6E;
+      }
+    }
+  }
+  ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    img { width: 100%; height: 120px; object-fit: cover; }
+    p { padding: 0.5rem; margin: 0; }
+  }
+}

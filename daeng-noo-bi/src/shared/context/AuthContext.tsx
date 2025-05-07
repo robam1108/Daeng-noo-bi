@@ -17,7 +17,14 @@ import {
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
 } from "firebase/auth";
-import { doc, setDoc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import {
   getFunctions,
@@ -162,33 +169,39 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   // 찜 추가
   const addFavorite = async (contentId: string) => {
-    if (!auth.currentUser) throw new Error('로그인이 필요합니다.');
+    if (!auth.currentUser) throw new Error("로그인이 필요합니다.");
     const uid = auth.currentUser.uid;
-    const userDoc = doc(db, 'users', uid);
+    const userDoc = doc(db, "users", uid);
 
     await updateDoc(userDoc, { favorites: arrayUnion(contentId) });
 
     // 로컬 상태도 즉시 반영
-    setUser(prev => prev && ({
-      ...prev,
-      favorites: prev.favorites?.includes(contentId)
-        ? prev.favorites
-        : [...(prev.favorites || []), contentId]
-    }));
+    setUser(
+      (prev) =>
+        prev && {
+          ...prev,
+          favorites: prev.favorites?.includes(contentId)
+            ? prev.favorites
+            : [...(prev.favorites || []), contentId],
+        }
+    );
   };
 
   // 찜 제거
   const removeFavorite = async (contentId: string) => {
-    if (!auth.currentUser) throw new Error('로그인이 필요합니다.');
+    if (!auth.currentUser) throw new Error("로그인이 필요합니다.");
     const uid = auth.currentUser.uid;
-    const userDoc = doc(db, 'users', uid);
+    const userDoc = doc(db, "users", uid);
 
     await updateDoc(userDoc, { favorites: arrayRemove(contentId) });
 
-    setUser(prev => prev && ({
-      ...prev,
-      favorites: prev.favorites?.filter(id => id !== contentId) || []
-    }));
+    setUser(
+      (prev) =>
+        prev && {
+          ...prev,
+          favorites: prev.favorites?.filter((id) => id !== contentId) || [],
+        }
+    );
   };
 
   return (
@@ -201,7 +214,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         logout,
         loginWithGoogle,
         addFavorite,
-        removeFavorite
+        removeFavorite,
       }}
     >
       {children}

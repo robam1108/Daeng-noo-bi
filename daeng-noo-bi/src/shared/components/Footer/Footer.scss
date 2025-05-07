@@ -3,26 +3,28 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
-    border-top: 2px solid #328E6E;
-    padding-top: 30px;
-
-}
-
-.Footer>div {
+    border-top: 1px solid #e3e3e3;
+    background-color: #fff;
     padding: 10px 20px;
+    color: #333;
 }
+    .producer-link {
+        margin-left: auto;
 
-.producer-link {
-    margin-left: auto;
-}
-
-.producer-link>p {
-    display: flex;
-    gap: 5px;
-
-}
-
-.producer-link>p>a,
-.producer-link>p>a:visited {
-    text-decoration-line: none;
-}
+        p {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            align-items: center;
+          a:hover,
+          a:focus {
+          opacity: 0.8;
+          }
+        } 
+      
+        .github-icon{
+            margin-right: 4px;
+            font-size: 1em;
+            vertical-align: middle;
+        }
+    }

@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../shared/context/AuthContext";
-
+import ForgotModal from "../components/ForgotModal";
 import "./Login.scss";
 
 const LoginPage: React.FC = () => {
@@ -15,6 +15,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isForgotOpen, setIsForgotOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,6 +69,12 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  const forgotJsx = (
+    <p className="forgot-link" onClick={() => setIsForgotOpen(true)}>
+      혹시 비밀번호를 잊으셨나요?
+    </p>
+  );
+
   const onClickSignup = () => {
     nav("/signup");
   };
@@ -99,7 +106,7 @@ const LoginPage: React.FC = () => {
           ref={pwRef}
           type="password"
           autoComplete="current-password"
-          className="login-input"
+          className="login-input password-input"
           placeholder="비밀번호"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -110,7 +117,7 @@ const LoginPage: React.FC = () => {
             setError("비밀번호를 입력해주세요.");
           }}
         />
-
+        {forgotJsx}
         <button type="submit" className="btn login">
           로그인
         </button>
@@ -126,6 +133,11 @@ const LoginPage: React.FC = () => {
         >
           Google 계정으로 로그인
         </button>
+
+        <ForgotModal
+          isOpen={isForgotOpen}
+          onClose={() => setIsForgotOpen(false)}
+        />
       </form>
     </div>
   );
