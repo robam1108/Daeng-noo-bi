@@ -62,9 +62,25 @@
         background-color: #67AE6E;
         color: #fff;
       }
-      &.social {
-        background-color: #ddd;
+      &.google {
+        background-color: #e4e3e3;
         color: #555;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &::before{
+          content: "";
+          display: inline-block;
+          width: 1.5rem;
+          height: 1.5rem;
+          margin-top: 1px;
+          margin-right: 0.2rem;
+          background-image: url("https://img.icons8.com/?size=512&id=17949&format=png");
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: contain;
+        }
       }
     }
   }

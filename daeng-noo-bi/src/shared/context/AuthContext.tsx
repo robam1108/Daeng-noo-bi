@@ -7,6 +7,8 @@ import React, {
   useState,
 } from "react";
 import {
+  GoogleAuthProvider,
+  signInWithPopup,
   getAuth,
   setPersistence,
   browserLocalPersistence,
@@ -35,6 +37,7 @@ interface AuthContextType {
   sendVerificationCode: (email: string, code: string) => Promise<void>;
   signup: (email: string, password: string, nickname: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -120,13 +123,44 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  // Google 로그인 함수
+  const loginWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+
+    // 팝업을 통해 로그인
+    const cred = await signInWithPopup(auth, provider);
+    const fbUser = cred.user;
+
+    // Firestore 사용자 문서 경로
+    const userRef = doc(db, "users", fbUser.uid);
+    const snap = await getDoc(userRef);
+
+    if (!snap.exists()) {
+      await setDoc(userRef, {
+        email: fbUser.email,
+        nickname: "", // 초기값, 추후 입력 유도 가능
+        favorites: [],
+        isVerified: true, // 구글은 이메일 인증 불필요
+      });
+    }
+
+    // 상태는 onAuthStateChanged에서 자동 반영됨
+  };
+
   const logout = async () => {
     await firebaseSignOut(auth);
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, sendVerificationCode, signup, login, logout }}
+      value={{
+        user,
+        sendVerificationCode,
+        signup,
+        login,
+        logout,
+        loginWithGoogle,
+      }}
     >
       {children}
     </AuthContext.Provider>
