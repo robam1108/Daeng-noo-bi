@@ -2,12 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../shared/context/AuthContext";
 import React from "react";
-import LoginButton from "./LoginButton";
+// import LoginButton from "./LoginButton";
+import SearchBar from "./SearchBar";
 import "./Navbar.scss";
 
 const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
-  const isLoggedIn = Boolean(user);
+  // const isLoggedIn = Boolean(user);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const nav = useNavigate();
@@ -67,13 +68,16 @@ const Navbar: React.FC = () => {
             </NavLink>
           ))}
         </div>
+        <div className="search-section">
+          <SearchBar />
+        </div>
         <div className="auth-section">
           {user ? (
             <div className="user-info" ref={dropdownRef}>
-              <span className="welcome-message">
+              {/* <span className="welcome-message">
                 <span className="userName">{user.nickname ?? user.email}</span>
                 님 어서오세요!
-              </span>
+              </span> */}
               <img
                 src="/userIcon.png"
                 alt="유저 프로필"

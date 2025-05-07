@@ -68,3 +68,42 @@ export async function fetchTourAPI(
   console.error("[fetchTourAPI] 모든 키 소진 – 빈 배열 반환");
   return [];
 }
+
+// 키워드 검색 기능 추가 
+
+export interface SearchPlace {
+  contentId:     string;
+  contentTypeId: string;
+  title?:        string;
+  addr1?:        string;
+  firstimage?:   string;
+  overview?:     string;
+}
+
+export async function searchPlacesByKeyword(
+  keyword: string,
+  pageNo: number = 1,
+  numOfRows: number = 20,
+  arrange: 'A' | 'B' | 'C' = 'C'
+): Promise<SearchPlace[]> {
+  const items = await fetchTourAPI(
+    'KorPetTourService',
+    'searchKeyword',
+    {
+      keyword,
+      pageNo:    pageNo.toString(),
+      numOfRows: numOfRows.toString(),
+      arrange,
+    }
+  );
+
+  // 필요한 경우 필드명을 camelCase로 변환하여 반환합니다.
+  return (items as any[]).map(item => ({
+    contentId:     item.contentid,
+    contentTypeId: item.contenttypeid,
+    title:         item.title,
+    addr1:         item.addr1,
+    firstimage:    item.firstimage,
+    overview:      item.overview,
+  }));
+}

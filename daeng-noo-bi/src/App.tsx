@@ -11,6 +11,7 @@ import Favorites from "./features/Favorites/pages/Favorites";
 import Navbar from "./shared/components/Navbar/Navbar";
 import Footer from "./shared/components/Footer/Footer";
 import Detail from "./features/Detail/page/Detail";
+import SearchResults from "./features/SearchResults/SearchResults";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/place/:contentId" element={<Detail />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/search" element={<SearchResults />} />
       </Routes>
       <Footer />
     </>
