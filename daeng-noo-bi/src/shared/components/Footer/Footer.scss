@@ -6,27 +6,31 @@ $background-color: black;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
-    background-color: $background-color;
-    color: $font-color;
-
-}
-
-.Footer>div {
+    border-top: 1px solid #e3e3e3;
+    background-color: #fff;
     padding: 10px 20px;
-}
+    color: #333;
 
-.producer-link {
-    margin-left: auto;
-}
+    .producer-link {
+        margin-left: auto;
 
-.producer-link>p {
-    display: flex;
-    gap: 5px;
+        p {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            align-items: center;
+        }  
+    
+        .producer-link a:hover,
+        .producer-link a:focus {
+        text-decoration: underline;
+        opacity: 0.8;
+        }
 
-}
-
-.producer-link>p>a,
-.producer-link>p>a:visited {
-    text-decoration-line: none;
-    color: $font-color;
+        .github-icon{
+            margin-right: 4px;
+            font-size: 1em;
+            vertical-align: middle;
+        }
+    }
 }
