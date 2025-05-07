@@ -4,31 +4,30 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 interface HeartButtonProps {
-    isActive: boolean;          // 즐겨찾기 상태만 받음
-    onClick: () => void;       // 토글 핸들러
+  isActive: boolean; // 즐겨찾기 상태만 받음
+  onClick: () => void; // 토글 핸들러
 }
 
 const HeartButton = ({ isActive, onClick }: HeartButtonProps) => {
-    const [hover, setHover] = useState(false);
-    const icon = isActive || hover ? fasHeart : farHeart;
+  const [hover, setHover] = useState(false);
+  const icon = isActive || hover ? fasHeart : farHeart;
 
-    return (
-        <button
-            className="HeartButton"
-            onClick={e => {
-                e.preventDefault();
-                e.stopPropagation();
-                onClick();
-            }}
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
-            aria-label={isActive ? "즐겨찾기 해제" : "즐겨찾기 추가"}
-            aria-pressed={isActive}
-        >
-            <FontAwesomeIcon icon={icon} />
-        </button>
-    );
+  return (
+    <button
+      className="HeartButton"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onClick();
+      }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      aria-label={isActive ? "즐겨찾기 해제" : "즐겨찾기 추가"}
+      aria-pressed={isActive}
+    >
+      <FontAwesomeIcon icon={icon} />
+    </button>
+  );
 };
 
-
-export default HeartButton
+export default HeartButton;
