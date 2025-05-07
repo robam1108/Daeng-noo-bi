@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useTestAuth } from '../../../shared/context/TestAuthContext';
+import { useAuth } from '../../../shared/context/AuthContext';
 import FavoritesList from '../components/FavoritesList';
 import { fetchPlaceDetail, PlaceDetail } from '../../../shared/api/petTourApi';
 import './Favorites.scss';
 
 export default function Favorites() {
-    const user = useTestAuth();
+    const { user } = useAuth();
     // 상세 정보들을 담을 상태
     const [places, setPlaces] = useState<PlaceDetail[]>([]);
     // 로딩 상태 표시용
@@ -43,7 +43,7 @@ export default function Favorites() {
 
     return (
         <div className="Favorites">
-            <h2>'{user.id}'님이 찜한 장소</h2>
+            <h2>'{user.nickname}'님이 찜한 장소</h2>
             <FavoritesList places={places} />
         </div>
     );

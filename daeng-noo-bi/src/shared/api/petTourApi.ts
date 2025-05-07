@@ -1,18 +1,20 @@
 import { fetchTourAPI } from './fetcher';
+import { FALLBACK_IMAGES } from '../constants/fallbackImages';
 
 /**
  * 화면에 최소한으로 표시할 장소 요약 정보 타입
  */
 export interface PlaceDetail {
-    contentId: string;     // 콘텐츠 고유 ID (필수)
-    title?: string;        // 제목
-    addr1?: string;        // 대표 주소
-    addr2?: string;
-    firstimage?: string;   // 대표 이미지 URL
-    firstimage2?: string;  // 추가 이미지 URL (API에 포함돼 있으면)
-    overview?: string;
-    tel?: string;
-    homepage?: string;
+    contentId: string;          // 콘텐츠 고유 ID
+    title?: string;             // 제목
+    addr1?: string;             // 대표 주소
+    addr2?: string;             // 추가 주소
+    firstimage?: string;        // API에서 내려주는 대표 이미지
+    firstimage2?: string;       // API에서 내려주는 두번째 이미지
+    overview?: string;          // 개요
+    tel?: string;               // 연락처
+    homepage?: string;          // 홈페이지
+    finalImage: string;         // 보완된 이미지 URL
 }
 
 /**
@@ -49,19 +51,27 @@ export async function fetchPlaceDetail(
             return null;
         }
 
-        // 3) PlaceDetail 형태로 매핑
-        const detali: PlaceDetail = {
+        // 3) 이미지 보완 로직
+        const finalImage =
+            raw.firstimage ||
+            raw.firstimage2 ||
+            FALLBACK_IMAGES[raw.title || ''] ||
+            '/images/no-image.png';
+
+        // 4) PlaceDetail 형태로 매핑
+        const detail: PlaceDetail = {
             contentId: raw.contentid,
             title: raw.title,
             addr1: raw.addr1,
             addr2: raw.addr2,
             firstimage: raw.firstimage,
-            firstimage2: (raw as any).firstimage2, // API에 따라 없을 수도 있음
-            tel: raw.tel,
+            firstimage2: raw.firstimage2,
             overview: raw.overview,
+            tel: raw.tel,
             homepage: raw.homepage,
+            finalImage,                // 보완된 이미지
         };
-        return detali;
+        return detail;
     } catch (e) {
         console.error('[fetchPlaceDetail] API 조회 실패:', e);
         return null;

@@ -1,14 +1,13 @@
-import { useLocation, useParams } from "react-router-dom"
+import { useLocation, useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { useTestAuth } from "../../../shared/context/TestAuthContext"
 import { fetchPlaceDetail, PlaceDetail } from "../../../shared/api/petTourApi"
-import Map from "../../Detail/components/Map"
+import { useFavorites } from "../../../shared/hooks/useFavorites"
 import Error from "../../../shared/components/Error/Error"
 import Loading from "../../../shared/components/Loading/Loading"
-import HeartButton from "../components/HeartButton"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink } from "@fortawesome/free-solid-svg-icons"
+import DetailView from "../components/DetailView"
 import "./Detail.scss";
+
+
 
 interface DetailState {
     place?: PlaceDetail
@@ -16,22 +15,34 @@ interface DetailState {
 
 
 export default function Detail() {
-    const user = useTestAuth();
+    const nav = useNavigate();
     const location = useLocation();
     const { contentId } = useParams<{ contentId: string }>();
-
     const initialPlace = (location.state as DetailState)?.place;
     const [place, setPlace] = useState<PlaceDetail | null>(initialPlace ?? null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
 
-    console.log(initialPlace);
-    console.log(contentId);
+    // 즐겨찾기 훅: 상태 조회, 추가·삭제 함수
+    const { user, isFavorite, toggleFavorite } = useFavorites();
+
+    // 토글 핸들러
+    const handleToggle = () => {
+        if (!user) {
+            // 로그인 유도
+            const ok = window.confirm('로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?');
+            if (ok) {
+                // 이동 후 돌아올 경로 보존
+                nav('/login', { state: { from: location } });
+            }
+            return;
+        }
+        toggleFavorite(contentId!);
+    };
 
 
     useEffect(() => {
         if (initialPlace) {
-            console.log('state로 넘어온 데이터가 있으므로 fetch 생략');
             setLoading(false);
             return;
         }
@@ -64,47 +75,16 @@ export default function Detail() {
         loadDetail();
     }, [initialPlace, contentId])
 
-    if (!user)
-        return <p className="err-msg">로그인이 필요합니다.</p>;
-    if (!user.favorites)
-        return <p className="err-msg">즐겨찾기 정보가 없습니다.</p>;
     if (loading) return <Loading />;
     if (error) return <Error />;
 
     console.log(place);
 
     return (
-        <div className="PlaceDetail">
-            <div className="detail-img-section">
-                {place!.firstimage ?
-                    <img src={place!.firstimage} alt={`${place!.title}의 사진`} />
-                    :
-                    <img src={place!.firstimage2} alt={`${place!.title}의 사진`} />}
-            </div>
-            <div className="detail-info-section">
-                <div className="info1">
-                    <p>{place!.title}</p>
-                    <p>{place!.addr1}</p>
-                    <p>{place!.overview}</p>
-                </div>
-                <div className="info2">
-                    <div className="tel">
-                        <p className="label">전화번호 : </p>
-                        {place!.tel ? <p className="value">{place!.tel}</p> : <p className="value">없음</p>}
-                    </div>
-                    <div className="homepage">
-                        <p className="label">홈페이지 :</p>
-                        {place!.homepage ?
-                            <div className="value" dangerouslySetInnerHTML={{ __html: place!.homepage! }} />
-                            : <p className="value">없음</p>}
-                    </div>
-                    <div className="btn-box">
-                        <HeartButton contentId={contentId!} userFavorites={user.favorites} onToggleFavorite={() => { }} />
-                        <button className="share-button"><FontAwesomeIcon icon={faLink} /></button>
-                    </div>
-                </div>
-            </div>
-            <Map address={place!.addr1 as string} />
-        </div>
+        <DetailView
+            place={place!}
+            isFavorited={isFavorite(contentId!)}
+            onToggleFavorite={handleToggle}
+        />
     )
 }
