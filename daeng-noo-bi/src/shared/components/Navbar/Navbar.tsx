@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../shared/context/AuthContext";
 import React from "react";
@@ -7,7 +8,8 @@ import "./Navbar.scss";
 const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
   const isLoggedIn = Boolean(user);
-  const userAvatarUrl = "/images/avatar.png"; // 예시 URL
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const nav = useNavigate();
 
   const menuItems = [
@@ -18,7 +20,6 @@ const Navbar: React.FC = () => {
 
   const location = useLocation();
   const isSubPage = menuItems.some((item) => location.pathname === item.to);
-  // const nav = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -28,6 +29,19 @@ const Navbar: React.FC = () => {
       console.error("Logout Error ▶", err);
     }
   };
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <nav>
@@ -53,15 +67,32 @@ const Navbar: React.FC = () => {
             </NavLink>
           ))}
         </div>
-        {isLoggedIn ? (
-          <button className="btn logout-btn" onClick={handleLogout}>
-            로그아웃
-          </button>
-        ) : (
-          <button className="btn login-btn" onClick={() => nav("/login")}>
-            로그인
-          </button>
-        )}
+        <div className="auth-section">
+          {user ? (
+            <div className="user-info" ref={dropdownRef}>
+              <span className="welcome-message">
+                <span className="userName">{user.nickname ?? user.email}</span>
+                님 어서오세요!
+              </span>
+              <img
+                src="/userIcon.png"
+                alt="유저 프로필"
+                className="user-avatar"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              />
+              {dropdownOpen && (
+                <div className="dropdown-menu">
+                  <button onClick={() => nav("/Favorites")}>마이페이지</button>
+                  <button onClick={handleLogout}>로그아웃</button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button className="btn login-btn" onClick={() => nav("/login")}>
+              로그인
+            </button>
+          )}
+        </div>
       </div>
     </nav>
   );

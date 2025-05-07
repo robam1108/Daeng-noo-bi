@@ -1,15 +1,14 @@
 // src/pages/LoginPage.tsx
-
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../shared/context/AuthContext";
+
 import "./Login.scss";
 
 const LoginPage: React.FC = () => {
   const nav = useNavigate();
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
 
-  // 1) ref 선언
   const emailRef = useRef<HTMLInputElement | null>(null);
   const pwRef = useRef<HTMLInputElement | null>(null);
 
@@ -21,7 +20,6 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     setError(null);
 
-    // 2) 빈 값 검사
     if (!email.trim()) {
       emailRef.current?.focus();
       setError("이메일을 입력해주세요.");
@@ -33,7 +31,6 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    // 3) 이메일 형식 검사
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!pattern.test(email.trim())) {
       emailRef.current?.focus();
@@ -41,9 +38,9 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    // 4) 실제 로그인
     try {
-      await login(email.trim(), password);
+      const userCredential = await login(email.trim(), password);
+      console.log("🎉 로그인 성공:", userCredential);
       nav("/");
     } catch (err: any) {
       console.error("Login Error ▶", err.code, err.message);
@@ -59,13 +56,25 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    setError(null);
+    try {
+      await loginWithGoogle();
+      console.log("🎉 구글 로그인 성공 (Context)");
+      nav("/");
+    } catch (err: any) {
+      console.error("Google Login Error ▶", err);
+      setError("구글 로그인 중 오류가 발생했습니다.");
+    }
+  };
+
   const onClickSignup = () => {
     nav("/signup");
   };
 
   return (
     <div className="login-page">
-      <form className="login-form" onSubmit={handleSubmit}>
+      <form className="login-form" noValidate onSubmit={handleSubmit}>
         <h1 className="login-title">로그인</h1>
 
         <p className="error-text">{error ?? "\u00A0"}</p>
@@ -73,6 +82,7 @@ const LoginPage: React.FC = () => {
         <input
           ref={emailRef}
           type="email"
+          autoComplete="email"
           className="login-input"
           placeholder="이메일"
           value={email}
@@ -88,11 +98,17 @@ const LoginPage: React.FC = () => {
         <input
           ref={pwRef}
           type="password"
+          autoComplete="current-password"
           className="login-input"
           placeholder="비밀번호"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          onInvalid={(e) => {
+            e.preventDefault();
+            pwRef.current?.focus();
+            setError("비밀번호를 입력해주세요.");
+          }}
         />
 
         <button type="submit" className="btn login">
@@ -102,8 +118,13 @@ const LoginPage: React.FC = () => {
         <button type="button" className="btn signup" onClick={onClickSignup}>
           회원가입
         </button>
-        <button type="submit" className="btn social">
-          연동 로그인
+
+        <button
+          type="button"
+          className="btn google"
+          onClick={handleGoogleLogin}
+        >
+          Google 계정으로 로그인
         </button>
       </form>
     </div>
