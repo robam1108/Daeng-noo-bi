@@ -1,7 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./shared/context/AuthContext.tsx";
-// import { TestAuthProvider } from './shared/context/TestAuthContext.tsx'
 import "./index.scss";
 import App from "./App.tsx";
 

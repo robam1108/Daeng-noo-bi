@@ -1,6 +1,5 @@
-// src/context/AuthContext.tsx
-
-import React, {
+// shared/context/AuthContext.tsx
+import {
   createContext,
   ReactNode,
   useContext,
@@ -17,7 +16,7 @@ import {
   signOut as firebaseSignOut,
   User as FirebaseUser,
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { db } from "../../firebase";
 
 export interface AuthUser {
@@ -27,11 +26,14 @@ export interface AuthUser {
   nickname?: string;
 }
 
-interface AuthContextType {
+export interface AuthContextType {
   user: AuthUser | null;
+  sendVerificationCode: (email: string, code: string) => Promise<void>;
   signup: (email: string, password: string, nickname: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  addFavorite: (contentId: string) => Promise<void>;
+  removeFavorite: (contentId: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -90,8 +92,41 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     await firebaseSignOut(auth);
   };
 
+  // 찜 추가
+  const addFavorite = async (contentId: string) => {
+    if (!auth.currentUser) throw new Error('로그인이 필요합니다.');
+    const uid = auth.currentUser.uid;
+    const userDoc = doc(db, 'users', uid);
+
+    await updateDoc(userDoc, { favorites: arrayUnion(contentId) });
+
+    // 로컬 상태도 즉시 반영
+    setUser(prev => prev && ({
+      ...prev,
+      favorites: prev.favorites?.includes(contentId)
+        ? prev.favorites
+        : [...(prev.favorites || []), contentId]
+    }));
+  };
+
+  // 찜 제거
+  const removeFavorite = async (contentId: string) => {
+    if (!auth.currentUser) throw new Error('로그인이 필요합니다.');
+    const uid = auth.currentUser.uid;
+    const userDoc = doc(db, 'users', uid);
+
+    await updateDoc(userDoc, { favorites: arrayRemove(contentId) });
+
+    setUser(prev => prev && ({
+      ...prev,
+      favorites: prev.favorites?.filter(id => id !== contentId) || []
+    }));
+  };
+
   return (
-    <AuthContext.Provider value={{ user, signup, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, sendVerificationCode, signup, login, logout, addFavorite, removeFavorite }}
+    >
       {children}
     </AuthContext.Provider>
   );

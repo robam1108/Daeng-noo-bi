@@ -23,7 +23,7 @@ export default function FavoritesList({ places, onDelete }: Props) {
                             className="card"
                             style={{
                                 backgroundImage: place.firstimage
-                                    ? `url(${place.firstimage})`
+                                    ? `url(${place.finalImage})`
                                     : undefined,
                             }}
                         >
