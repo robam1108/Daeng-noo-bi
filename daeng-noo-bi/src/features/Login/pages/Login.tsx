@@ -1,18 +1,13 @@
 // src/pages/LoginPage.tsx
-const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY!;
-const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI!;
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../shared/context/AuthContext";
-import { auth } from "../../../firebase"; // Firebase 설정 경로 확인
-import { getFunctions, httpsCallable } from "firebase/functions";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 import "./Login.scss";
 
 const LoginPage: React.FC = () => {
   const nav = useNavigate();
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
 
   const emailRef = useRef<HTMLInputElement | null>(null);
   const pwRef = useRef<HTMLInputElement | null>(null);
@@ -63,24 +58,14 @@ const LoginPage: React.FC = () => {
 
   const handleGoogleLogin = async () => {
     setError(null);
-    const provider = new GoogleAuthProvider();
-
     try {
-      const result = await signInWithPopup(auth, provider);
-      console.log("🎉 구글 로그인 성공:", result.user);
+      await loginWithGoogle();
+      console.log("🎉 구글 로그인 성공 (Context)");
       nav("/");
     } catch (err: any) {
-      console.error("Google Login Error ▶", err.code, err.message);
+      console.error("Google Login Error ▶", err);
       setError("구글 로그인 중 오류가 발생했습니다.");
     }
-  };
-
-  const handleKakaoLogin = () => {
-    const url = new URL("https://kauth.kakao.com/oauth/authorize");
-    url.searchParams.set("client_id", KAKAO_REST_API_KEY);
-    url.searchParams.set("redirect_uri", REDIRECT_URI);
-    url.searchParams.set("response_type", "code");
-    window.location.href = url.toString();
   };
 
   const onClickSignup = () => {

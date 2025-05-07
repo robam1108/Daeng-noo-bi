@@ -20,6 +20,7 @@ nav{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
     
     .logo {
       display: flex;
@@ -35,9 +36,12 @@ nav{
     }
   
     .menu{
+      position: absolute;
       display: flex;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-left: 0;
       gap: 100px;
-      margin-left: -75px;
       transition: color 0.3s;
       
       a {
@@ -48,12 +52,71 @@ nav{
         }
       }
 
-      .dimmed {
-        // color: #858585;
-      }
       .active {
         color: #328E6E;
         // font-weight: bold;
+      }
+    }
+
+
+    .auth-section {
+      display: flex;
+      align-items: center;
+      position: relative;
+    
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: relative;
+    
+        .welcome-message {
+          font-size: 0.95rem;
+          color: #333;
+
+          .userName{
+            color: #34a53f;
+          }
+        }
+    
+        .user-avatar {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          cursor: pointer;
+          transition: filter 0.3s ease;
+          outline: 2px solid #6b6b6b;
+    
+          &:hover {
+            filter: brightness(0.9);
+          }
+        }
+    
+        .dropdown-menu {
+          position: absolute;
+          top: 48px;
+          right: 0;
+          background-color: white;
+          border: 1px solid #ccc;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+          border-radius: 6px;
+          display: flex;
+          flex-direction: column;
+          z-index: 1000;
+    
+          button {
+            padding: 0.75rem 1.25rem;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.2s;
+    
+            &:hover {
+              background-color: #f5f5f5;
+            }
+          }
+        }
       }
     }
   }

@@ -135,15 +135,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const userRef = doc(db, "users", fbUser.uid);
     const snap = await getDoc(userRef);
 
-    if (!snap.exists()) {
-      await setDoc(userRef, {
-        email: fbUser.email,
-        nickname: "", // 초기값, 추후 입력 유도 가능
-        favorites: [],
-        isVerified: true, // 구글은 이메일 인증 불필요
-      });
-    }
-
+    await setDoc(
+      userRef,
+      {
+        email: fbUser.email || "",
+        nickname: fbUser.displayName || "",
+        favorites: snap.exists() ? (snap.data().favorites as string[]) : [],
+        isVerified: true,
+      },
+      { merge: true }
+    );
+    setUser({
+      id: fbUser.uid,
+      email: fbUser.email || "",
+      nickname: fbUser.displayName || "",
+      favorites: snap.exists() ? (snap.data().favorites as string[]) : [],
+    });
     // 상태는 onAuthStateChanged에서 자동 반영됨
   };
 
