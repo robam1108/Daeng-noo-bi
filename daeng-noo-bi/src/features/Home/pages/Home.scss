@@ -1,53 +1,148 @@
-$color-title: #fff;
-$color-subtitle: black;
-$color-title-bg: #328E6E;
-
-
 .Home {
     display: flex;
     flex-direction: column;
-    gap: 150px;
     align-items: center;
-    padding-bottom: 15rem;
-}
+    gap: 100px;
+    padding-bottom: 5rem;
+  
+    .home-section {
+      display: flex;
+      flex-direction: column;
+  
+      .home-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+  
+        .home-title {
+          display: inline-block;
+          width: fit-content;
+          padding: 5px 12px;
+          font-size: 1rem;
+          font-weight: 400;
+          color: #ffffff;
+          background-color: #328e6e;
+          border-radius: 15px;
+          margin: 0;
+        }
+  
+        .home-subtitle {
+          font-family: "GmarketSansMedium";
+          margin: 0;
+          color: black;
+          font-size: 2.5rem;
+          font-weight: 500;
+        }
+      }
+    }
+  
+    .section-popular {
+      .home-header {
+        margin-bottom: 20px;
+      }
+    }
+  
+    .section-region {
+      background-color: #e1eebc;
+      padding: 30px 0;
+  
+      .region-selector-wrapper {
+        .region-selector {
+          padding: 0 310px;
+        }
+      }
+    }
+  
+    .section-category {
+      .home-header,
+      .theme-selector-wrapper {
+        background-color: #ffffff;
+      }
 
-.home-section {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
+      .theme-selector-button, .theme-selector-button.active {
+        outline: 5px solid #90c67c;
+      }
+    }
+  }
+  
+  .Banner {
+    box-shadow: 0px 8px 8px 1px rgba(0, 0, 0, 0.07);
+  }
 
-.home-header {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    margin-bottom: 16px;
-    align-items: center;
-}
-
-.home-title {
-    display: inline-block;
-    width: fit-content;
-    padding: 8px 16px;
-    font-size: 1rem;
-    color: $color-title;
-    background-color: $color-title-bg;
-    border-radius: 15px 15px 15px 0;
-    margin: 0;
-}
-
-.home-subtitle {
-    color: $color-subtitle;
-    margin: 0;
-}
-
-.ThemespotList {
-    background-color: #E1EEBC;
-    padding: 50px 0;
-}
-
-.Banner,
-.RegionspotList,
-.ThemespotList {
-    box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.15);
-}
+/* ── 노트북 (1025px ~ 1440px) ── */
+@media (max-width: 1440px) and (min-width: 1025px) {
+    .Home {
+      gap: 80px;
+  
+      .section-region {
+        .region-selector-wrapper {
+          .region-selector {
+            padding: 0 200px;
+          }
+        }
+      }
+  
+      .home-section .home-header .home-subtitle {
+        font-size: 2.25rem;
+      }
+    }
+  }
+  
+  /* ── 태블릿 (769px ~ 1024px) ── */
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .Home {
+      gap: 70px;
+      padding-bottom: 4rem;
+  
+      .section-region {
+        .region-selector-wrapper {
+          .region-selector {
+            padding: 0 100px;
+          }
+        }
+      }
+  
+      .home-section .home-header {
+        gap: 8px;
+  
+        .home-title {
+          font-size: 0.9rem;
+          padding: 4px 10px;
+        }
+  
+        .home-subtitle {
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+  
+  /* ── 모바일 (≤ 768px) ── */
+  @media (max-width: 768px) {
+    .Home {
+      gap: 60px;
+      padding-bottom: 3rem;
+  
+      .section-region {
+        .region-selector-wrapper {
+          .region-selector {
+            padding: 0 1rem;
+          }
+        }
+      }
+  
+      .home-section .home-header {
+        gap: 6px;
+  
+        .home-title {
+          font-size: 0.85rem;
+          padding: 3px 8px;
+        }
+  
+        .home-subtitle {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
