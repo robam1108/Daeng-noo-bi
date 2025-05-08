@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ThemeSelector from "../components/ThemeSelector/ThemeSelector";
 import ThemeCardList from "../components/themeCardList/ThemeCardList";
 import type { Place } from "../api/themeAPI";
@@ -7,6 +8,8 @@ import { getCachedTheme } from "../../../shared/api/cacheAPI";
 import "./Theme.scss";
 
 export default function Theme() {
+  const nav = useNavigate();
+  const [searchParams] = useSearchParams();
   const [selectedTheme, setSelectedTheme] = useState<ThemeKey>("nature");
   const [places, setPlaces] = useState<Place[]>([]);
   const [page, setPage] = useState(1);
@@ -15,6 +18,13 @@ export default function Theme() {
   const [error, setError] = useState<string | null>(null);
 
   const themeTitle = themeMap[selectedTheme].title;
+
+  useEffect(() => {
+    const theme = searchParams.get("selected") as ThemeKey;
+    if (theme && theme !== selectedTheme) {
+      setSelectedTheme(theme);
+    }
+  }, [searchParams, selectedTheme]);
 
   // 테마 변경 시 초기 상태 리셋
   useEffect(() => {
@@ -58,6 +68,10 @@ export default function Theme() {
     }
   };
 
+  const handleThemeSelect = (theme: ThemeKey) => {
+    nav(`/theme?selected=${theme}`);
+  };
+
   return (
     <div className="theme-page">
       <h1 className="theme-title">
@@ -69,7 +83,7 @@ export default function Theme() {
 
       <ThemeSelector
         selectedTheme={selectedTheme}
-        onSelect={setSelectedTheme}
+        onSelect={handleThemeSelect}
       />
       {error && <div className="error">⚠️ {error}</div>}
       <h2>{themeTitle}</h2>

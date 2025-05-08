@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
   const nav = useNavigate();
 
   const menuItems = [
-    { to: "/popular", label: "인기 여행지" },
+    { to: "/popular", label: "실시간 인기" },
     { to: "/region", label: "지역별 여행지" },
     { to: "/theme", label: "테마 여행지" },
   ];
