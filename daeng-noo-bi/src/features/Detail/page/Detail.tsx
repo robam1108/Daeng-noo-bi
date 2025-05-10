@@ -1,8 +1,8 @@
 import { useLocation, useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { fetchPlaceDetail, PlaceDetail } from "../../../shared/api/petTourApi"
-import { fetchDetailIntro, DetailIntroResponse } from "../api/fetchDetailIntro"
-import { fetchPlaceImage, PlaceImage } from "../api/fetchImages"
+import { PlaceDetail } from "../../../shared/api/petTourApi"
+import { DetailIntroResponse } from "../api/fetchDetailIntro"
+import { PlaceImage } from "../api/fetchImages"
 import { useFavorites } from "../../../shared/hooks/useFavorites"
 import Error from "../../../shared/components/Error/Error"
 import Loading from "../../../shared/components/Loading/Loading"
@@ -10,6 +10,7 @@ import DetailView from "../components/DetailView"
 import "./Detail.scss";
 import { doc, setDoc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../../firebase";
+import { getCachedPlaceDetail, getCachedPlaceImages, getCachedDetailIntro } from "../../../shared/api/cacheAPI"
 
 interface DetailState {
   place?: PlaceDetail;
@@ -68,35 +69,25 @@ export default function Detail() {
   };
 
   useEffect(() => {
-    if (initialPlace) {
-      setLoading(false);
-      return;
-    }
 
     const loadDetail = async () => {
       try {
-        const detail = await fetchPlaceDetail(contentId!);
-        if (detail) {
-          setPlace(detail);
-        } else {
-          console.log('fetchPlaceDetail 오류, 해당 여행지 정보를 찾을 수 없습니다.');
-          setError(true);
-        }
+        // 1) 상세 정보
+        const detailPromise = getCachedPlaceDetail(contentId!);
 
-        const imgs = await fetchPlaceImage(contentId!);
-        if (imgs) {
-          setImgs(imgs);
-        }
+        // 2) 이미지
+        const imgsPromise = getCachedPlaceImages(contentId!);
 
-        // contentTypeId가 준비된 후 intro 가져오기
-        const intro = await fetchDetailIntro(contentId!, detail!.contentTypeId);
-        console.log(`contentTypeId: ${detail!.contentTypeId}`);
-        if (intro) {
-          setIntro(intro);
-        } else {
-          console.log('fetchDetailIntro 오류, 해당 여행지 정보를 찾을 수 없습니다.'); 4
-          setError(true);
-        }
+        // detail이 필요한 intro 호출을 위해 먼저 받아오고,
+        const detail = await detailPromise;
+        setPlace(detail!);
+
+        // 3) intro와 이미지 병렬 요청
+        const introPromise = getCachedDetailIntro(contentId!, detail!.contentTypeId);
+        const [imgs, intro] = await Promise.all([imgsPromise, introPromise]);
+
+        setImgs(imgs!);
+        setIntro(intro!);
       } catch (e: any) {
         console.error('loadDetail 에러:', e);
         setError(true);
