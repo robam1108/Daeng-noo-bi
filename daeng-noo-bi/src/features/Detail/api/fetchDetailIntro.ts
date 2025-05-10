@@ -58,13 +58,25 @@ export interface DetailIntroShopping extends DetailIntroBase {
     infocentershopping: string;
 }
 
+// contentTypeId = '39' (음식점)
+export interface DetailIntroFood extends DetailIntroBase {
+    contenttypeid: '39';
+    opentimefood: string;
+    parkingfood: string;
+    restdatefood: string;
+    infocenterfood: string;
+}
+
+
+
 // 모든 경우를 묶은 유니언
 export type DetailIntroResponse =
     | DetailIntroTourist
     | DetailIntroCulture
     | DetailIntroLeports
     | DetailIntroStay
-    | DetailIntroShopping;
+    | DetailIntroShopping
+    | DetailIntroFood;
 
 // 함수 오버로드 시그니처
 export function fetchDetailIntro(
@@ -87,6 +99,10 @@ export function fetchDetailIntro(
     contentId: string,
     contentTypeId: '38'
 ): Promise<DetailIntroShopping | null>;
+export function fetchDetailIntro(
+    contentId: string,
+    contentTypeId: '39'
+): Promise<DetailIntroFood | null>;
 // 일반 시그니처 (fallback)
 export function fetchDetailIntro(
     contentId: string,
@@ -121,6 +137,8 @@ export async function fetchDetailIntro(
                 return raw as DetailIntroStay;
             case "38":
                 return raw as DetailIntroShopping;
+            case "39":
+                return raw as DetailIntroFood;
             default:
                 return null;
         }

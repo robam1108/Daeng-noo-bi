@@ -1,57 +1,82 @@
 .image-gallery {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 8px;
-    height: 500px;
     border-radius: 0.5rem;
     overflow: hidden;
 
-    &__big {
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        cursor: grab;
-        transition: transform 0.3s ease;
+    /* 그리드 레이아웃: big(762px) + thumbs(382px) */
+    display: grid;
+    grid-template-columns: 762px 382px;
+    gap: 8px;
+    height: 500px;
 
-        &:active {
-            cursor: grabbing;
-        }
-
+    &--single {
+        /* single 모드: 전체 폭 1152px, 높이 500px */
+        display: block;
+        width: 1152px;
+        height: 500px;
+        overflow: hidden;
         border-radius: 0.5rem;
+
+        img {
+            /* 이미지: 객체 비율 유지, 가운데 노출, 모서리 둥글게 */
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+
+    &__big {
+        /* big 이미지 영역: 762x500 사이즈 고정 */
+        display: block;
+        width: 762px;
+        height: 500px;
+        border-radius: 0.5rem;
+
+
+        img {
+            /* 이미지: 비율 유지, 가운데 노출, 드래그 커서, 모서리 둥글게 */
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+
+            transition: transform 0.3s ease;
+        }
     }
 
     &__thumbs {
+        /* 썸네일 컨테이너: 세로 스크롤, 균일한 row 높이와 간격 */
         display: grid;
-        grid-template-columns: 1fr; // 한 열
+        grid-auto-rows: 119px;
+        /* thumbs 높이 고정 */
         gap: 8px;
+        /* 세로 간격도 4px로 균일 */
+        overflow-y: auto;
     }
 
     &__thumb {
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        cursor: pointer;
-        transition: transform 0.2s ease;
+        /* 썸네일 이미지: 382x119 사이즈 고정 */
+        width: 382px;
+        height: 119px;
+        overflow: hidden;
         border-radius: 0.5rem;
+        cursor: grab;
 
-        &:hover {
-            transform: scale(1.03);
-        }
-    }
-
-    /* images가 없을 때: 전체 영역을 단일 이미지로 채우기 */
-    &--single {
-        display: block;
-        height: 500px;
-
-        .image-gallery__single {
+        img {
+            /* 이미지: 비율 유지, 가운데 노출, 모서리 둥글게, hover 시 확대 */
+            display: block;
             width: 100%;
             height: 100%;
-            background-size: cover;
-            background-position: center;
-            border-radius: 0.5rem;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.2s ease;
+            transform-origin: center;
+        }
+
+        &:hover img {
+            transform: scale(1.2);
         }
     }
 }

@@ -1,4 +1,4 @@
-import React, { Fragment, ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import {
     DetailIntroResponse,
     DetailIntroTourist,
@@ -6,6 +6,7 @@ import {
     DetailIntroLeports,
     DetailIntroStay,
     DetailIntroShopping,
+    DetailIntroFood
 } from "../api/fetchDetailIntro";
 
 interface Props {
@@ -114,6 +115,14 @@ export default function IntroSection({ intro, homepage, tel }: Props) {
             if (t.parkingshopping) specificInfo.push(["주차 정보", renderWithLineBreaks(t.parkingshopping)]);
             if (t.restdateshopping) specificInfo.push(["휴무일", renderWithLineBreaks(t.restdateshopping)]);
             if (!tel && t.infocentershopping) specificInfo.push(["문의 센터", renderWithLineBreaks(t.infocentershopping)]);
+            break;
+        }
+        case "39": {
+            const t = intro as DetailIntroFood;
+            if (t.opentimefood) specificInfo.push(["운영 시간", renderWithLineBreaks(t.opentimefood)]);
+            if (t.parkingfood) specificInfo.push(["주차 정보", renderWithLineBreaks(t.parkingfood)]);
+            if (t.restdatefood) specificInfo.push(["휴무일", renderWithLineBreaks(t.restdatefood)]);
+            if (!tel && t.infocenterfood) specificInfo.push(["문의 센터", renderWithLineBreaks(t.infocenterfood)]);
             break;
         }
         default:

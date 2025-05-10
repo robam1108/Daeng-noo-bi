@@ -6,7 +6,7 @@ import './FavoritesList.scss';
 
 interface Props {
     places: PlaceDetail[];
-    onDelete?: (contentId: string) => void;
+    onDelete: (contentId: string) => void;
 }
 
 export default function FavoritesList({ places, onDelete }: Props) {
@@ -22,7 +22,7 @@ export default function FavoritesList({ places, onDelete }: Props) {
                         <div
                             className="card"
                             style={{
-                                backgroundImage: place.firstimage
+                                backgroundImage: place.finalImage
                                     ? `url(${place.finalImage})`
                                     : undefined,
                             }}
@@ -39,7 +39,7 @@ export default function FavoritesList({ places, onDelete }: Props) {
                         onClick={e => {
                             e.preventDefault();
                             e.stopPropagation();
-                            if (onDelete) onDelete(place.contentId);
+                            onDelete(place!.contentId!)
                         }}
                     >
                         <FontAwesomeIcon icon={faTrash} />

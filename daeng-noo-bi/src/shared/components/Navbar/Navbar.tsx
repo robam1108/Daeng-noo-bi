@@ -86,7 +86,8 @@ const Navbar: React.FC = () => {
               />
               {dropdownOpen && (
                 <div className="dropdown-menu">
-                  <button onClick={() => nav("/Favorites")}>마이페이지</button>
+                  <button onClick={() => nav("/Favorites")}>찜목록</button>
+                  <button onClick={() => nav("/EditProfile")}>회원정보</button>
                   <button onClick={handleLogout}>로그아웃</button>
                 </div>
               )}

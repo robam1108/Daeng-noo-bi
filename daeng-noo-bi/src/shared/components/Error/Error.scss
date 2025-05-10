@@ -1,0 +1,11 @@
+.Error {
+    position: relative;
+    width: 100%;
+    /* 네비(60px) 높이를 뺀 콘텐츠 영역 전체 높이 */
+    height: calc(100vh - 60px);
+    background: rgba(255, 255, 255, 0.6); // 반투명 배경 (원하시면 불투명으로 바꿔도 됩니다)
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}

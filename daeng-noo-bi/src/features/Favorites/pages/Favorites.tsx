@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../shared/context/AuthContext';
 import FavoritesList from '../components/FavoritesList';
-import { fetchPlaceDetail, PlaceDetail } from '../../../shared/api/petTourApi';
+import { PlaceDetail } from '../../../shared/api/petTourApi';
+import { getCachedPlaceDetail } from '../../../shared/api/cacheAPI';
+import Error from '../../../shared/components/Error/Error';
+import Loading from '../../../shared/components/Loading/Loading';
 import './Favorites.scss';
 
 export default function Favorites() {
-    const { user } = useAuth();
-    // 상세 정보들을 담을 상태
+    const { user, removeFavorite } = useAuth();
+    const nav = useNavigate();
     const [places, setPlaces] = useState<PlaceDetail[]>([]);
-    // 로딩 상태 표시용
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<boolean>(false);
 
     // user.favorites 배열이 변경될 때마다(최초 마운트 포함) 데이터 로드 실행
     useEffect(() => {
@@ -22,14 +26,13 @@ export default function Favorites() {
         const loadFavorites = async () => {
             setLoading(true);
             try {
-                // Promise.all로 favorites 안의 모든 항목을 병렬 호출
-                // 각 객체는 { contentid, contentTypeId } 형태
                 const results = await Promise.all(
-                    user.favorites!.map(contentId => fetchPlaceDetail(contentId))
+                    user.favorites!.map(contentId => getCachedPlaceDetail(contentId))
                 );
                 setPlaces(results.filter((item): item is PlaceDetail => item !== null));
             } catch (err) {
                 console.error('즐겨찾기 상세정보 로드 중 오류:', err);
+                setError(true);
             } finally {
                 setLoading(false);
             }
@@ -38,13 +41,40 @@ export default function Favorites() {
         loadFavorites();
     }, [user?.favorites]);
 
-    if (!user) return <p>로그인이 필요합니다.</p>;
-    if (loading) return <p className="loading">로딩 중…</p>;
+    const onDelete = async (contentId: string) => {
+        await removeFavorite(contentId)
+    };
+
+    if (!user) {    // 로그인 유도
+        const ok = window.confirm(
+            "로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?"
+        );
+        if (ok) {
+            // 이동 후 돌아올 경로 보존
+            nav("/login", { state: { from: location } });
+        }
+        return;
+    }
+    if (loading) return <Loading />
+    if (error) return <Error />
+
+    if (user?.favorites?.length == 0) {
+        return (
+            <div className="Favorites empty">
+                <div className='Favorites-header'>
+                    <h2>'{user.nickname}'님이 찜한 장소</h2>
+                </div>
+                <p>찜한 장소가 없습니다</p>
+            </div>
+        )
+    }
 
     return (
         <div className="Favorites">
-            <h2>'{user.nickname}'님이 찜한 장소</h2>
-            <FavoritesList places={places} />
+            <div className='Favorites-header'>
+                <h2>'{user.nickname}'님이 찜한 장소</h2>
+            </div>
+            <FavoritesList places={places} onDelete={onDelete} />
         </div>
     );
 }

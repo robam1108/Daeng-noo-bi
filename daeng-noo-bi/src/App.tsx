@@ -12,7 +12,7 @@ import Navbar from "./shared/components/Navbar/Navbar";
 import Footer from "./shared/components/Footer/Footer";
 import Detail from "./features/Detail/page/Detail";
 import SearchResults from "./features/SearchResults/SearchResults";
-
+import EditProfile from "./features/EditProfile/page/EditProfile";
 function App() {
   return (
     <>
@@ -28,6 +28,7 @@ function App() {
         <Route path="/place/:contentId" element={<Detail />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/search" element={<SearchResults />} />
+        <Route path="/editprofile" element={<EditProfile />} />
       </Routes>
       <Footer />
     </>

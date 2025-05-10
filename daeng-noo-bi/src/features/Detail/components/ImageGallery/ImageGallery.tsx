@@ -5,10 +5,11 @@ import "./ImageGallery.scss"
 
 interface Props {
     images: PlaceImage[] | null;
+    title: string
     titleImgUrl: string;
 }
 
-const ImageGallery = ({ images, titleImgUrl }: Props) => {
+const ImageGallery = ({ images, title, titleImgUrl }: Props) => {
 
     // images가 null인 경우 빈 배열로 처리
     const safeImages = useMemo(() => images ?? [], [images]);
@@ -39,12 +40,15 @@ const ImageGallery = ({ images, titleImgUrl }: Props) => {
     });
 
     // 이미지가 하나뿐일 때 (스와이퍼 비활성화)
+    // 1152*500
     if (total === 1) {
         return (
             <div className="image-gallery image-gallery--single">
-                <div
+                <img
                     className="image-gallery__single"
-                    style={{ backgroundImage: `url(${allImages[0]})` }}
+                    src={allImages[0]}
+                    alt={`${title} 사진`}
+                    loading="lazy"
                 />
             </div>
         );
@@ -60,20 +64,26 @@ const ImageGallery = ({ images, titleImgUrl }: Props) => {
     return (
         <div className="image-gallery" {...handlers}>
             {/* 왼쪽 큰 이미지 */}
-            <div
+            {/* 762*500 */}
+            <img
                 className="image-gallery__big"
-                style={{ backgroundImage: `url(${display[0]})` }}
+                alt={`${title} 사진(1)`}
+                src={display[0]}
+                loading="lazy"
             />
 
             {/* 오른쪽 썸네일들 */}
+            {/* 382*119 */}
             <div className="image-gallery__thumbs">
                 {display.slice(1).map((url, idx) => (
-                    <div
-                        key={idx}
-                        className="image-gallery__thumb"
-                        style={{ backgroundImage: `url(${url})` }}
-                        onClick={() => jumpTo(currentIndex + idx + 1)}
-                    />
+                    <div key={idx} className="image-gallery__thumb">
+                        <img
+                            src={url}
+                            alt={`${title} 사진(${idx + 2})`}
+                            loading="lazy"
+                            onClick={() => jumpTo(currentIndex + idx + 1)}
+                        />
+                    </div>
                 ))}
             </div>
         </div>

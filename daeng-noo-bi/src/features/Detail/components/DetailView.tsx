@@ -19,7 +19,7 @@ const DetailView = ({ place, images, intro, isFavorited, onToggleFavorite }: Pro
     return (
         <div className="PlaceDetail">
             <div className="detail-img-section">
-                <ImageGallery images={images} titleImgUrl={place!.finalImage!} />
+                <ImageGallery images={images} title={place!.title!} titleImgUrl={place!.finalImage!} />
             </div>
             <div className="detail-info-section">
                 <div className="info1">
