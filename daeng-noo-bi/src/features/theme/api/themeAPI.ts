@@ -120,7 +120,7 @@ const enriched: Place[] = await Promise.all(
       p.firstimage ||
       p.firstimage2 ||
       FALLBACK_IMAGES[p.title] ||
-      '/images/no-image.png';
+      '/no-image.png';
 
     // 6-2) 주소 보완: 이미 addr1/addr2가 있으면 그대로, 없으면 detailCommon 호출
     let addr = p.addr1 || p.addr2 || '';

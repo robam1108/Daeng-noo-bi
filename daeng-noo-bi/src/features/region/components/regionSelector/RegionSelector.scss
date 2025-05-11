@@ -9,7 +9,7 @@
     align-items: center;
     overflow: visible;
     justify-content: space-between;
-    padding: 60px 310px 20px 310px;
+    padding: 0px 80px 20px 80px;
     // overflow: hidden;
 
     .swiper {
@@ -93,12 +93,12 @@
 
     .swiper-button-prev {
       margin-top: 5px;
-      left: 200px;
+      left: 10px;
     }
 
     .swiper-button-next {
       margin-top: 5px;
-      right: 200px;
+      right: 10px;
     }
 
     // 아이콘 배치
@@ -174,15 +174,72 @@
 
   /* ── 노트북 (1025px ~ 1440px) ── */
   @media (max-width: 1440px) and (min-width: 1025px) {
+    .region-selector-wrapper{
+      .region-selector {
+        padding: 0px 80px 20px 80px;
+
+      .region-button {
+        .region-icon {
+          width: 80px;
+          height: 80px;
+        }
+        .region-name {
+          font-size: 18px;
+        }
+      }
+
+      .swiper-button-prev { left: 10px; }
+      .swiper-button-next { right: 10px; }
+    }
+    }
 
   }
 
   /* ── 태블릿 (769px ~ 1024px) ── */
   @media (max-width: 1024px) and (min-width: 769px) {
+    .region-selector-wrapper{
+      .region-selector {
+        padding: 0px;
 
+        .region-button {
+          .region-icon {
+            width: 70px;
+            height: 70px;
+          }
+          .region-name {
+            font-size: 16px;
+          }
+        }
+        // 태블릿,모바일에서는 화살표 숨기고 스와이프만 사용
+        .custom-arrow {
+          display: none;
+        }
+      }
+    }
   }
 
   /* ── 모바일 (≤ 768px) ── */
   @media (max-width: 768px) {
+    .region-selector-wrapper{
 
+      .region-selector {
+        padding: 0px;
+  
+        .region-button {
+          .region-icon {
+            width: 70px;
+            height: 70px;
+          }
+          .region-name {
+            font-size: 16px;
+          }
+        }
+        .custom-arrow {
+          display: none;
+        }
+        .swiper {
+          padding: 10px;
+        }
+      }
+    }
   }

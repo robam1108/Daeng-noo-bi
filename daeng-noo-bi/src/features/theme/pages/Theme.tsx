@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ThemeSelector from "../components/ThemeSelector/ThemeSelector";
 import ThemeCardList from "../components/themeCardList/ThemeCardList";
+import Loading from "../../../shared/components/Loading/Loading";
 import type { Place } from "../api/themeAPI";
 import { ThemeKey, themeMap } from "../constants/themeConstants";
 import { getCachedTheme } from "../../../shared/api/cacheAPI";
@@ -89,7 +90,11 @@ export default function Theme() {
       <h2>{themeTitle}</h2>
       <ThemeCardList places={places} />
 
-      {loading && <div className="loading">로딩 중...</div>}
+      {loading && (
+        <div className="loading">
+          <Loading />
+        </div>
+      )}
 
       {!loading && hasMore && (
         <button className="load-more-button" onClick={handleLoadMore}>

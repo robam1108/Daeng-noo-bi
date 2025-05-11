@@ -24,13 +24,27 @@ const RegionSelector = ({ selected, onChange }: RegionSelectorProps) => {
         <Swiper
           modules={[Navigation]}
           loop={true}
-          slidesPerView={10}
-          spaceBetween={30}
+          slidesPerView={6}
+          spaceBetween={20}
           navigation={{
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
           }}
           grabCursor={true}
+          breakpoints={{
+            767: {
+              slidesPerView: 8,
+              spaceBetween: 20,
+            },
+            1024: {
+              slidesPerView: 9,
+              spaceBetween: 20,
+            },
+            1440: {
+              slidesPerView: 12,
+              spaceBetween: 30,
+            },
+          }}
         >
           {REGION_CODES.map((region) => (
             <SwiperSlide key={region.code}>

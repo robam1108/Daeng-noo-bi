@@ -86,7 +86,7 @@ export async function fetchPetFriendlyPlacesByRegion(
 
       return {
         ...p,
-        finalImage: img || FALLBACK_IMAGES[p.title] || '/images/no-image.png',
+        finalImage: img || FALLBACK_IMAGES[p.title] || '/no-image.png',
         addr1:      addr,
       };
     })

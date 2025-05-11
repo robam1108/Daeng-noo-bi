@@ -52,3 +52,11 @@
       }
     }
   }
+
+  // ── 모바일 (≤ 768px) ──
+@media (max-width: 768px) {
+  .theme-card{
+    width: 200px;
+    height: 200px;
+  }
+}
