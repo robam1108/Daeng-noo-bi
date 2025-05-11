@@ -37,6 +37,7 @@ export interface AuthUser {
   email: string;
   favorites?: string[];
   nickname?: string;
+  icon?: number;
 }
 
 interface AuthContextType {
