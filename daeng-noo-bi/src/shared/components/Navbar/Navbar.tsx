@@ -23,6 +23,11 @@ const Navbar: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
   const nav = useNavigate();
+  const iconIndex = Number(user?.icon);
+  const iconSrc =
+    iconIndex >= 1 && iconIndex <= 9
+      ? `../../src/assets/userIcon/userIcon_${iconIndex}.png`
+      : "/userIcon.png";
 
   const menuItems = [
     { to: "/popular", label: "실시간 인기" },
@@ -95,12 +100,14 @@ const Navbar: React.FC = () => {
         <div className="auth-section">
           {user ? (
             <div className="user-info" ref={dropdownRef}>
-              <img
-                src="/userIcon.png"
-                alt="유저 프로필"
-                className="user-avatar"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              />
+              <div className="icon-wrapper">
+                <img
+                  src={iconSrc}
+                  alt="유저 프로필"
+                  className="user-avatar"
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                />
+              </div>
               {dropdownOpen && (
                 <div className="dropdown-menu">
                   <button onClick={() => nav("/Favorites")}>찜목록</button>
@@ -149,7 +156,7 @@ const Navbar: React.FC = () => {
           {user ? (
             <div className="user-info">
               <img
-                src="/userIcon.png"
+                src={iconSrc}
                 alt="유저 프로필"
                 className="user-avatar"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
