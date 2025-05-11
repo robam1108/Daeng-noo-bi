@@ -5,20 +5,6 @@ import 'swiper/css';
 import { FreeMode } from "swiper/modules";
 import "./UserIconSelector.scss"
 
-import icon1 from "../../../../assets/userIcon/userIcon_1.png"
-import icon2 from "../../../../assets/userIcon/userIcon_2.png"
-import icon3 from "../../../../assets/userIcon/userIcon_3.png"
-import icon4 from "../../../../assets/userIcon/userIcon_4.png"
-import icon5 from "../../../../assets/userIcon/userIcon_5.png"
-import icon6 from "../../../../assets/userIcon/userIcon_6.png"
-import icon7 from "../../../../assets/userIcon/userIcon_7.png"
-import icon8 from "../../../../assets/userIcon/userIcon_8.png"
-import icon9 from "../../../../assets/userIcon/userIcon_9.png"
-
-
-const icons = [
-    icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, icon9
-];
 
 interface UserIconSelectorProps {
     initialIconNumber?: number;
@@ -26,6 +12,7 @@ interface UserIconSelectorProps {
 
 const UserIconSelector = ({ initialIconNumber }: UserIconSelectorProps) => {
     const { updateUserIcon } = useAuth();
+    const icons = Array.from({ length: 9 }, (_, i) => `/userIcon_${i + 1}.png`);
     const [selectedIcon, setSelectedIcon] = useState<number | null>(
         initialIconNumber ?? null
     );

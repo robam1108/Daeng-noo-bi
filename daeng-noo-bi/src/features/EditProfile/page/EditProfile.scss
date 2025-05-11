@@ -1,8 +1,14 @@
-.EditProfile {
+.EditProfile,
+.RequirePassword {
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: calc(100vh - 60px - 70px);
+
+    h1 {
+        margin-bottom: 10px;
+    }
 
     .InfoChangeForm {
         width: 400px;
@@ -136,5 +142,24 @@
         &.error {
             color: #e74c3c;
         }
+    }
+
+    .requirePassword-btn {
+        @extend .editProfile-btn;
+        width: 80%;
+        align-self: center;
+    }
+}
+
+.RequirePassword {
+    text-align: center;
+
+    h2 {
+        margin-bottom: 40px;
+    }
+
+    #current-password {
+        width: 80%;
+        margin-bottom: 10px;
     }
 }

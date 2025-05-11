@@ -1,5 +1,5 @@
 import { useLocation, useParams, useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useLayoutEffect } from "react"
 import { PlaceDetail } from "../../../shared/api/petTourApi"
 import { DetailIntroResponse } from "../api/fetchDetailIntro"
 import { PlaceImage } from "../api/fetchImages"
@@ -26,6 +26,7 @@ export default function Detail() {
   const [imgs, setImgs] = useState<PlaceImage[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
+
 
   // 즐겨찾기 훅: 상태 조회, 추가·삭제 함수
   const { user, isFavorite, toggleFavorite } = useFavorites();
@@ -69,7 +70,6 @@ export default function Detail() {
   };
 
   useEffect(() => {
-
     const loadDetail = async () => {
       try {
         // 1) 상세 정보
@@ -93,11 +93,24 @@ export default function Detail() {
         setError(true);
       } finally {
         setLoading(false);
+        // 데이터 로딩이 끝난 직후에 스크롤 초기화
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;            // Safari, older 웹킷
+        document.documentElement.scrollTop = 0; // IE, 크롬 등
       }
     };
 
     loadDetail();
-  }, [initialPlace, contentId]);
+  }, [contentId]);
+
+  useEffect(() => {
+    if (!loading) {
+      // 로딩이 끝났을 때만 실행
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+  }, [loading]);
 
 
   if (error) return <Error />
