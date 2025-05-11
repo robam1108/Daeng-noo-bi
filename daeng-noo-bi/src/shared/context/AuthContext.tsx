@@ -16,6 +16,11 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
+  updateProfile as firebaseUpdateProfile,
+  updateEmail as firebaseUpdateEmail,
+  updatePassword as firebaseUpdatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
 } from "firebase/auth";
 import {
   doc,
@@ -37,6 +42,7 @@ export interface AuthUser {
   email: string;
   favorites?: string[];
   nickname?: string;
+  icon?: number;
 }
 
 interface AuthContextType {
@@ -48,6 +54,11 @@ interface AuthContextType {
   logout: () => Promise<void>;
   addFavorite: (contentId: string) => Promise<void>;
   removeFavorite: (contentId: string) => Promise<void>;
+
+  updateNickname: (nickname: string) => Promise<void>;
+  updateEmail: (newEmail: string) => Promise<void>;
+  updatePassword: (newPassword: string) => Promise<void>;
+  updateUserIcon: (iconNumber: number) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -82,6 +93,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           email: fbUser.email || "",
           favorites: (data.favorites as string[]) || [],
           nickname: (data.nickname as string) || "",
+          icon: (data.icon as number) || 0,
         });
       } else {
         setUser(null);
@@ -204,6 +216,62 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     );
   };
 
+  // 닉네임 변경
+  const updateNickname = async (nickname: string) => {
+    if (!auth.currentUser) throw new Error("로그인이 필요합니다.");
+    // Firebase Auth 프로필 업데이트
+    await firebaseUpdateProfile(auth.currentUser, { displayName: nickname });
+    // Firestore users 문서에 반영
+    const uid = auth.currentUser.uid;
+    await updateDoc(doc(db, "users", uid), { nickname });
+    // 로컬 상태 업데이트
+    setUser((prev) =>
+      prev ? { ...prev, nickname } : prev
+    );
+  };
+
+  // 이메일 변경
+  const updateEmail = async (newEmail: string) => {
+    if (!auth.currentUser) throw new Error("로그인이 필요합니다.");
+    // Firebase Auth 이메일 업데이트
+    await firebaseUpdateEmail(auth.currentUser, newEmail);
+    // Firestore users 문서에 반영
+    const uid = auth.currentUser.uid;
+    await updateDoc(doc(db, "users", uid), { email: newEmail });
+    // 로컬 상태 업데이트
+    setUser((prev) =>
+      prev ? { ...prev, email: newEmail } : prev
+    );
+  };
+
+  // 비밀번호 변경
+  const updatePassword = async (newPassword: string) => {
+    if (!auth.currentUser || !auth.currentUser.email)
+      throw new Error("로그인이 필요합니다.");
+    // 비밀번호 업데이트
+    await firebaseUpdatePassword(auth.currentUser, newPassword);
+  };
+
+  // 프로필 아이콘 변경
+  const updateUserIcon = async (iconNumber: number) => {
+    if (!auth.currentUser) throw new Error("로그인이 필요합니다.");
+    // 1~9 범위 검증
+    if (iconNumber < 1 || iconNumber > 9) {
+      console.error("iconNumber는 1~9 사이여야 합니다.");
+      return;
+    }
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    try {
+      // Firestore에 icon 필드만 업데이트
+      await updateDoc(userRef, { icon: iconNumber });
+      // 로컬 컨텍스트 상태도 즉시 반영
+      setUser(prev => prev ? { ...prev, icon: iconNumber } : prev);
+    } catch (error) {
+      console.error("아이콘 업데이트 실패:", error);
+    }
+  };
+
+
   return (
     <AuthContext.Provider
       value={{
@@ -215,6 +283,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         loginWithGoogle,
         addFavorite,
         removeFavorite,
+        updateNickname,
+        updateEmail,
+        updatePassword,
+        updateUserIcon,
       }}
     >
       {children}

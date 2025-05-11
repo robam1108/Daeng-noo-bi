@@ -1,7 +1,140 @@
 .EditProfile {
-    width: 100%;
-    min-height: 770px;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+
+    .InfoChangeForm {
+        width: 400px;
+    }
+
+    form {
+        width: 400px;
+        // padding-top: 10vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .editProfile-input {
+        height: 45px;
+        padding: 0 12px;
+        margin-bottom: 25px;
+        font-size: 16px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+
+        &:focus {
+            border-color: #67AE6E;
+        }
+    }
+
+    .editProfile-btn {
+        width: 110px;
+        height: 45px;
+        background: #ccc;
+        color: #888;
+        border: none;
+        border-radius: 5px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+
+
+    /* 이메일 row */
+    .email-row {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0px;
+        width: 100%;
+
+        >div {
+            display: flex;
+            width: 100%; // ← 추가: 부모 폭 꽉 채우기
+        }
+
+        .emailInputWrap {
+            display: flex;
+            flex: 1;
+            margin-right: 8px;
+
+            .email-input {
+                @extend .editProfile-input;
+                flex: 1;
+                margin-right: 8px;
+            }
+
+            .auth-btn {
+                width: 110px;
+                height: 45px;
+                background: #67AE6E;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                font-size: 15px;
+                cursor: pointer;
+
+                &:disabled {
+                    background: #ccc;
+                    color: #888;
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+
+    .verifyWrap {
+        display: flex;
+        margin-bottom: 5px;
+
+        .verify-group {
+            display: flex;
+            align-items: center;
+            @extend .editProfile-input;
+            flex: 1;
+            margin-right: 8px;
+            margin-bottom: 0px;
+
+            .verify-input {
+                flex: 1;
+                border: none;
+                /* 이미 부모에서 border 있음 */
+                outline: none;
+            }
+
+            .verify-timer {
+                width: 50px;
+                color: #328E6E;
+                text-align: center;
+            }
+        }
+
+        .verify-btn {
+            @extend .editProfile-btn;
+
+            &:disabled {
+                background: #ccc;
+                color: #888;
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    /* 인증코드 확인 메세지 */
+    .dup-msg,
+    .pw-msg {
+        min-height: 1.2em;
+        margin-bottom: 12px;
+        font-size: 14px;
+        text-align: center;
+
+        &.success {
+            color: #67AE6E;
+        }
+
+        &.error {
+            color: #e74c3c;
+        }
+    }
 }
