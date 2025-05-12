@@ -1,14 +1,25 @@
-import ThemeSelector from "../../theme/components/ThemeSelector/ThemeSelector"
-import { ThemeKey, themeMap } from "../../theme/constants/themeConstants"
-import { useState } from "react"
+import ThemeSelector from "../../theme/components/ThemeSelector/ThemeSelector";
+import { ThemeKey, themeMap } from "../../theme/constants/themeConstants";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const ThemespotList = () => {
-    const [selectedTheme, setSelectedTheme] = useState<ThemeKey>("nature");
+  const navigate = useNavigate();
+  const [selectedTheme, setSelectedTheme] = useState<ThemeKey>("nature");
 
-    return (
-        <div className="ThemespotList">
-            <ThemeSelector selectedTheme={selectedTheme} onSelect={setSelectedTheme} />
-        </div>
-    )
-}
+  const handleThemeSelect = (theme: ThemeKey) => {
+    setSelectedTheme(theme);
+    navigate(`/theme?selected=${theme}`);
+  };
 
-export default ThemespotList
+  return (
+    <div className="ThemespotList">
+      <ThemeSelector
+        selectedTheme={selectedTheme}
+        onSelect={handleThemeSelect}
+      />
+    </div>
+  );
+};
+
+export default ThemespotList;

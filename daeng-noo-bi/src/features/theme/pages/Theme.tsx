@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ThemeSelector from "../components/ThemeSelector/ThemeSelector";
 import ThemeCardList from "../components/themeCardList/ThemeCardList";
+import Loading from "../../../shared/components/Loading/Loading";
 import type { Place } from "../api/themeAPI";
 import { ThemeKey, themeMap } from "../constants/themeConstants";
 import { getCachedTheme } from "../../../shared/api/cacheAPI";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import "./Theme.scss";
 
 export default function Theme() {
-  const [selectedTheme, setSelectedTheme] = useState<ThemeKey>("nature");
+  const nav = useNavigate();
+  const [searchParams] = useSearchParams();
+  const initialTheme = (searchParams.get("selected") as ThemeKey) || "nature";
+  const [selectedTheme, setSelectedTheme] = useState<ThemeKey>(initialTheme);
   const [places, setPlaces] = useState<Place[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -15,6 +23,13 @@ export default function Theme() {
   const [error, setError] = useState<string | null>(null);
 
   const themeTitle = themeMap[selectedTheme].title;
+
+  useEffect(() => {
+    const theme = searchParams.get("selected") as ThemeKey;
+    if (theme && theme !== selectedTheme) {
+      setSelectedTheme(theme);
+    }
+  }, [searchParams]);
 
   // 테마 변경 시 초기 상태 리셋
   useEffect(() => {
@@ -58,28 +73,43 @@ export default function Theme() {
     }
   };
 
+  const handleThemeSelect = (theme: ThemeKey) => {
+    nav(`/theme?selected=${theme}`);
+  };
+
   return (
     <div className="theme-page">
       <h1 className="theme-title">
         <span className="theme-pagetitleLine1">힐링부터 모험까지,</span>
         <span className="theme-pagetitleLine2">
-          테마별로 즐기는 반려동물 동반 여행
+          테마별로 즐기는
+          <br className="mobile-only" />
+          반려동물 동반 여행
         </span>
       </h1>
 
       <ThemeSelector
         selectedTheme={selectedTheme}
-        onSelect={setSelectedTheme}
+        onSelect={handleThemeSelect}
       />
-      {error && <div className="error">⚠️ {error}</div>}
+      {error && (
+        <div className="error" role="alert">
+          ⚠️ {error}
+        </div>
+      )}
       <h2>{themeTitle}</h2>
       <ThemeCardList places={places} />
 
-      {loading && <div className="loading">로딩 중...</div>}
+      {loading && (
+        <div className="loading">
+          <Loading />
+        </div>
+      )}
 
       {!loading && hasMore && (
         <button className="load-more-button" onClick={handleLoadMore}>
           <p>더보기</p>
+          <FontAwesomeIcon icon={faCaretDown as IconProp} />
         </button>
       )}
 

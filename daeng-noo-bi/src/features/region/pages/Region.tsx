@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import RegionSelector from "../components/regionSelector/RegionSelector";
 import RegionCardList from "../components/regionCardList/RegionCardList";
+import Loading from "../../../shared/components/Loading/Loading";
 import { REGION_CODES } from "../constants/regionConstants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -65,26 +66,54 @@ export default function Region() {
   };
 
   return (
-    <div className="region-page">
-      <RegionSelector selected={selectedRegion} onChange={setSelectedRegion} />
+    <main className="region-page">
+      <section
+        className="regionSelector-section"
+        aria-labelledby="region-selector-title"
+      >
+        <h3 className="selector-title">
+          <span className="selector-titleLine1">오늘은</span>
+          <span className="selector-titleLine2">어디로 떠나볼까요?</span>
+        </h3>
+        <RegionSelector
+          selected={selectedRegion}
+          onChange={setSelectedRegion}
+        />
+      </section>
+
       <h2>{regionName}</h2>
 
-      {error && <div className="error">⚠️ {error}</div>}
+      {error && (
+        <div className="error" role="alert">
+          ⚠️ {error}
+        </div>
+      )}
+      <section aria-labelledby="places-title" className="places-section">
+        <RegionCardList places={places} />
+      </section>
 
-      <RegionCardList places={places} />
-
-      {loading && <div className="loading">로딩 중...</div>}
+      {loading && (
+        <div className="loading">
+          <Loading />
+        </div>
+      )}
 
       {!loading && hasMore && (
-        <button className="load-more-button" onClick={handleLoadMore}>
+        <button
+          className="load-more-button"
+          onClick={handleLoadMore}
+          aria-label="더 많은 여행지 불러오기"
+        >
           <p>더보기</p>
           <FontAwesomeIcon icon={faCaretDown as IconProp} />
         </button>
       )}
 
       {!loading && !hasMore && places.length > 0 && (
-        <div className="end-message">마지막 여행지까지 모두 불러왔습니다.</div>
+        <div className="end-message" role="status">
+          마지막 여행지까지 모두 불러왔습니다.
+        </div>
       )}
-    </div>
+    </main>
   );
 }

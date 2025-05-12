@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import PopularCardList from "../components/PopularCardList";
 import BlogSection from "../components/BlogSection";
+import Loading from "../../../shared/components/Loading/Loading";
 import { fetchTopFavoritedPlaces, Place } from "../api/popularAPI";
 import { fetchBlogPosts } from "../../../shared/api/kakaoBlogAPI";
 import "./Popular.scss";
@@ -65,7 +66,11 @@ export default function Popular() {
         <p>가장 많은 찜을 받은, 반려인들이 인정한 인기 명소를 소개합니다!</p>
       </div>
 
-      {loading && <p className="loading">로딩 중...</p>}
+      {loading && (
+        <p className="loading">
+          <Loading />
+        </p>
+      )}
       {error && <div className="error">⚠️ {error}</div>}
 
       {!loading && !error && <PopularCardList places={places} />}

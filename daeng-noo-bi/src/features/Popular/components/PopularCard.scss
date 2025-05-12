@@ -1,0 +1,62 @@
+.card {
+  width: 250px;
+  height: 250px;
+  border-radius: 15px;
+  padding: 10px;
+  position: relative;
+  overflow: hidden; 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform: translateY(20px);
+  opacity: 0; 
+  box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
+
+  &::before { 
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(255, 255, 255, 0.2) 30%,rgba(0, 0, 0, 0.8));
+    z-index: 1;
+  }
+
+  &:hover { 
+    transform: translateY(-8px); 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); 
+  }
+  
+  &.show {
+    transform: translateY(0);
+    opacity: 1; 
+  }
+
+  .info {
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-align: left;
+    word-break: keep-all;
+    color: #fff;
+    z-index: 2;
+    
+    h4{
+      font-size: 18px;
+      font-weight: 400;
+    }
+    p{
+      font-size: 12px;
+    }
+  }
+}
+
+
+  // ── 모바일 (≤ 768px) ──
+  @media (max-width: 768px) {
+.card {
+  width: 200px;
+  height: 200px;
+}
+  }

@@ -7,3 +7,10 @@
     gap: 30px;
     background-color: white;
   }
+
+  // ── 모바일 (≤ 768px) ──
+  @media (max-width: 768px) {
+    .card-list {
+    max-width: 800px;
+  }
+}

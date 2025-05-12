@@ -34,6 +34,28 @@
     justify-content: center;
     color: #7c7c7c;
   }
+}
 
-
+// ── 노트북 (1025px ~ 1440px) ──
+@media (min-width: 1025px) and (max-width: 1440px) {
+  // .popular-page .popular-title h1{font-size: 3rem;}
+}
+// ── 태블릿 (769px ~ 1024px) ──
+@media (min-width: 769px) and (max-width: 1024px) {
+  .popular-page .popular-title{
+    height: 200px;
+    h1{font-size: 2.8rem;}
+    p{font-size: 1.2rem;}
+}
+}
+// ── 모바일 (≤ 768px) ──
+@media (max-width: 768px) {
+    .mobile-only {
+    display: inline;
+  }
+    .popular-page .popular-title{
+    height: 160px;
+    h1{font-size: 2.2rem;}
+    p{font-size: 1rem;}
+}
 }
