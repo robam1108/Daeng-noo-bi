@@ -22,7 +22,7 @@ export default function BlogSection({ places, blogs }: Props) {
   return (
     <section className="blog-section">
       <h2>
-        후기 속에 담긴 생생한 이야기,{" "}
+        후기 속에 담긴 생생한 이야기, <br className="mobile-only" />
         <span className="pointColor">어떤 곳</span>일까요?
       </h2>
       <div className="blog-text-card-grid">
