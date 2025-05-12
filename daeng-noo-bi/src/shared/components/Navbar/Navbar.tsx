@@ -11,6 +11,7 @@ import {
   faCircleInfo,
   faHeart,
   faInfoCircle,
+  faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "./SearchBar";
 import "./Navbar.scss";
@@ -167,7 +168,7 @@ const Navbar: React.FC = () => {
               </span>
             </div>
           ) : (
-            <div>어서오세요!</div>
+            <div className="welcome-message">어서오세요!</div>
           )}
         </div>
 
@@ -215,7 +216,11 @@ const Navbar: React.FC = () => {
                 nav("/login");
               }}
             >
-              로그인
+              <FontAwesomeIcon
+                className="icon"
+                icon={faRightToBracket as IconProp}
+              />
+              <p>로그인</p>
             </button>
           )}
         </div>
