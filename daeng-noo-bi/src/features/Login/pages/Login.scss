@@ -94,3 +94,10 @@
     }
   }
 }
+
+  // ── 모바일 (≤ 768px) ──
+  @media (max-width: 768px) {
+  .login-page .login-form {
+      width: 350px;
+  }
+}
