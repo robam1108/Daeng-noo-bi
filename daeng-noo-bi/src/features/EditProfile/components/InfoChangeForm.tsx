@@ -3,14 +3,10 @@ import { useAuth } from "../../../shared/context/AuthContext";
 import UserIconSelector from "./UserIconSelector/UserIconSelector";
 
 
-interface InfoChangeFormProps {
-    initialNicName: string;
-}
+const InfoChangeForm: React.FC = () => {
+    const { updateNickname, user } = useAuth();
 
-const InfoChangeForm: React.FC<InfoChangeFormProps> = ({ initialNicName }) => {
-    const { updateNickname } = useAuth();
-
-    const [nickname, setNickname] = useState(initialNicName);
+    const [nickname, setNickname] = useState(user!.nickname!);
     const [loading, setLoading] = useState(false);
     const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
@@ -21,7 +17,7 @@ const InfoChangeForm: React.FC<InfoChangeFormProps> = ({ initialNicName }) => {
 
     const handleChange = async () => {
         const trimmed = nickname.trim();
-        if (!trimmed || trimmed === initialNicName) return;
+        if (!trimmed || trimmed === user!.nickname) return;
 
         setLoading(true);
         try {
@@ -59,7 +55,7 @@ const InfoChangeForm: React.FC<InfoChangeFormProps> = ({ initialNicName }) => {
                     disabled={
                         loading ||
                         !nickname.trim() ||
-                        nickname.trim() === initialNicName
+                        nickname.trim() === user!.nickname
                     }
                 >
                     {loading ? "변경 중..." : "변경"}

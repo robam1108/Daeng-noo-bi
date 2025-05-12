@@ -12,6 +12,11 @@ const Navbar: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const nav = useNavigate();
+  const iconIndex = Number(user?.icon);
+  const iconSrc =
+    iconIndex >= 1 && iconIndex <= 9
+      ? `/userIcon_${iconIndex}.png`
+      : "/userIcon.png";
 
   const menuItems = [
     { to: "/popular", label: "인기 여행지" },

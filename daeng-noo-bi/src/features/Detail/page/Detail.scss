@@ -122,4 +122,98 @@
             }
         }
     }
+
+
+
+
+    // ── 노트북 (1025px ~ 1440px) ──
+    @media (min-width: 1025px) and (max-width: 1440px) {
+        padding: 4rem 1rem; // 좌우 여백 축소
+
+        .detail-img-section {
+            &>img {
+                height: 400px; // 이미지 높이 조절
+            }
+        }
+
+        .detail-info-section {
+            gap: 2rem; // 정보 영역 간격 축소
+
+            .info2 {
+                flex: none; // 내부 크기에 맞춰 축소
+                width: auto;
+                margin: 0; // 왼쪽 정렬
+                align-self: flex-start;
+            }
+        }
+    }
+
+    // ── 태블릿 (769px ~ 1024px) ──
+    @media (min-width: 769px) and (max-width: 1024px) {
+        padding: 3rem 2rem;
+
+        .detail-img-section {
+            &>img {
+                height: 300px;
+            }
+        }
+
+        .detail-info-section {
+            // flex-direction: column; // 세로 스택
+            gap: 1.5rem;
+
+            .info1 {
+                p:first-of-type {
+                    font-size: 1.5rem; // 제목 크기 약간 축소
+                }
+            }
+
+            .info2 {
+                flex: none;
+                width: 30%;
+                margin: 0;
+                align-self: flex-start;
+            }
+
+            .btn-box {
+                margin-top: 0px; // 모바일 버튼 간격
+            }
+        }
+    }
+
+    // ── 모바일 (≤ 768px) ──
+    @media (max-width: 768px) {
+        padding: 2rem 1rem;
+
+        .detail-img-section {
+            &>img {
+                height: 200px; // 모바일용 더 작은 높이
+            }
+        }
+
+        .detail-info-section {
+            flex-direction: column;
+            gap: 1rem;
+
+            .info1 {
+                p:first-of-type {
+                    font-size: 1.25rem; // 모바일 제목 크기
+                }
+            }
+
+            .info2 {
+                flex: none;
+                width: 100%;
+                margin: 0;
+                padding: 1rem; // 패딩 축소
+                box-shadow: none; // 그림자 제거해도 좋습니다
+
+                .btn-box {
+                    margin-top: 0px; // 모바일 버튼 간격
+                }
+
+            }
+
+        }
+    }
 }

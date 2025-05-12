@@ -1,9 +1,15 @@
 // src/pages/LoginPage.tsx
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../shared/context/AuthContext";
 import ForgotModal from "../components/ForgotModal";
 import "./Login.scss";
+
+interface LocationState {
+  from?: {
+    pathname: string;
+  };
+}
 
 const LoginPage: React.FC = () => {
   const nav = useNavigate();
@@ -16,6 +22,10 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isForgotOpen, setIsForgotOpen] = useState(false);
+
+  const location = useLocation();
+  const state = location.state as LocationState;
+  const fromPath = state?.from?.pathname || "/";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +52,7 @@ const LoginPage: React.FC = () => {
     try {
       const userCredential = await login(email.trim(), password);
       console.log("🎉 로그인 성공:", userCredential);
-      nav("/");
+      nav(fromPath, { replace: true });
     } catch (err: any) {
       console.error("Login Error ▶", err.code, err.message);
       if (
