@@ -14,7 +14,8 @@ import "./Theme.scss";
 export default function Theme() {
   const nav = useNavigate();
   const [searchParams] = useSearchParams();
-  const [selectedTheme, setSelectedTheme] = useState<ThemeKey>("nature");
+  const initialTheme = (searchParams.get("selected") as ThemeKey) || "nature";
+  const [selectedTheme, setSelectedTheme] = useState<ThemeKey>(initialTheme);
   const [places, setPlaces] = useState<Place[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -28,7 +29,7 @@ export default function Theme() {
     if (theme && theme !== selectedTheme) {
       setSelectedTheme(theme);
     }
-  }, [searchParams, selectedTheme]);
+  }, [searchParams]);
 
   // 테마 변경 시 초기 상태 리셋
   useEffect(() => {
