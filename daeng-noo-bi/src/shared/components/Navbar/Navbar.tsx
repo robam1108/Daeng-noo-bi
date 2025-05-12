@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
   const iconIndex = Number(user?.icon);
   const iconSrc =
     iconIndex >= 1 && iconIndex <= 9
-      ? `../../src/assets/userIcon/userIcon_${iconIndex}.png`
+      ? `./userIcon_${iconIndex}.png`
       : "/userIcon.png";
 
   const menuItems = [
