@@ -3,18 +3,16 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { useAuth } from "../../../shared/context/AuthContext";
 
-interface EmailChangeFormProps {
-    initialEmail: string;
-}
 
-const EmailChangeForm: React.FC<EmailChangeFormProps> = ({ initialEmail }) => {
-    const { sendVerificationCode, updateEmail } = useAuth();
+
+const EmailChangeForm: React.FC = () => {
+    const { sendVerificationCode, updateEmail, user } = useAuth();
 
     // ref
     const emailRef = useRef<HTMLInputElement | null>(null);
 
     // 입력 및 인증 상태
-    const [email, setEmail] = useState(initialEmail);
+    const [email, setEmail] = useState(user!.email);
     const [verificationCode, setVerificationCode] = useState("");
     const [generatedCode, setGeneratedCode] = useState("");
     const [timeLeft, setTimeLeft] = useState(0);
@@ -156,7 +154,7 @@ const EmailChangeForm: React.FC<EmailChangeFormProps> = ({ initialEmail }) => {
                         type="button"
                         className="auth-btn"
                         onClick={handleEmailVerificationRequest}
-                        disabled={(isMailSent && !isExpired) || email === initialEmail}
+                        disabled={(isMailSent && !isExpired) || email === user!.email}
                     >
                         {isExpired ? "인증코드 재발송" : "인증코드 발송"}
                     </button>

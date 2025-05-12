@@ -1,9 +1,4 @@
 .Footer {
-    position: relative;
-    /* z-index가 동작하도록 포지션을 지정 */
-    z-index: 1001;
-    /* 오버레이(1000)보다 크게 */
-
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -33,5 +28,17 @@
         margin-right: 4px;
         font-size: 1em;
         vertical-align: middle;
+    }
+}
+
+@media (max-width: 768px) {
+    .Footer {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .producer-link {
+            margin-top: 15px;
+            margin-left: 0;
+        }
     }
 }

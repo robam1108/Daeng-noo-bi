@@ -45,14 +45,9 @@ export default function Favorites() {
         await removeFavorite(contentId)
     };
 
-    if (!user) {    // 로그인 유도
-        const ok = window.confirm(
-            "로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?"
-        );
-        if (ok) {
-            // 이동 후 돌아올 경로 보존
-            nav("/login", { state: { from: location } });
-        }
+    if (!user) {
+        // 이동 후 돌아올 경로 보존
+        nav("/login", { state: { from: location } });
         return;
     }
     if (loading) return <Loading />

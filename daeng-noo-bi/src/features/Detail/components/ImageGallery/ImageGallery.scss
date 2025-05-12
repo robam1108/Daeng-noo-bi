@@ -79,4 +79,103 @@
             transform: scale(1.2);
         }
     }
+
+    // ── 노트북 (1025px ~ 1440px) ──
+    @media (min-width: 1025px) and (max-width: 1440px) {
+        // grid-template-columns: 600px 300px;
+        height: 400px;
+        width: 100%;
+
+        &__big {
+            height: 400px;
+            width: 780px;
+        }
+
+        &__thumbs {
+            grid-auto-rows: 95px;
+            row-gap: 6px;
+            margin-bottom: 0;
+        }
+
+        &__thumb {
+            width: 100%;
+            height: 95px;
+        }
+    }
+
+    // ── 태블릿 (769px ~ 1024px) ──
+    @media (min-width: 769px) and (max-width: 1024px) {
+
+        &__big {
+            margin-bottom: 8px
+        }
+
+        &__thumbs {
+            gap: 8px;
+
+        }
+    }
+
+    // ── 태블릿 &모바일 ──
+    @media (max-width: 1024px) {
+        /* 부모 그리드 레이아웃 해제 */
+        display: block !important;
+        height: auto !important; // 고정 500px 해제
+        overflow: visible !important; // 숨김 해제
+
+        &--single {
+            width: 100%;
+
+            img {
+                border-radius: 0.5rem;
+            }
+        }
+
+        &__big {
+            width: 100%;
+            height: auto; // 크기 비율에 맡김
+            aspect-ratio: 16 / 9; // 필요에 따라 조정
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+
+        &__thumbs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(0, 2fr));
+            grid-auto-rows: 1fr; // 셀 높이는 컬럼 폭에 비례
+            height: auto !important; // 고정 높이 해제
+            overflow: visible !important;
+        }
+
+        &__thumb {
+            /* 고정 크기 제거 */
+            width: auto;
+            height: auto;
+            /* 정사각형 비율 강제 */
+            aspect-ratio: 1 / 1;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            cursor: grab;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+    }
+
+    // ── 모바일 (≤ 768px) ──
+    @media (max-width: 768px) {
+        &__big {
+            margin-bottom: 4px
+        }
+
+        &__thumbs {
+            gap: 4px;
+
+        }
+    }
 }
