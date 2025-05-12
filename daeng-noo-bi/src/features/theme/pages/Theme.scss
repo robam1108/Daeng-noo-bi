@@ -1,18 +1,7 @@
-@font-face {
-    font-family: 'LeeSeoyun';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/LeeSeoyun.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'GmarketSansMedium';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
-
 .theme-page{
+
+  padding-bottom: 40px;
+
     h1{
         font-family: 'LeeSeoyun';
         width: 100%;
@@ -69,7 +58,7 @@
         p{margin-right: 5px;}
     }
 
-      .end-message{
+    .end-message{
     padding: 60px 0px 20px 0px;
     display: flex;
     justify-content: center;
