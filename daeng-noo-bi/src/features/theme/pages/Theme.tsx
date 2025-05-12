@@ -6,6 +6,9 @@ import Loading from "../../../shared/components/Loading/Loading";
 import type { Place } from "../api/themeAPI";
 import { ThemeKey, themeMap } from "../constants/themeConstants";
 import { getCachedTheme } from "../../../shared/api/cacheAPI";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import "./Theme.scss";
 
 export default function Theme() {
@@ -78,7 +81,9 @@ export default function Theme() {
       <h1 className="theme-title">
         <span className="theme-pagetitleLine1">힐링부터 모험까지,</span>
         <span className="theme-pagetitleLine2">
-          테마별로 즐기는 반려동물 동반 여행
+          테마별로 즐기는
+          <br className="mobile-only" />
+          반려동물 동반 여행
         </span>
       </h1>
 
@@ -86,7 +91,11 @@ export default function Theme() {
         selectedTheme={selectedTheme}
         onSelect={handleThemeSelect}
       />
-      {error && <div className="error">⚠️ {error}</div>}
+      {error && (
+        <div className="error" role="alert">
+          ⚠️ {error}
+        </div>
+      )}
       <h2>{themeTitle}</h2>
       <ThemeCardList places={places} />
 
@@ -99,6 +108,7 @@ export default function Theme() {
       {!loading && hasMore && (
         <button className="load-more-button" onClick={handleLoadMore}>
           <p>더보기</p>
+          <FontAwesomeIcon icon={faCaretDown as IconProp} />
         </button>
       )}
 

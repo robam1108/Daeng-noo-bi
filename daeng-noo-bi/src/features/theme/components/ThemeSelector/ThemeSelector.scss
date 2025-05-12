@@ -10,7 +10,7 @@
   overflow: hidden;  
 
   .theme-selector-button {
-      position: relative;
+    position: relative;
     flex: 1 1 150px;
     min-width: 200px;
     aspect-ratio: 250 / 300;
@@ -53,6 +53,83 @@
     &.shopping {background-image: url('https://image.fnnews.com/resource/media/image/2016/06/28/201606281657147348_l.jpg');}
     &.accommodation {background-image: url('https://images.mypetlife.co.kr/content/uploads/2021/06/16124810/43f39621-7.png');}
     &.food {background-image: url('https://health.chosun.com/site/data/img_dir/2024/01/02/2024010202095_0.jpg'); background-position: center -40px;}
+  }
+}
+
+.mobile-only {
+display: none;
+}
+
+/* ── 노트북 (1025px ~ 1440px) ── */
+@media (max-width: 1440px) and (min-width: 1025px) {
+  .theme-selector-wrapper {
+    padding: 1.5rem 8rem 2rem 8rem;
+    gap: clamp(0.5rem, 2vw, 1.5rem);
+
+    .theme-selector-button {
+      min-width: 145px;
+      aspect-ratio: 250 / 300;
+    }
+  }
+
+}
+
+/* ── 태블릿 (769px ~ 1024px) ── */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .theme-selector-wrapper {
+    padding: 1.5rem 6rem 2rem 6rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    gap: 3rem 2rem;
+
+    .theme-selector-button {
+      // flex: 1 1 45%;
+      // width: 180px;
+      max-width: 200px;
+      min-width: 120px;
+      aspect-ratio: 250 / 300;
+      // aspect-ratio: 5 / 6;
+    }
+  }
+}
+
+/* ── 모바일 (≤ 768px) ── */
+@media (max-width: 768px) {
+  .mobile-only {
+    display: inline;
+  }
+
+  .theme-page h1 {
+    .theme-pagetitleLine1{
+      font-size: 2rem;
+    }
+
+    .theme-pagetitleLine2 {
+    text-align: center;
+    line-height: 3.5rem;
+    font-size: 3rem;
+    }
+  }
+
+  .theme-selector-wrapper {
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    gap: 2rem 1rem;
     
+    .theme-selector-button {
+      // width: 80%;
+      outline: 3px solid #fff;
+      max-width: 150px;
+      min-width: 120px;
+      margin: 0 auto;
+      aspect-ratio: 250 / 300;
+
+      &.active{
+        outline: 3px solid #328E6E;
+      }
+    }
   }
 }
