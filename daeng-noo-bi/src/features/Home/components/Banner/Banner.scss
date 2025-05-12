@@ -125,5 +125,115 @@
         }
     }
 
+    // ── 노트북 (1025px ~ 1440px) ──
+    @media (min-width: 1025px) and (max-width: 1440px) {
+        height: 450px;
+
+        .banner-title {
+            margin: 14% 0 0 4%;
+
+            h1 {
+                font-size: 2.5rem; // 약간 줄임
+            }
+
+            .banner-subtitle1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        .swiper-box {
+            width: 100vw;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+            .swiper-slide {
+                width: 320px !important; // 슬라이드 폭 조정
+            }
+        }
+    }
+
+    // ── 태블릿 (769px ~ 1024px) ──
+    @media (min-width: 769px) and (max-width: 1024px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+
+        .banner-title {
+            margin: 1rem auto 0;
+            text-align: center;
+
+            h2.home-title {
+                font-size: 1.6rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .banner-subtitle1 {
+                font-size: 1.6rem;
+            }
+        }
+
+        .swiper-box {
+            // 절대위치 해제하고, 마진으로 가운데 정렬
+            position: static;
+            width: 80%;
+            margin: 1.5rem auto 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+            .swiper-slide {
+                width: 280px !important;
+            }
+        }
+    }
+
+    // ── 모바일 (≤ 768px) ──
+    @media (max-width: 768px) {
+        height: 300px;
+        background-color: #E1EEBC;
+
+        .banner-title {
+            margin: 5% auto 0;
+            text-align: center;
+
+            h2.home-title {
+                font-size: 1.4rem;
+            }
+
+            .banner-subtitle1,
+            .banner-subtitle2 {
+                font-size: 1.2rem;
+                line-height: 1.2;
+            }
+        }
+
+        .swiper-box {
+            width: 100%;
+            bottom: 0;
+            right: 0;
+            box-shadow: none;
+
+            .swiper-slide {
+                width: 240px !important;
+            }
+
+            .banner-image-wrapper {
+                &::before {
+                    background: rgba(0, 0, 0, 0.3);
+                }
+
+                .banner-info {
+                    h1 {
+                        font-size: 1rem;
+                    }
+
+                    p {
+                        font-size: 0.9rem;
+                    }
+                }
+            }
+        }
+    }
 
 }

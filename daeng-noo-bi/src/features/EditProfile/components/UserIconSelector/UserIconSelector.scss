@@ -48,4 +48,20 @@
             }
         }
     }
+
+    // ── 태블릿 (769px ~ 1024px) ──
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .icon-list {
+            left: 70px;
+            width: calc(100% - 70px);
+        }
+    }
+
+    // ── 모바일 (≤ 768px) ──
+    @media (max-width: 768px) {
+        .icon-list {
+            left: 70px;
+            width: calc(100% - 70px);
+        }
+    }
 }
