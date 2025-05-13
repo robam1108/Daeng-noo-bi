@@ -3,18 +3,16 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { useAuth } from "../../../shared/context/AuthContext";
 
-interface EmailChangeFormProps {
-    initialEmail: string;
-}
 
-const EmailChangeForm: React.FC<EmailChangeFormProps> = ({ initialEmail }) => {
-    const { sendVerificationCode, updateEmail } = useAuth();
+
+const EmailChangeForm: React.FC = () => {
+    const { sendVerificationCode, updateEmail, user } = useAuth();
 
     // ref
     const emailRef = useRef<HTMLInputElement | null>(null);
 
     // 입력 및 인증 상태
-    const [email, setEmail] = useState(initialEmail);
+    const [email, setEmail] = useState(user!.email);
     const [verificationCode, setVerificationCode] = useState("");
     const [generatedCode, setGeneratedCode] = useState("");
     const [timeLeft, setTimeLeft] = useState(0);
@@ -132,7 +130,7 @@ const EmailChangeForm: React.FC<EmailChangeFormProps> = ({ initialEmail }) => {
     };
 
     return (
-        <form className="email-change-form" onSubmit={(e) => e.preventDefault()} noValidate>
+        <form className="EmailChangeForm" onSubmit={(e) => e.preventDefault()} noValidate>
             {/* <label className="form-label">이메일 변경</label> */}
 
             {/* 이메일 입력 & 인증코드 발송 */}
@@ -156,7 +154,7 @@ const EmailChangeForm: React.FC<EmailChangeFormProps> = ({ initialEmail }) => {
                         type="button"
                         className="auth-btn"
                         onClick={handleEmailVerificationRequest}
-                        disabled={(isMailSent && !isExpired) || email === initialEmail}
+                        disabled={(isMailSent && !isExpired) || email === user!.email}
                     >
                         {isExpired ? "인증코드 재발송" : "인증코드 발송"}
                     </button>
@@ -175,9 +173,7 @@ const EmailChangeForm: React.FC<EmailChangeFormProps> = ({ initialEmail }) => {
                             disabled={!isMailSent || isVerified}
                             aria-describedby="dup-msg"
                         />
-                        {isMailSent && !isVerified && (
-                            <span className="verify-timer">{formatTime(timeLeft)}</span>
-                        )}
+
                     </div>
                     <button
                         type="button"
@@ -191,15 +187,20 @@ const EmailChangeForm: React.FC<EmailChangeFormProps> = ({ initialEmail }) => {
             </div>
 
             {/* 중복 & 에러 메시지 */}
-            <p id="dup-msg" className={`dup-msg ${dupType ?? ""}`}>
-                {dupMsg ?? "\u00A0"}
-            </p>
-            {error && (
-                <p className="error-text" role="alert">
-                    {error}
+            <div className="email-dup-msg">
+                {isMailSent && !isVerified && (
+                    <span className="verify-timer">{formatTime(timeLeft)}</span>
+                )}
+                <p className={`dup-msg ${dupType ?? ""}`}>
+                    {dupMsg ?? "\u00A0"}
                 </p>
-            )}
-        </form>
+                {error && (
+                    <p className="error-text" role="alert">
+                        {error}
+                    </p>
+                )}
+            </div>
+        </form >
     );
 };
 

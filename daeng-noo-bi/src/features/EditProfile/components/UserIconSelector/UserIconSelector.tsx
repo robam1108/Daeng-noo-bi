@@ -5,16 +5,11 @@ import 'swiper/css';
 import { FreeMode } from "swiper/modules";
 import "./UserIconSelector.scss"
 
-
-interface UserIconSelectorProps {
-    initialIconNumber?: number;
-}
-
-const UserIconSelector = ({ initialIconNumber }: UserIconSelectorProps) => {
-    const { updateUserIcon } = useAuth();
+const UserIconSelector = () => {
+    const { updateUserIcon, user } = useAuth();
     const icons = Array.from({ length: 9 }, (_, i) => `/userIcon_${i + 1}.png`);
     const [selectedIcon, setSelectedIcon] = useState<number | null>(
-        initialIconNumber ?? null
+        user!.icon ?? null
     );
     const [isOpen, setIsOpen] = useState(false);
     const currentSrc = selectedIcon

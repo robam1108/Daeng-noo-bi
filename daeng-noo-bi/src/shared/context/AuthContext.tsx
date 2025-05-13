@@ -19,8 +19,7 @@ import {
   updateProfile as firebaseUpdateProfile,
   updateEmail as firebaseUpdateEmail,
   updatePassword as firebaseUpdatePassword,
-  EmailAuthProvider,
-  reauthenticateWithCredential,
+  UserInfo
 } from "firebase/auth";
 import {
   doc,
@@ -43,6 +42,7 @@ export interface AuthUser {
   favorites?: string[];
   nickname?: string;
   icon?: number;
+  providerData: UserInfo[];
 }
 
 interface AuthContextType {
@@ -91,6 +91,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser({
           id: fbUser.uid,
           email: fbUser.email || "",
+          providerData: fbUser.providerData,
           favorites: (data.favorites as string[]) || [],
           nickname: (data.nickname as string) || "",
           icon: (data.icon as number) || 0,
@@ -169,6 +170,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setUser({
       id: fbUser.uid,
       email: fbUser.email || "",
+      providerData: fbUser.providerData,
       nickname: fbUser.displayName || "",
       favorites: snap.exists() ? (snap.data().favorites as string[]) : [],
     });

@@ -8,18 +8,15 @@ import Theme from "./features/theme/pages/Theme";
 import Login from "./features/Login/pages/Login";
 import Signup from "./features/Signup/pages/Signup";
 import Favorites from "./features/Favorites/pages/Favorites";
-import Navbar from "./shared/components/Navbar/Navbar";
-import Footer from "./shared/components/Footer/Footer";
 import Detail from "./features/Detail/page/Detail";
 import SearchResults from "./features/SearchResults/SearchResults";
-import EditProfile from "./features/EditProfile/page/EditProfile";
-import RequirePassword from "./features/EditProfile/components/RequirePassword";
+import EditProfileRoute from "./features/EditProfile/page/EditProfileRoute";
+import MainLayout from "./shared/components/MainLayout/MainLayout";
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <Routes>
+    <Routes>
+      <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/popular" element={<Popular />} />
         <Route path="/region" element={<Region />} />
@@ -28,12 +25,12 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/place/:contentId" element={<Detail />} />
-        <Route path="*" element={<NotFound />} />
         <Route path="/search" element={<SearchResults />} />
-        <Route path="/editprofile" element={<RequirePassword><EditProfile /></RequirePassword>} />
-      </Routes>
-      <Footer />
-    </>
+        <Route path="/editprofile" element={<EditProfileRoute />} />
+      </Route>
+
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 
