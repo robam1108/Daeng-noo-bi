@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import ThemeSelector from "../components/ThemeSelector/ThemeSelector";
 import ThemeCardList from "../components/themeCardList/ThemeCardList";
 import Loading from "../../../shared/components/Loading/Loading";
+import Error from "../../../shared/components/Error/Error";
 import type { Place } from "../api/themeAPI";
 import { ThemeKey, themeMap } from "../constants/themeConstants";
 import { getCachedTheme } from "../../../shared/api/cacheAPI";
@@ -92,13 +93,14 @@ export default function Theme() {
         selectedTheme={selectedTheme}
         onSelect={handleThemeSelect}
       />
-      {error && (
-        <div className="error" role="alert">
-          ⚠️ {error}
-        </div>
-      )}
       <h2>{themeTitle}</h2>
       <ThemeCardList places={places} />
+
+      {error && (
+        <div className="error" role="alert">
+          <Error />
+        </div>
+      )}
 
       {loading && (
         <div className="loading">

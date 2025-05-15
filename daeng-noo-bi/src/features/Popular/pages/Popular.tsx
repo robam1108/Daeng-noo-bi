@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import PopularCardList from "../components/PopularCardList";
 import BlogSection from "../components/BlogSection";
 import Loading from "../../../shared/components/Loading/Loading";
+import Error from "../../../shared/components/Error/Error";
 import { fetchTopFavoritedPlaces, Place } from "../api/popularAPI";
 import { fetchBlogPosts } from "../../../shared/api/kakaoBlogAPI";
 import "./Popular.scss";
@@ -71,7 +72,11 @@ export default function Popular() {
           <Loading />
         </p>
       )}
-      {error && <div className="error">⚠️ {error}</div>}
+      {error && (
+        <div className="error" role="alert">
+          <Error />
+        </div>
+      )}
 
       {!loading && !error && <PopularCardList places={places} />}
 

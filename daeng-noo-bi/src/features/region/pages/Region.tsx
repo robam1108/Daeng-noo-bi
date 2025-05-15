@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import RegionSelector from "../components/regionSelector/RegionSelector";
 import RegionCardList from "../components/regionCardList/RegionCardList";
 import Loading from "../../../shared/components/Loading/Loading";
+import Error from "../../../shared/components/Error/Error";
 import { REGION_CODES } from "../constants/regionConstants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -83,14 +84,14 @@ export default function Region() {
 
       <h2>{regionName}</h2>
 
-      {error && (
-        <div className="error" role="alert">
-          ⚠️ {error}
-        </div>
-      )}
       <section aria-labelledby="places-title" className="places-section">
         <RegionCardList places={places} />
       </section>
+      {error && (
+        <div className="error" role="alert">
+          <Error />
+        </div>
+      )}
 
       {loading && (
         <div className="loading">
