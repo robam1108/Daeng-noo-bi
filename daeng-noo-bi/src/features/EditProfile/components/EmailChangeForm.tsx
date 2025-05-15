@@ -130,7 +130,7 @@ const EmailChangeForm: React.FC = () => {
     };
 
     return (
-        <form className="email-change-form" onSubmit={(e) => e.preventDefault()} noValidate>
+        <form className="EmailChangeForm" onSubmit={(e) => e.preventDefault()} noValidate>
             {/* <label className="form-label">이메일 변경</label> */}
 
             {/* 이메일 입력 & 인증코드 발송 */}
@@ -173,9 +173,7 @@ const EmailChangeForm: React.FC = () => {
                             disabled={!isMailSent || isVerified}
                             aria-describedby="dup-msg"
                         />
-                        {isMailSent && !isVerified && (
-                            <span className="verify-timer">{formatTime(timeLeft)}</span>
-                        )}
+
                     </div>
                     <button
                         type="button"
@@ -189,15 +187,20 @@ const EmailChangeForm: React.FC = () => {
             </div>
 
             {/* 중복 & 에러 메시지 */}
-            <p id="dup-msg" className={`dup-msg ${dupType ?? ""}`}>
-                {dupMsg ?? "\u00A0"}
-            </p>
-            {error && (
-                <p className="error-text" role="alert">
-                    {error}
+            <div className="email-dup-msg">
+                {isMailSent && !isVerified && (
+                    <span className="verify-timer">{formatTime(timeLeft)}</span>
+                )}
+                <p className={`dup-msg ${dupType ?? ""}`}>
+                    {dupMsg ?? "\u00A0"}
                 </p>
-            )}
-        </form>
+                {error && (
+                    <p className="error-text" role="alert">
+                        {error}
+                    </p>
+                )}
+            </div>
+        </form >
     );
 };
 

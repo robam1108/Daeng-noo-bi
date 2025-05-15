@@ -95,7 +95,6 @@
             fill: currentColor;
         }
 
-        /* 기본 아이콘 색 (쓰레기통 빨강) */
         color: #616161;
 
         &:hover {
@@ -111,5 +110,58 @@
     &:hover .delete-button {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+/* ── 태블릿 (769px ~ 1024px) ── */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .favorites-grid {
+        gap: 10px;
+        max-width: 800px;
+    }
+
+    .card-wrapper {
+        .card {
+            width: 230px;
+            height: 230px;
+        }
+
+        .delete-button {
+            /* 기본 상태에서 항상 보이도록 변경 */
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
+    }
+}
+
+/* ── 모바일 (≤ 768px) ── */
+@media (max-width: 768px) {
+    .favorites-grid {
+        gap: 15px;
+        max-width: 500px;
+    }
+
+    .card-wrapper {
+        .card {
+            width: 150px;
+            height: 150px;
+
+            .info {
+                h3 {
+                    font-size: 1rem;
+                    font-weight: 400;
+                }
+
+                p {
+                    display: none;
+                }
+            }
+        }
+
+        .delete-button {
+            /* 기본 상태에서 항상 보이도록 변경 */
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
     }
 }

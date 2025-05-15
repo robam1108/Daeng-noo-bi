@@ -57,7 +57,7 @@ const PasswordChangeForm: React.FC = () => {
 
     return (
         <form
-            className="password-change-form"
+            className="PasswordChangeForm"
             onSubmit={(e) => e.preventDefault()}
             noValidate
         >
