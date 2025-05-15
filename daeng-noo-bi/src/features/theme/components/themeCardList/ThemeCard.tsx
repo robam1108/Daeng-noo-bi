@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import React, { useEffect, useState, useRef } from "react";
 import type { RawPlace } from "../../../region/api/regionAPI";
 import "./ThemeCard.scss";
@@ -19,9 +19,7 @@ const ThemeCard: React.FC<{ place: Place }> = ({ place }) => {
   }, [place]);
 
   return (
-    <Link
-      to={`/place/${place.contentid}`}
-    >
+    <Link to={`/place/${place.contentid}`}>
       <div
         ref={cardRef}
         className={`theme-card ${isVisible ? "show" : ""}`}
@@ -30,6 +28,7 @@ const ThemeCard: React.FC<{ place: Place }> = ({ place }) => {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
+        aria-labelledby="place"
       >
         <div className="info">
           <h4>{place.title}</h4>
