@@ -101,24 +101,53 @@ const Navbar: React.FC = () => {
         <div className="auth-section">
           {user ? (
             <div className="user-info" ref={dropdownRef}>
-              <div className="icon-wrapper">
-                <img
-                  src={iconSrc}
-                  alt="유저 프로필"
-                  className="user-avatar"
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                />
-              </div>
+              <button
+                className="icon-wrapper"
+                type="button"
+                aria-label={dropdownOpen ? "유저 메뉴 닫기" : "유저 메뉴 열기"}
+                aria-haspopup="menu"
+                aria-expanded={dropdownOpen}
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                <img src={iconSrc} alt="유저 프로필" className="user-avatar" />
+              </button>
               {dropdownOpen && (
-                <div className="dropdown-menu">
-                  <button onClick={() => nav("/Favorites")}>찜목록</button>
-                  <button onClick={() => nav("/EditProfile")}>회원정보</button>
-                  <button onClick={handleLogout}>로그아웃</button>
-                </div>
+                <button
+                  className="dropdown-menu"
+                  type="button"
+                  role="menu"
+                  aria-label={
+                    dropdownOpen ? "유저 메뉴 닫기" : "유저 메뉴 열기"
+                  }
+                  aria-haspopup="menu"
+                  aria-expanded={dropdownOpen}
+                >
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => nav("/Favorites")}
+                  >
+                    찜목록
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => nav("/EditProfile")}
+                  >
+                    회원정보
+                  </button>
+                  <button type="button" role="menuitem" onClick={handleLogout}>
+                    로그아웃
+                  </button>
+                </button>
               )}
             </div>
           ) : (
-            <button className="btn login-btn" onClick={() => nav("/login")}>
+            <button
+              type="button"
+              className="btn login-btn"
+              onClick={() => nav("/login")}
+            >
               로그인
             </button>
           )}

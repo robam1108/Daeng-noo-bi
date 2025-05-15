@@ -47,7 +47,7 @@
 
   > div {
     display: flex;
-    width: 100%;      // ← 추가: 부모 폭 꽉 채우기
+    width: 100%;  
   }
 
     .emailInputWrap {
@@ -70,6 +70,10 @@
         border-radius: 5px;
         font-size: 15px;
         cursor: pointer;
+
+        &:focus-visible, &:hover {
+          filter: brightness(0.9);
+        }
 
         &:disabled {
           background: #ccc;
@@ -119,6 +123,9 @@
           color: #888;
           cursor: not-allowed;
         }
+        &:focus-visible, &:hover {
+          filter: brightness(0.9);
+        }
       }
     }
   }
@@ -146,6 +153,10 @@
     &.disabled, &:disabled {
       background: #c0c0c0;
       cursor: not-allowed;
+    }
+
+    &:focus-visible, &:hover {
+      filter: brightness(0.9);
     }
   }
 

@@ -47,9 +47,13 @@
     background-color: #e1eebc;
     padding: 30px 0;
 
-    .region-selector-wrapper {
-      .region-selector {
-        padding: 0 310px;
+    .region-selector{
+      .swiper-button-prev {
+        margin-top: -25px;
+      }
+  
+      .swiper-button-next {
+        margin-top: -25px;
       }
     }
   }
@@ -61,9 +65,13 @@
       background-color: #ffffff;
     }
 
-    .theme-selector-button,
-    .theme-selector-button.active {
+    .theme-selector-button {
       outline: 5px solid #90c67c;
+
+      &:focus-visible {
+      outline: 5px solid #328E6E;
+      transform: translateY(-10px);
+      }
     }
   }
 }
@@ -77,13 +85,13 @@
   .Home {
     gap: 80px;
 
-    .section-region {
-      .region-selector-wrapper {
-        .region-selector {
-          padding: 0 200px;
-        }
-      }
-    }
+    // .section-region {
+    //   .region-selector-wrapper {
+    //     .region-selector {
+    //       padding: 0 200px;
+    //     }
+    //   }
+    // }
 
     .home-section .home-header .home-subtitle {
       font-size: 2.25rem;
@@ -96,14 +104,6 @@
   .Home {
     gap: 70px;
     padding-bottom: 4rem;
-
-    .section-region {
-      .region-selector-wrapper {
-        .region-selector {
-          padding: 0 100px;
-        }
-      }
-    }
 
     .home-section .home-header {
       gap: 8px;
@@ -125,14 +125,6 @@
   .Home {
     gap: 60px;
     padding-bottom: 3rem;
-
-    .section-region {
-      .region-selector-wrapper {
-        .region-selector {
-          padding: 0 1rem;
-        }
-      }
-    }
 
     .home-section .home-header {
       gap: 6px;

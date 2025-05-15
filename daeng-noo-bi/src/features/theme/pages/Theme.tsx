@@ -118,7 +118,11 @@ export default function Theme() {
       )}
 
       {!loading && hasMore && (
-        <button className="load-more-button" onClick={handleLoadMore}>
+        <button
+          type="button"
+          className="load-more-button"
+          onClick={handleLoadMore}
+        >
           <p>더보기</p>
           <FontAwesomeIcon icon={faCaretDown as IconProp} />
         </button>

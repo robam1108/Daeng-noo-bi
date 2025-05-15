@@ -35,6 +35,13 @@
       cursor: pointer;
       transition: all 0.3s ease;
 
+      // 탭조작일때만 보임
+      &:focus-visible {
+        outline: 2px solid  #67AE6E;
+        outline-offset: -2px;
+        background: rgba(50, 142, 110, 0.1);
+      }
+
       .region-icon {
         width: 100px;
         height: 100px;
@@ -46,7 +53,7 @@
         background-color: #67AE6E;
         transition: all 0.3s ease;
 
-        &:hover {
+        &:hover, &:focus {
           transform: scale(1.05);
           box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
         }

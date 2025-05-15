@@ -80,9 +80,13 @@ const LoginPage: React.FC = () => {
   };
 
   const forgotJsx = (
-    <p className="forgot-link" onClick={() => setIsForgotOpen(true)}>
+    <button
+      type="button"
+      className="forgot-link"
+      onClick={() => setIsForgotOpen(true)}
+    >
       혹시 비밀번호를 잊으셨나요?
-    </p>
+    </button>
   );
 
   const onClickSignup = () => {

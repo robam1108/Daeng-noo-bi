@@ -25,6 +25,10 @@
     transform-origin: center bottom;
     cursor: pointer;
 
+    &:focus-visible {
+      outline: 5px solid #90C67C;
+    }
+
     .theme-title{
       position:absolute;
       bottom: 0px;
@@ -40,6 +44,7 @@
     }
 
     &:hover {
+      outline: 5px solid #90c67c;
       transform: translateY(-10px);
     }
 
@@ -49,7 +54,7 @@
       .theme-title{
         color: #328E6E;
         font-weight: 600;
-      }
+      } 
     }
 
     &.nature { background-image: url('https://img2.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202406/21/speaktravel/20240621140000946yvnv.jpg');}
