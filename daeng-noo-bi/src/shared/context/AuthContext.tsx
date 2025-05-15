@@ -19,7 +19,7 @@ import {
   updateProfile as firebaseUpdateProfile,
   updateEmail as firebaseUpdateEmail,
   updatePassword as firebaseUpdatePassword,
-  UserInfo
+  UserInfo,
 } from "firebase/auth";
 import {
   doc,
@@ -105,17 +105,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, [auth]);
 
   const sendVerificationCode = async (email: string, code: string) => {
-    if (isDev) {
-      console.log(`[DEV] sendVerificationCode → ${email}: ${code}`);
+    if (import.meta.env.MODE === "development") {
+      console.log(`[DEV] 인증코드: ${code} → ${email}`);
       return;
     }
-    const fn = httpsCallable<
-      { email: string; code: string },
-      { success: boolean }
-    >(functions, "sendVerificationCode");
-    const res = await fn({ email, code });
-    if (!res.data.success) {
-      throw new Error("인증 메일 전송에 실패했습니다.");
+
+    const res = await fetch("/api/sendVerificationCode", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, code }),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error("메일 전송 실패: " + errText);
     }
   };
 
@@ -227,9 +230,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const uid = auth.currentUser.uid;
     await updateDoc(doc(db, "users", uid), { nickname });
     // 로컬 상태 업데이트
-    setUser((prev) =>
-      prev ? { ...prev, nickname } : prev
-    );
+    setUser((prev) => (prev ? { ...prev, nickname } : prev));
   };
 
   // 이메일 변경
@@ -241,9 +242,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const uid = auth.currentUser.uid;
     await updateDoc(doc(db, "users", uid), { email: newEmail });
     // 로컬 상태 업데이트
-    setUser((prev) =>
-      prev ? { ...prev, email: newEmail } : prev
-    );
+    setUser((prev) => (prev ? { ...prev, email: newEmail } : prev));
   };
 
   // 비밀번호 변경
@@ -267,12 +266,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       // Firestore에 icon 필드만 업데이트
       await updateDoc(userRef, { icon: iconNumber });
       // 로컬 컨텍스트 상태도 즉시 반영
-      setUser(prev => prev ? { ...prev, icon: iconNumber } : prev);
+      setUser((prev) => (prev ? { ...prev, icon: iconNumber } : prev));
     } catch (error) {
       console.error("아이콘 업데이트 실패:", error);
     }
   };
-
 
   return (
     <AuthContext.Provider
