@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const ThemespotList = () => {
   const navigate = useNavigate();
-  const [selectedTheme, setSelectedTheme] = useState<ThemeKey>("nature");
+  const [selectedTheme, setSelectedTheme] = useState<ThemeKey | null>(null);
 
   const handleThemeSelect = (theme: ThemeKey) => {
     setSelectedTheme(theme);

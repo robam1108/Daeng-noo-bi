@@ -26,6 +26,15 @@ export default function Theme() {
   const themeTitle = themeMap[selectedTheme].title;
 
   useEffect(() => {
+    const selected = searchParams.get("selected");
+    if (selected) {
+      requestAnimationFrame(() => {
+        document.body.scrollTo({ top: 0, behavior: "auto" });
+      });
+    }
+  }, [searchParams.toString()]);
+
+  useEffect(() => {
     const theme = searchParams.get("selected") as ThemeKey;
     if (theme && theme !== selectedTheme) {
       setSelectedTheme(theme);

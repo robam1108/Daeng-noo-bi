@@ -3,7 +3,7 @@ import { ThemeInfo, THEMES } from "../../constants/themeConstants";
 import "./ThemeSelector.scss";
 
 interface Props {
-  selectedTheme: ThemeInfo["key"];
+  selectedTheme: ThemeInfo["key"] | null;
   onSelect: (theme: ThemeInfo["key"]) => void;
 }
 
