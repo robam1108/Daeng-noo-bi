@@ -236,4 +236,122 @@
         }
     }
 
+        .banner-title {
+            margin: 14% 0 0 4%;
+
+            h1 {
+                font-size: 2.5rem; // 약간 줄임
+            }
+
+            .banner-subtitle1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        .swiper-box {
+            width: 100vw;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+            .swiper-slide {
+                width: 320px !important; // 슬라이드 폭 조정
+            }
+        }
+    }
+
+    // ── 태블릿 (769px ~ 1024px) ──
+    @media (min-width: 769px) and (max-width: 1024px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100%;
+
+        .banner-title {
+            margin: 1rem auto 0;
+            text-align: center;
+
+            h2.home-title {
+                font-size: 1.6rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .banner-subtitle1 {
+                font-size: 1.6rem;
+            }
+
+            .banner-subtitle2 {
+                white-space: nowrap;
+                overflow: hidden;
+
+                br {
+                    display: none;
+                }
+            }
+        }
+
+        .swiper-box {
+            // 절대위치 해제하고, 마진으로 가운데 정렬
+            position: static;
+            width: 100%;
+            margin: 1.5rem auto 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+            .swiper-slide {
+                width: 280px !important;
+            }
+
+        }
+    }
+
+    // ── 모바일 (≤ 768px) ──
+    @media (max-width: 768px) {
+        height: 290px !important;
+
+
+        .banner-title {
+            margin: 5% auto 0;
+            text-align: center;
+
+            h2.home-title {
+                font-size: 1.4rem;
+            }
+
+            .banner-subtitle1,
+            .banner-subtitle2 {
+                font-size: 1.2rem;
+                line-height: 1.2;
+            }
+        }
+
+        .swiper-box {
+            width: 100% !important;
+            right: 0;
+            bottom: 0;
+            box-shadow: none;
+        }
+
+        .swiper-slide {
+            flex-shrink: 0;
+            width: 120px !important; // 컨텐츠 폭에 맞게
+            max-width: 120px; // 필요하면 폭 제한
+            margin: 0 auto; // 가운데 정렬
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .banner-image-wrapper {
+            height: auto !important;
+        }
+
+        .banner-image {
+            width: 100%;
+            height: auto; // 원본 비율 유지
+            object-fit: contain; // 비율 유지하며 축소
+            margin: 0 auto; // 가로 중앙
+        }
+    }
 }

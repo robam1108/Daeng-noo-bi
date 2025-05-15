@@ -62,7 +62,7 @@ const Banner: React.FC = () => {
             <div className='banner-title'>
                 <h2 className='home-title'>전국에서 열리는 케이펫페어</h2>
                 <h1 className='banner-subtitle1'>댕댕이와 함께할 수 있는</h1>
-                <h1 className='banner-subtitle2'>즐길거리와 볼거리가<br />기다리고 있어요!</h1>
+                <h1 className='banner-subtitle2'>즐길거리와 볼거리가 <br />기다리고 있어요!</h1>
             </div>
             <div className='swiper-box'>
                 <Swiper

@@ -16,7 +16,7 @@
         overflow: hidden;
         border-radius: 0.5rem;
 
-        img {
+        .image-gallery__single {
             /* 이미지: 객체 비율 유지, 가운데 노출, 모서리 둥글게 */
             display: block;
             width: 100%;
@@ -24,7 +24,16 @@
             object-fit: cover;
             object-position: center;
         }
+
+        .image-gallery__no-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+        }
     }
+
 
     &__big {
         /* big 이미지 영역: 762x500 사이즈 고정 */
@@ -105,6 +114,11 @@
 
     // ── 태블릿 (769px ~ 1024px) ──
     @media (min-width: 769px) and (max-width: 1024px) {
+        &--single {
+            .image-gallery__no-image {
+                height: 400px;
+            }
+        }
 
         &__big {
             margin-bottom: 8px
@@ -169,6 +183,12 @@
 
     // ── 모바일 (≤ 768px) ──
     @media (max-width: 768px) {
+        &--single {
+            .image-gallery__no-image {
+                height: 200px;
+            }
+        }
+
         &__big {
             margin-bottom: 4px
         }

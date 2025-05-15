@@ -41,7 +41,7 @@ const RequirePassword: React.FC<RequirePasswordProps> = ({ children }) => {
   if (!verified) {
     return (
       <div className="RequirePassword">
-        <h2>비밀번호를 입력하세요</h2>
+        <h2 className='title'>비밀번호를 입력하세요</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <input

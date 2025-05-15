@@ -58,7 +58,7 @@ export async function fetchPlaceDetail(
             raw.firstimage ||
             raw.firstimage2 ||
             FALLBACK_IMAGES[raw.title || ''] ||
-            '/images/no-image.png';
+            '/no-image.png';
 
         // 4) PlaceDetail 형태로 매핑
         const detail: PlaceDetail = {

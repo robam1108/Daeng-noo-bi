@@ -1,0 +1,12 @@
+.MainLayout {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+
+    .layout-main {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        flex: 1;
+    }
+}

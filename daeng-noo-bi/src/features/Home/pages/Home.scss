@@ -1,148 +1,150 @@
 .Home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 100px;
+  padding-bottom: 5rem;
+
+  .home-section {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 100px;
-    padding-bottom: 5rem;
-  
-    .home-section {
+
+    .home-header {
       display: flex;
       flex-direction: column;
-  
-      .home-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-  
-        .home-title {
-          display: inline-block;
-          width: fit-content;
-          padding: 5px 12px;
-          font-size: 1rem;
-          font-weight: 400;
-          color: #ffffff;
-          background-color: #328e6e;
-          border-radius: 15px;
-          margin: 0;
-        }
-  
-        .home-subtitle {
-          font-family: "GmarketSansMedium";
-          margin: 0;
-          color: black;
-          font-size: 2.5rem;
-          font-weight: 500;
-        }
-      }
-    }
-  
-    .section-popular {
-      .home-header {
-        margin-bottom: 20px;
-      }
-    }
-  
-    .section-region {
-      background-color: #e1eebc;
-      padding: 30px 0;
-  
-      .region-selector-wrapper {
-        .region-selector {
-          padding: 0 310px;
-        }
-      }
-    }
-  
-    .section-category {
-      .home-header,
-      .theme-selector-wrapper {
-        background-color: #ffffff;
+      align-items: center;
+      gap: 10px;
+
+      .home-title {
+        display: inline-block;
+        width: fit-content;
+        padding: 5px 12px;
+        font-size: 1rem;
+        font-weight: 400;
+        color: #ffffff;
+        background-color: #328e6e;
+        border-radius: 15px;
+        margin: 0;
       }
 
-      .theme-selector-button, .theme-selector-button.active {
-        outline: 5px solid #90c67c;
+      .home-subtitle {
+        font-family: "GmarketSansMedium";
+        margin: 0;
+        color: black;
+        font-size: 2.5rem;
+        font-weight: 500;
       }
     }
   }
-  
-  .Banner {
-    box-shadow: 0px 8px 8px 1px rgba(0, 0, 0, 0.07);
+
+  .section-popular {
+    .home-header {
+      margin-bottom: 20px;
+    }
   }
+
+  .section-region {
+    background-color: #e1eebc;
+    padding: 30px 0;
+
+    .region-selector-wrapper {
+      .region-selector {
+        padding: 0 310px;
+      }
+    }
+  }
+
+  .section-category {
+
+    .home-header,
+    .theme-selector-wrapper {
+      background-color: #ffffff;
+    }
+
+    .theme-selector-button,
+    .theme-selector-button.active {
+      outline: 5px solid #90c67c;
+    }
+  }
+}
+
+.Banner {
+  box-shadow: 0px 8px 8px 1px rgba(0, 0, 0, 0.07);
+}
 
 /* ── 노트북 (1025px ~ 1440px) ── */
 @media (max-width: 1440px) and (min-width: 1025px) {
-    .Home {
-      gap: 80px;
-  
-      .section-region {
-        .region-selector-wrapper {
-          .region-selector {
-            padding: 0 200px;
-          }
-        }
-      }
-  
-      .home-section .home-header .home-subtitle {
-        font-size: 2.25rem;
-      }
-    }
-  }
-  
-  /* ── 태블릿 (769px ~ 1024px) ── */
-  @media (max-width: 1024px) and (min-width: 769px) {
-    .Home {
-      gap: 70px;
-      padding-bottom: 4rem;
-  
-      .section-region {
-        .region-selector-wrapper {
-          .region-selector {
-            padding: 0 100px;
-          }
-        }
-      }
-  
-      .home-section .home-header {
-        gap: 8px;
-  
-        .home-title {
-          font-size: 0.9rem;
-          padding: 4px 10px;
-        }
-  
-        .home-subtitle {
-          font-size: 2rem;
+  .Home {
+    gap: 80px;
+
+    .section-region {
+      .region-selector-wrapper {
+        .region-selector {
+          padding: 0 200px;
         }
       }
     }
+
+    .home-section .home-header .home-subtitle {
+      font-size: 2.25rem;
+    }
   }
-  
-  /* ── 모바일 (≤ 768px) ── */
-  @media (max-width: 768px) {
-    .Home {
-      gap: 60px;
-      padding-bottom: 3rem;
-  
-      .section-region {
-        .region-selector-wrapper {
-          .region-selector {
-            padding: 0 1rem;
-          }
-        }
-      }
-  
-      .home-section .home-header {
-        gap: 6px;
-  
-        .home-title {
-          font-size: 0.85rem;
-          padding: 3px 8px;
-        }
-  
-        .home-subtitle {
-          font-size: 1.5rem;
+}
+
+/* ── 태블릿 (769px ~ 1024px) ── */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .Home {
+    gap: 70px;
+    padding-bottom: 4rem;
+
+    .section-region {
+      .region-selector-wrapper {
+        .region-selector {
+          padding: 0 100px;
         }
       }
     }
+
+    .home-section .home-header {
+      gap: 8px;
+
+      .home-title {
+        font-size: 0.9rem;
+        padding: 4px 10px;
+      }
+
+      .home-subtitle {
+        font-size: 2rem;
+      }
+    }
   }
+}
+
+/* ── 모바일 (≤ 768px) ── */
+@media (max-width: 768px) {
+  .Home {
+    gap: 60px;
+    padding-bottom: 3rem;
+
+    .section-region {
+      .region-selector-wrapper {
+        .region-selector {
+          padding: 0 1rem;
+        }
+      }
+    }
+
+    .home-section .home-header {
+      gap: 6px;
+
+      .home-title {
+        font-size: 0.85rem;
+        padding: 3px 8px;
+      }
+
+      .home-subtitle {
+        font-size: 1.3rem;
+      }
+    }
+  }
+}
