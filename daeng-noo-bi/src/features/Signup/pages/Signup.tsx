@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "../../../firebase";
+import { getAuth, fetchSignInMethodsForEmail } from "firebase/auth";
 import { useAuth } from "../../../shared/context/AuthContext";
 
 import "./Signup.scss";
@@ -23,6 +22,7 @@ function useFieldRefs<T extends Record<string, any>>() {
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
   const { sendVerificationCode, signup } = useAuth();
+  const auth = getAuth();
 
   // 모든 input refs
   const { refs: fieldRefs, setRef } =
@@ -74,18 +74,16 @@ ${String(sec % 60).padStart(2, "0")}`;
       return;
     }
     try {
-      const q = query(
-        collection(db, "users"),
-        where("email", "==", email.trim())
-      );
-      const snap = await getDocs(q);
-      if (!snap.empty) {
+      // Auth로 이메일 중복 확인
+      const methods = await fetchSignInMethodsForEmail(auth, email.trim());
+      if (methods.length > 0) {
         fieldRefs.email?.focus();
         setDupMsg("이미 가입된 이메일입니다.");
         setDupType("error");
         return;
       }
-    } catch {
+    } catch (err: any) {
+      console.error("❌ 이메일 중복 확인 오류:", err);
       setError("이메일 중복 확인 중 오류가 발생했습니다.");
       return;
     }
