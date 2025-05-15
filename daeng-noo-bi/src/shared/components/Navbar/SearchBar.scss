@@ -13,6 +13,10 @@
 }
 .SearchButton{
   cursor: pointer;
+
+  &:focus-visible, &:hover {
+    filter: opacity(0.6);
+  }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
