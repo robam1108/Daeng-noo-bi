@@ -42,10 +42,11 @@ const ImageGallery = ({ images, title, titleImgUrl }: Props) => {
     // 이미지가 하나뿐일 때 (스와이퍼 비활성화)
     // 1152*500
     if (total === 1) {
+
         return (
             <div className="image-gallery image-gallery--single">
                 <img
-                    className="image-gallery__single"
+                    className={`${(allImages[0] === '/no-image.png') ? 'image-gallery__no-image' : 'image-gallery__single'}`}
                     src={allImages[0]}
                     alt={`${title} 사진`}
                     loading="lazy"
