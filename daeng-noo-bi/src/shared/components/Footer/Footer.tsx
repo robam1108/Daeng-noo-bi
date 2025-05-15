@@ -5,7 +5,11 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export default function Footer() {
   return (
-    <footer className="Footer" role="contentinfo">
+    <footer
+      className="Footer"
+      role="contentinfo"
+      aria-label="저작권,제작자 정보 푸터"
+    >
       {/* 프로젝트 정보 */}
       <div className="info">
         <p>댕누비 - 반려동물과 함께하는 여행</p>

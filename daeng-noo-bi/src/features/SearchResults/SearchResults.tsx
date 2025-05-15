@@ -38,7 +38,7 @@ export default function SearchResults() {
   }));
 
   return (
-    <div className="SearchResults">
+    <section className="SearchResults" aria-labelledby="searchResults">
       <div className="SearchResult-title">
         <h1>
           “<span className="pointColor">{keyword}</span>” 검색 결과
@@ -47,6 +47,6 @@ export default function SearchResults() {
       {loading && <p>검색 중...</p>}
       {!loading && places.length === 0 && <p>결과가 없습니다.</p>}
       {!loading && places.length > 0 && <RegionCardList places={places} />}
-    </div>
+    </section>
   );
 }

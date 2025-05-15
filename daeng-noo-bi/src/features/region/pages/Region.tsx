@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import RegionSelector from "../components/regionSelector/RegionSelector";
 import RegionCardList from "../components/regionCardList/RegionCardList";
@@ -67,11 +67,12 @@ export default function Region() {
   };
 
   return (
-    <main className="region-page">
-      <section
-        className="regionSelector-section"
-        aria-labelledby="region-selector-title"
-      >
+    <main
+      className="region-page"
+      role="region-page"
+      aria-label="지역별 여행지 페이지"
+    >
+      <section className="regionSelector-section" aria-label="지역 선택 영역">
         <h3 className="selector-title">
           <span className="selector-titleLine1">오늘은</span>
           <span className="selector-titleLine2">어디로 떠나볼까요?</span>
@@ -82,11 +83,11 @@ export default function Region() {
         />
       </section>
 
-      <h2>{regionName}</h2>
-
       <section aria-labelledby="places-title" className="places-section">
+        <h2>{regionName}</h2>
         <RegionCardList places={places} />
       </section>
+
       {error && (
         <div className="error" role="alert">
           <Error />

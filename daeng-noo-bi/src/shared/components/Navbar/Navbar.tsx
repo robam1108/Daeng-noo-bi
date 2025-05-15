@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
   }, [drawerOpen]);
 
   return (
-    <nav>
+    <nav role="navigation" aria-label="메인 내비게이션">
       <div className="navbar">
         <NavLink to="/" className="logo">
           <img

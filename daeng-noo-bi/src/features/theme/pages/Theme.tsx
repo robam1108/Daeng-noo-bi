@@ -88,7 +88,11 @@ export default function Theme() {
   };
 
   return (
-    <div className="theme-page">
+    <div
+      className="theme-page"
+      role="theme-page"
+      aria-label="테마별 여행지 페이지"
+    >
       <h1 className="theme-title">
         <span className="theme-pagetitleLine1">힐링부터 모험까지,</span>
         <span className="theme-pagetitleLine2">
@@ -102,8 +106,11 @@ export default function Theme() {
         selectedTheme={selectedTheme}
         onSelect={handleThemeSelect}
       />
-      <h2>{themeTitle}</h2>
-      <ThemeCardList places={places} />
+
+      <section aria-labelledby="places-title">
+        <h2>{themeTitle}</h2>
+        <ThemeCardList places={places} />
+      </section>
 
       {error && (
         <div className="error" role="alert">
@@ -121,6 +128,7 @@ export default function Theme() {
         <button
           type="button"
           className="load-more-button"
+          aria-label="더 많은 여행지 불러오기"
           onClick={handleLoadMore}
         >
           <p>더보기</p>

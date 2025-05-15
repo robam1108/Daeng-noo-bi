@@ -94,7 +94,12 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="login-page">
+    <section
+      className="login-page"
+      id="login-page"
+      role="login"
+      aria-labelledby="login-page"
+    >
       <form className="login-form" noValidate onSubmit={handleSubmit}>
         <h1 className="login-title">로그인</h1>
 
@@ -153,7 +158,7 @@ const LoginPage: React.FC = () => {
           onClose={() => setIsForgotOpen(false)}
         />
       </form>
-    </div>
+    </section>
   );
 };
 
