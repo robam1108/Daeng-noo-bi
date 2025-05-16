@@ -1,11 +1,11 @@
 // src/feacures/Login/components/ForgotModal/ForgotModal.tsx
 import React, { useState } from "react";
 import {
-  getAuth,
   sendPasswordResetEmail,
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import "./ForgotModal.scss";
+import { auth } from "../../../firebase";
 
 interface ForgotModalProps {
   isOpen: boolean;
@@ -25,13 +25,20 @@ const ForgotModal: React.FC<ForgotModalProps> = ({ isOpen, onClose }) => {
     }
 
     setLoading(true);
-    const auth = getAuth();
+    // const auth = getAuth();
 
     try {
       // 1) 해당 이메일로 가입된 계정이 있는지 먼저 확인
       const methods = await fetchSignInMethodsForEmail(auth, email.trim());
       if (methods.length === 0) {
         setMessage("등록된 계정이 없습니다. 이메일을 확인해주세요.");
+        return;
+      }
+
+      if (!methods.includes("password")) {
+        setMessage(
+          "이메일/비밀번호 방식으로 가입한 계정이 아닙니다. 소셜 로그인을 이용해주세요."
+        );
         return;
       }
 
