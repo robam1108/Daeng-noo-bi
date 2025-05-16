@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, fetchSignInMethodsForEmail } from "firebase/auth";
+import { fetchSignInMethodsForEmail } from "firebase/auth";
+import { auth } from "../../../firebase";
 import { useAuth } from "../../../shared/context/AuthContext";
 
 import "./Signup.scss";
@@ -22,7 +23,7 @@ function useFieldRefs<T extends Record<string, any>>() {
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
   const { sendVerificationCode, signup } = useAuth();
-  const auth = getAuth();
+  // const auth = getAuth();
 
   // 모든 input refs
   const { refs: fieldRefs, setRef } =
