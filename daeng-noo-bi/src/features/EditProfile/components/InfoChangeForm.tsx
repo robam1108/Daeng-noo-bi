@@ -4,11 +4,7 @@ import UserIconSelector from "./UserIconSelector/UserIconSelector";
 
 const InfoChangeForm: React.FC = () => {
   const { updateNickname, user } = useAuth();
-  const { updateNickname, user } = useAuth();
 
-  const [nickname, setNickname] = useState(user!.nickname!);
-  const [loading, setLoading] = useState(false);
-  const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [nickname, setNickname] = useState(user!.nickname!);
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
