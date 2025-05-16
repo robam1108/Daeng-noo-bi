@@ -28,19 +28,19 @@
         box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
         opacity: 1;
 
-        &::before { 
+        &::before {
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(rgba(255, 255, 255, 0.2) 30%,rgba(0, 0, 0, 0.8));
+            background: linear-gradient(rgba(255, 255, 255, 0.2) 30%, rgba(0, 0, 0, 0.8));
             z-index: 1;
         }
 
         &:hover {
-        transform: translateY(-1px); 
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); 
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
-        
+
 
         .info {
             position: absolute;
@@ -99,7 +99,8 @@
 
         color: #616161;
 
-        &:hover {
+        &:hover,
+        &:focus-visible {
             /* 배경을 살짝 더 밝게 */
             background: rgba(255, 255, 255, 0.95);
             /* 아이콘 색은 톤 다운된 빨강으로 */
@@ -107,9 +108,15 @@
             /* 살짝 키우면 더 눌러보기 좋은 크기로 보입니다 */
             transform: scale(1);
         }
+
+        &:focus-visible {
+            border: 2px solid #000000;
+            ;
+        }
     }
 
-    &:hover .delete-button {
+    &:hover .delete-button,
+    &:focus-visible .delete-button {
         opacity: 1;
         transform: scale(1);
     }
