@@ -9,15 +9,14 @@ import Loading from '../../../shared/components/Loading/Loading';
 import './Favorites.scss';
 
 export default function Favorites() {
-    const { user, removeFavorite } = useAuth();
+    const { user, removeFavorite, initializing } = useAuth();
+    const fromPath = location.pathname + location.search;
     const nav = useNavigate();
     const [places, setPlaces] = useState<PlaceDetail[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<boolean>(false);
 
-    // user.favorites 배열이 변경될 때마다(최초 마운트 포함) 데이터 로드 실행
     useEffect(() => {
-        // favorites가 비어 있거나 user 자체가 없으면 바로 로딩 끝내기
         if (!user || !user.favorites?.length) {
             setLoading(false);
             return;
@@ -45,9 +44,12 @@ export default function Favorites() {
         await removeFavorite(contentId)
     };
 
+    if (initializing) {
+        return <Loading />;
+    }
     if (!user) {
         // 이동 후 돌아올 경로 보존
-        nav("/login", { state: { from: location } });
+        nav("/login", { state: { from: fromPath } });
         return;
     }
     if (loading) return <Loading />

@@ -49,6 +49,7 @@ export interface AuthUser {
 
 interface AuthContextType {
   user: AuthUser | null;
+  initializing: boolean;
   sendVerificationCode: (email: string, code: string) => Promise<void>;
   signup: (email: string, password: string, nickname: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
@@ -77,10 +78,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const isDev = import.meta.env.MODE !== "production";
   if (isDev) {
     connectFunctionsEmulator(functions, "localhost", 5001);
-    // console.log(`[DEV] Firebase Functions Emulator 연결됨`);
   }
 
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
     setPersistence(auth, browserLocalPersistence).catch(() => {
@@ -91,6 +92,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (fbUser) {
         const snap = await getDoc(doc(db, "users", fbUser.uid));
         const data = snap.exists() ? snap.data() : {};
+
         setUser({
           id: fbUser.uid,
           email: fbUser.email || "",
@@ -102,9 +104,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       } else {
         setUser(null);
       }
+
+      setInitializing(false);
     });
 
-    return () => unsubscribe();
+    return unsubscribe;
   }, [auth]);
 
   const sendVerificationCode = async (email: string, code: string) => {
@@ -288,6 +292,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     <AuthContext.Provider
       value={{
         user,
+        initializing,
         sendVerificationCode,
         signup,
         login,
