@@ -25,10 +25,11 @@ const InfoChangeForm: React.FC = () => {
         try {
             await updateNickname(trimmed);
             setSuccessMsg("닉네임이 성공적으로 변경되었습니다.");
+            btnRef.current!.className = "verify-btn";
         } catch (err) {
             console.error(err);
         } finally {
-            btnRef.current!.className = "verify-btn";
+
             setLoading(false);
         }
     };

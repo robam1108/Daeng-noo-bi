@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../../shared/context/AuthContext";
 
 const PasswordChangeForm: React.FC = () => {
-    const { updatePassword } = useAuth();
+    const { updatePassword, reauthenticate } = useAuth();
 
     const [newPw, setNewPw] = useState("");
     const [confirmPw, setConfirmPw] = useState("");
@@ -18,7 +18,6 @@ const PasswordChangeForm: React.FC = () => {
     useEffect(() => {
         if (!newPw && !confirmPw) {
             setError(null);
-            setSuccessMsg(null);
             return;
         }
         if (newPw && newPw.length < 6) {
@@ -44,9 +43,24 @@ const PasswordChangeForm: React.FC = () => {
     const handleChange = async () => {
         if (error) return;  // 검증 에러 있으면 중단
         setLoading(true);
+
+        try {
+            await reauthenticate(newPw);
+            setError("새 비밀번호가 기존 비밀번호와 같습니다.");
+            btnRef.current!.className = "verify-btn";
+            setNewPw("");
+            setConfirmPw("");
+            setLoading(false);
+            return;
+        } catch (reauthErr: any) {
+            console.log(reauthErr);
+        }
         try {
             await updatePassword(newPw);
             setSuccessMsg("비밀번호가 성공적으로 변경되었습니다.");
+            if (btnRef.current) {
+                btnRef.current.className = "verify-btn";
+            }
             setNewPw("");
             setConfirmPw("");
         } catch (err: any) {
@@ -55,7 +69,6 @@ const PasswordChangeForm: React.FC = () => {
             setSuccessMsg(null);
         } finally {
             setLoading(false);
-            btnRef.current!.className = "verify-btn";
         }
     };
 
