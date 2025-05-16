@@ -86,17 +86,11 @@
             object-position: center;
             transition: transform 0.2s ease;
             transform-origin: center;
-        }
 
-        &:hover,
-        &:focus-visible {
-            img {
+            &:hover,
+            &:focus-visible {
                 transform: scale(1.2);
             }
-        }
-
-        &:focus-visible {
-            border: 2px solid black;
         }
     }
 

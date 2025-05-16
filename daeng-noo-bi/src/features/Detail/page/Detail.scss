@@ -122,18 +122,18 @@
 
         .detail-img-section {
             &>img {
-                height: 400px; // 이미지 높이 조절
+                height: 400px;
             }
-        }
 
-        .detail-info-section {
-            gap: 2rem; // 정보 영역 간격 축소
+            .detail-info-section {
+                gap: 2rem;
 
-            .info2 {
-                flex: none; // 내부 크기에 맞춰 축소
-                width: auto;
-                margin: 0; // 왼쪽 정렬
-                align-self: flex-start;
+                .info2 {
+                    flex: none; // 내부 크기에 맞춰 축소
+                    width: auto;
+                    margin: 0; // 왼쪽 정렬
+                    align-self: flex-start;
+                }
             }
         }
     }
@@ -149,12 +149,11 @@
         }
 
         .detail-info-section {
-            // flex-direction: column; // 세로 스택
             gap: 1.5rem;
 
             .info1 {
                 p:first-of-type {
-                    font-size: 1.5rem; // 제목 크기 약간 축소
+                    font-size: 1.5rem;
                 }
             }
 
@@ -177,7 +176,7 @@
 
         .detail-img-section {
             &>img {
-                height: 200px; // 모바일용 더 작은 높이
+                height: 200px;
             }
         }
 
@@ -195,11 +194,11 @@
                 flex: none;
                 width: 100%;
                 margin: 0;
-                padding: 1rem; // 패딩 축소
-                box-shadow: none; // 그림자 제거해도 좋습니다
+                padding: 1rem;
+                box-shadow: none;
 
                 .btn-box {
-                    margin-top: 0px; // 모바일 버튼 간격
+                    margin-top: 0px;
                 }
 
             }
