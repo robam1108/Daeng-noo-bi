@@ -9,7 +9,10 @@ interface Props {
 
 export default function ThemeSelector({ selectedTheme, onSelect }: Props) {
   return (
-    <div className="theme-selector-wrapper">
+    <section
+      className="theme-selector-wrapper"
+      aria-label="테마 여행지 선택 영역"
+    >
       {THEMES.map(({ key, title, className }) => (
         <button
           key={key}
@@ -22,6 +25,6 @@ export default function ThemeSelector({ selectedTheme, onSelect }: Props) {
           <div className="theme-title">{title}</div>
         </button>
       ))}
-    </div>
+    </section>
   );
 }

@@ -80,7 +80,7 @@ export async function fetchTopFavoritedPlaces(): Promise<Place[]> {
 
   // 3) 문서 조회
   const snapshot = await getDocs(favQuery);
-  console.log("[fetchTopFavoritedPlaces] snapshot docs:", snapshot.docs.length);
+  // console.log("[fetchTopFavoritedPlaces] snapshot docs:", snapshot.docs.length);
 
   // 4) Snapshot.docs 의 각 doc 타입을 명시하고, Place 배열로 매핑
   const places: Place[] = snapshot.docs.map(
@@ -102,6 +102,6 @@ export async function fetchTopFavoritedPlaces(): Promise<Place[]> {
         };
       }
     );
-  console.log("[fetchTopFavoritedPlaces] returned places:", places);
+  // console.log("[fetchTopFavoritedPlaces] returned places:", places);
   return places;
 }

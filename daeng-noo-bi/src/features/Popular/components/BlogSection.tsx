@@ -1,5 +1,5 @@
 // src/components/BlogSection.tsx
-import React from "react";
+import React, { useRef } from "react";
 import "./BlogSection.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -20,7 +20,7 @@ interface Props {
 
 export default function BlogSection({ places, blogs }: Props) {
   return (
-    <section className="blog-section">
+    <section aria-label="인기 장소 블로그 모음" className="blog-section">
       <h2>
         후기 속에 담긴 생생한 이야기, <br className="mobile-only" />
         <span className="pointColor">어떤 곳</span>일까요?

@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const isDev = import.meta.env.MODE !== "production";
   if (isDev) {
     connectFunctionsEmulator(functions, "localhost", 5001);
-    console.log(`[DEV] Firebase Functions Emulator 연결됨`);
+    // console.log(`[DEV] Firebase Functions Emulator 연결됨`);
   }
 
   const [user, setUser] = useState<AuthUser | null>(null);

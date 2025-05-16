@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, fetchSignInMethodsForEmail } from "firebase/auth";
+import { fetchSignInMethodsForEmail } from "firebase/auth";
+import { auth } from "../../../firebase";
 import { useAuth } from "../../../shared/context/AuthContext";
 
 import "./Signup.scss";
@@ -22,7 +23,7 @@ function useFieldRefs<T extends Record<string, any>>() {
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
   const { sendVerificationCode, signup } = useAuth();
-  const auth = getAuth();
+  // const auth = getAuth();
 
   // 모든 input refs
   const { refs: fieldRefs, setRef } =
@@ -201,7 +202,7 @@ ${String(sec % 60).padStart(2, "0")}`;
   };
 
   return (
-    <div className="signup-page">
+    <section className="signup-page" role="signup" aria-labelledby="login-page">
       <form className="signup-form" onSubmit={handleSubmit} noValidate>
         <h1 className="signup-title">회원가입</h1>
         <p id="error-text" className="error-text" role="alert">
@@ -311,7 +312,7 @@ ${String(sec % 60).padStart(2, "0")}`;
           회원가입
         </button>
       </form>
-    </div>
+    </section>
   );
 };
 

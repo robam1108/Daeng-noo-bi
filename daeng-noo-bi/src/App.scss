@@ -9,6 +9,7 @@ html, body {
   height: 100%;
   font-family: "Pretendard";
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -45,4 +46,10 @@ a {
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
   font-weight: normal;
   font-style: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

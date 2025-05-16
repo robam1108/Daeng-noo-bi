@@ -1,11 +1,11 @@
 // src/feacures/Login/components/ForgotModal/ForgotModal.tsx
 import React, { useState } from "react";
 import {
-  getAuth,
   sendPasswordResetEmail,
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import "./ForgotModal.scss";
+import { auth } from "../../../firebase";
 
 interface ForgotModalProps {
   isOpen: boolean;
@@ -25,23 +25,15 @@ const ForgotModal: React.FC<ForgotModalProps> = ({ isOpen, onClose }) => {
     }
 
     setLoading(true);
-    const auth = getAuth();
+    // const auth = getAuth();
 
     try {
-      // 1) 해당 이메일로 가입된 계정이 있는지 먼저 확인
-      const methods = await fetchSignInMethodsForEmail(auth, email.trim());
-      if (methods.length === 0) {
-        setMessage("등록된 계정이 없습니다. 이메일을 확인해주세요.");
-        return;
-      }
-
-      // 2) 계정이 있으면 실제로 재설정 메일 발송
       await sendPasswordResetEmail(auth, email.trim());
-      setMessage("재설정 안내 메일을 보냈습니다. 메일함을 확인해주세요.");
     } catch (err: any) {
       console.error("ForgotPassword Error ▶", err);
       setMessage("메일 전송 중 오류가 발생했습니다.");
     } finally {
+      setMessage("이메일을 전송했습니다. 메일함을 확인해주세요.");
       setLoading(false);
     }
   };
