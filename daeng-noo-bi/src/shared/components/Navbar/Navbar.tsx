@@ -122,23 +122,15 @@ const Navbar: React.FC = () => {
                   aria-haspopup="menu"
                   aria-expanded={dropdownOpen}
                 >
-                  <button
-                    type="button"
-                    role="menuitem"
-                    onClick={() => nav("/Favorites")}
-                  >
+                  <div role="menuitem" onClick={() => nav("/Favorites")}>
                     찜목록
-                  </button>
-                  <button
-                    type="button"
-                    role="menuitem"
-                    onClick={() => nav("/EditProfile")}
-                  >
+                  </div>
+                  <div role="menuitem" onClick={() => nav("/EditProfile")}>
                     회원정보
-                  </button>
-                  <button type="button" role="menuitem" onClick={handleLogout}>
+                  </div>
+                  <div role="menuitem" onClick={handleLogout}>
                     로그아웃
-                  </button>
+                  </div>
                 </button>
               )}
             </div>
