@@ -40,6 +40,7 @@ const Map: React.FC<MapProps> = ({ address }) => {
 
     return (
         <div
+            aria-label="지도"
             ref={mapRef}
             style={{ width: "100%", height: "300px", marginTop: "1rem" }}
         />
