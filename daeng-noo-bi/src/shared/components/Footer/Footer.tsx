@@ -17,7 +17,7 @@ export default function Footer() {
       </div>
 
       {/* 제작자 링크 */}
-      <div className="producer-link">
+      <div className="producer-link" aria-label="제작자 정보">
         <p>
           Developed by :
           <a
