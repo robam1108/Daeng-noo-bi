@@ -7,12 +7,21 @@ const PasswordChangeForm: React.FC = () => {
     const [newPw, setNewPw] = useState("");
     const [confirmPw, setConfirmPw] = useState("");
     const [loading, setLoading] = useState(false);
+    const lastPwRef = useRef<string>("");
 
     // 메시지 상태
     const [error, setError] = useState<string | null>(null);
     const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-    const btnRef = useRef<HTMLButtonElement>(null);
+    // 버튼 보이기/감추기용 active 플래그
+    const [showActive, setShowActive] = useState(false);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+
+
+    const isLenOk = newPw.length >= 6;
+    const isMatch = newPw !== "" && newPw === confirmPw;
+    const isEnabled = isLenOk && isMatch && !loading;
+    const isDifferent = newPw !== lastPwRef.current;
 
     // 실시간 검증
     useEffect(() => {
@@ -30,37 +39,53 @@ const PasswordChangeForm: React.FC = () => {
             setSuccessMsg(null);
             return;
         }
+        if (!isDifferent && newPw) {
+            setError("이전 비밀번호와 동일합니다.");
+            return;
+        }
         if (newPw && confirmPw && newPw === confirmPw) {
             setError(null);
-            setSuccessMsg("비밀번호가 일치합니다.");
-            btnRef.current!.className = "verify-btn active";
+            setSuccessMsg("새 비밀번호와 확인이 일치합니다.");
             return;
         }
         setError(null);
         setSuccessMsg(null);
-    }, [newPw, confirmPw]);
+    }, [newPw, confirmPw, isDifferent]);
+
+    useEffect(() => {
+        function handleClickOutside(e: MouseEvent) {
+            if (
+                wrapperRef.current &&
+                !wrapperRef.current.contains(e.target as Node)
+            ) {
+                setShowActive(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const handleChange = async () => {
         if (error) return;  // 검증 에러 있으면 중단
+        setLoading(true);
+        if (!isEnabled) return;
         setLoading(true);
 
         try {
             await reauthenticate(newPw);
             setError("새 비밀번호가 기존 비밀번호와 같습니다.");
-            btnRef.current!.className = "verify-btn";
             setNewPw("");
             setConfirmPw("");
+            setShowActive(false);
             setLoading(false);
             return;
-        } catch (reauthErr: any) {
-            console.log(reauthErr);
+        } catch {
         }
         try {
             await updatePassword(newPw);
             setSuccessMsg("비밀번호가 성공적으로 변경되었습니다.");
-            if (btnRef.current) {
-                btnRef.current.className = "verify-btn";
-            }
             setNewPw("");
             setConfirmPw("");
         } catch (err: any) {
@@ -69,6 +94,7 @@ const PasswordChangeForm: React.FC = () => {
             setSuccessMsg(null);
         } finally {
             setLoading(false);
+            setShowActive(false);
         }
     };
 
@@ -78,40 +104,40 @@ const PasswordChangeForm: React.FC = () => {
             onSubmit={(e) => e.preventDefault()}
             noValidate
         >
-            {/* 새 비밀번호 입력 */}
             <input
                 type="password"
                 className="editProfile-input"
                 placeholder="새 비밀번호"
                 value={newPw}
-                onChange={(e) => setNewPw(e.target.value)}
+                onChange={(e) => {
+                    setNewPw(e.target.value);
+                    setShowActive(true);
+                }}
+                onFocus={() => setShowActive(true)}
                 disabled={loading}
             />
 
-            {/* 확인 입력 + 버튼 (이메일 verify 레이아웃과 동일) */}
-            <div className="verifyWrap">
+            <div className="verifyWrap" ref={wrapperRef}>
                 <div className="verify-group">
                     <input
                         type="password"
                         className="verify-input"
                         placeholder="새 비밀번호 확인"
                         value={confirmPw}
-                        onChange={(e) => setConfirmPw(e.target.value)}
+                        onChange={(e) => {
+                            setConfirmPw(e.target.value);
+                            setShowActive(true);
+                        }}
+                        onFocus={() => setShowActive(true)}
                         disabled={loading}
                         aria-describedby="pw-msg"
                     />
                 </div>
                 <button
                     type="button"
-                    ref={btnRef}
-                    className="verify-btn"
+                    className={`verify-btn ${isEnabled && showActive ? "active" : ""}`}
                     onClick={handleChange}
-                    disabled={
-                        loading ||
-                        !newPw ||
-                        !confirmPw ||
-                        !!error
-                    }
+                    disabled={!(isEnabled && showActive)}
                 >
                     {loading ? "변경 중..." : "변경"}
                 </button>
