@@ -10,7 +10,18 @@ interface HeartButtonProps {
 
 const HeartButton = ({ isActive, onClick }: HeartButtonProps) => {
   const [hover, setHover] = useState(false);
-  const icon = isActive || hover ? fasHeart : farHeart;
+  const [focusVisible, setFocusVisible] = useState(false);
+
+  const handleFocus = (e: React.FocusEvent<HTMLButtonElement>) => {
+    if (e.currentTarget.matches(":focus-visible")) {
+      setFocusVisible(true);
+    }
+  };
+  const handleBlur = () => {
+    setFocusVisible(false);
+  };
+
+  const icon = isActive || hover || focusVisible ? fasHeart : farHeart;
 
   return (
     <button
@@ -22,6 +33,8 @@ const HeartButton = ({ isActive, onClick }: HeartButtonProps) => {
       }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       aria-label={isActive ? "즐겨찾기 해제" : "즐겨찾기 추가"}
       aria-pressed={isActive}
     >
