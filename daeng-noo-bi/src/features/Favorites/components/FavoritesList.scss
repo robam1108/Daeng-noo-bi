@@ -36,7 +36,7 @@
             z-index: 1;
         }
 
-        &:hover {
+        &:hover, &:focus-visible{
             transform: translateY(-1px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
@@ -114,12 +114,12 @@
             ;
         }
     }
-
     &:hover .delete-button,
-    &:focus-visible .delete-button {
+    &:focus-within .delete-button {
         opacity: 1;
         transform: scale(1);
     }
+
 }
 
 /* ── 태블릿 (769px ~ 1024px) ── */
