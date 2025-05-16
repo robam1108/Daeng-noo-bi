@@ -1,5 +1,5 @@
 // src/pages/Popular.tsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PopularCardList from "../components/PopularCardList";
 import BlogSection from "../components/BlogSection";
 import Loading from "../../../shared/components/Loading/Loading";

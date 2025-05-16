@@ -1,5 +1,4 @@
 import "./Home.scss";
-import { useRef, useEffect } from "react";
 import Banner from "../components/Banner/Banner";
 import PopularspotList from "../components/PopularspotList";
 import RegionspotList from "../components/RegionspotList";

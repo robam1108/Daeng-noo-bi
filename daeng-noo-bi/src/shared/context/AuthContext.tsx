@@ -32,11 +32,7 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import {
-  getFunctions,
-  connectFunctionsEmulator,
-  httpsCallable,
-} from "firebase/functions";
+import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
 
 export interface AuthUser {
   id: string;
@@ -304,7 +300,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         updateEmail,
         updatePassword,
         updateUserIcon,
-        reauthenticate
+        reauthenticate,
       }}
     >
       {children}

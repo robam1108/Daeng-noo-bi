@@ -1,5 +1,5 @@
 import ThemeSelector from "../../theme/components/ThemeSelector/ThemeSelector";
-import { ThemeKey, themeMap } from "../../theme/constants/themeConstants";
+import { ThemeKey } from "../../theme/constants/themeConstants";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 

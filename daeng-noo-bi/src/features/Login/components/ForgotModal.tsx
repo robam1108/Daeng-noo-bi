@@ -1,9 +1,6 @@
 // src/feacures/Login/components/ForgotModal/ForgotModal.tsx
 import React, { useState } from "react";
-import {
-  sendPasswordResetEmail,
-  fetchSignInMethodsForEmail,
-} from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import "./ForgotModal.scss";
 import { auth } from "../../../firebase";
 

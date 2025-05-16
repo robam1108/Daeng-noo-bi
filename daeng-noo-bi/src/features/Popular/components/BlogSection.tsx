@@ -1,5 +1,3 @@
-// src/components/BlogSection.tsx
-import React, { useRef } from "react";
 import "./BlogSection.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -18,7 +16,7 @@ interface Props {
   blogs: Record<string, BlogPost[]>;
 }
 
-export default function BlogSection({ places, blogs }: Props) {
+export default function BlogSection({ blogs }: Props) {
   return (
     <section aria-label="인기 장소 블로그 모음" className="blog-section">
       <h2>

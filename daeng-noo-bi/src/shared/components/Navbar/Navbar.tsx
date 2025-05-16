@@ -8,7 +8,6 @@ import {
   faBars,
   faXmark,
   faRightFromBracket,
-  faCircleInfo,
   faHeart,
   faInfoCircle,
   faRightToBracket,

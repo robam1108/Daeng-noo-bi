@@ -1,5 +1,5 @@
 // src/pages/SearchResults.tsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { searchPlacesByKeyword, SearchPlace } from "../../shared/api/fetcher";
 import RegionCardList from "../region/components/regionCardList/RegionCardList"; // 실제 경로로 조정하세요

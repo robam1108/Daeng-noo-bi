@@ -1,4 +1,3 @@
-import React from "react";
 import { ThemeInfo, THEMES } from "../../constants/themeConstants";
 import "./ThemeSelector.scss";
 

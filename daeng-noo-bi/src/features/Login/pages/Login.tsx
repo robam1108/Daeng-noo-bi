@@ -1,5 +1,5 @@
 // src/pages/LoginPage.tsx
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../shared/context/AuthContext";
 import ForgotModal from "../components/ForgotModal";

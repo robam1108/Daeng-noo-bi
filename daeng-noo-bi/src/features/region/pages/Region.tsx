@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import RegionSelector from "../components/regionSelector/RegionSelector";
 import RegionCardList from "../components/regionCardList/RegionCardList";

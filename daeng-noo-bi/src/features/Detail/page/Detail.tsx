@@ -1,16 +1,20 @@
-import { useLocation, useParams, useNavigate } from "react-router-dom"
-import { useEffect, useState, useLayoutEffect } from "react"
-import { PlaceDetail } from "../../../shared/api/petTourApi"
-import { DetailIntroResponse } from "../api/fetchDetailIntro"
-import { PlaceImage } from "../api/fetchImages"
-import { useFavorites } from "../../../shared/hooks/useFavorites"
-import Error from "../../../shared/components/Error/Error"
-import Loading from "../../../shared/components/Loading/Loading"
-import DetailView from "../components/DetailView"
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { PlaceDetail } from "../../../shared/api/petTourApi";
+import { DetailIntroResponse } from "../api/fetchDetailIntro";
+import { PlaceImage } from "../api/fetchImages";
+import { useFavorites } from "../../../shared/hooks/useFavorites";
+import Error from "../../../shared/components/Error/Error";
+import Loading from "../../../shared/components/Loading/Loading";
+import DetailView from "../components/DetailView";
 import "./Detail.scss";
-import { doc, setDoc, updateDoc, increment } from "firebase/firestore";
+import { doc, setDoc, increment } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { getCachedPlaceDetail, getCachedPlaceImages, getCachedDetailIntro } from "../../../shared/api/cacheAPI"
+import {
+  getCachedPlaceDetail,
+  getCachedPlaceImages,
+  getCachedDetailIntro,
+} from "../../../shared/api/cacheAPI";
 
 interface DetailState {
   place?: PlaceDetail;
@@ -23,10 +27,9 @@ export default function Detail() {
   const initialPlace = (location.state as DetailState)?.place;
   const [place, setPlace] = useState<PlaceDetail | null>(initialPlace ?? null);
   const [intro, setIntro] = useState<DetailIntroResponse | null>(null);
-  const [imgs, setImgs] = useState<PlaceImage[] | null>(null)
+  const [imgs, setImgs] = useState<PlaceImage[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
-
 
   // 즐겨찾기 훅: 상태 조회, 추가·삭제 함수
   const { user, isFavorite, toggleFavorite } = useFavorites();
@@ -83,19 +86,22 @@ export default function Detail() {
         setPlace(detail!);
 
         // 3) intro와 이미지 병렬 요청
-        const introPromise = getCachedDetailIntro(contentId!, detail!.contentTypeId);
+        const introPromise = getCachedDetailIntro(
+          contentId!,
+          detail!.contentTypeId
+        );
         const [imgs, intro] = await Promise.all([imgsPromise, introPromise]);
 
         setImgs(imgs!);
         setIntro(intro!);
       } catch (e: any) {
-        console.error('loadDetail 에러:', e);
+        console.error("loadDetail 에러:", e);
         setError(true);
       } finally {
         setLoading(false);
         // 데이터 로딩이 끝난 직후에 스크롤 초기화
         window.scrollTo(0, 0);
-        document.body.scrollTop = 0;            // Safari, older 웹킷
+        document.body.scrollTop = 0; // Safari, older 웹킷
         document.documentElement.scrollTop = 0; // IE, 크롬 등
       }
     };
@@ -112,9 +118,8 @@ export default function Detail() {
     }
   }, [loading]);
 
-
-  if (error) return <Error />
-  if (loading) return <Loading />
+  if (error) return <Error />;
+  if (loading) return <Loading />;
 
   return (
     <DetailView
@@ -124,5 +129,5 @@ export default function Detail() {
       isFavorited={isFavorite(contentId!)}
       onToggleFavorite={handleToggle}
     />
-  )
+  );
 }
