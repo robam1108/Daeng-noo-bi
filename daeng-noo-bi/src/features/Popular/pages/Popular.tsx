@@ -59,7 +59,11 @@ export default function Popular() {
   }, [places]);
 
   return (
-    <div className="popular-page">
+    <section
+      className="popular-page"
+      role="popular-page"
+      aria-label="찜순순 인기 장소 모음"
+    >
       <div className="popular-title">
         <h1>
           전국 반려동물 인기 스팟 <span className="pointColor">TOP 9</span>
@@ -81,6 +85,6 @@ export default function Popular() {
       {!loading && !error && <PopularCardList places={places} />}
 
       <BlogSection places={places} blogs={blogs} />
-    </div>
+    </section>
   );
 }

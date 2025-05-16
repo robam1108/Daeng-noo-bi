@@ -27,7 +27,7 @@ export async function fetchPlaceImage(
             return null;
         }
 
-        console.log('fetchPlaceImage 내부 확인용', raw);
+        // console.log('fetchPlaceImage 내부 확인용', raw);
 
         const rawImages: PlaceImage[] = raw.map(img => ({
             contentid: img.contentid,

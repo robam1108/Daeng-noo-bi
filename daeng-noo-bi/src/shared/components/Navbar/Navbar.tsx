@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
   }, [drawerOpen]);
 
   return (
-    <nav>
+    <nav role="navigation" aria-label="메인 내비게이션">
       <div className="navbar">
         <NavLink to="/" className="logo">
           <img
@@ -122,23 +122,27 @@ const Navbar: React.FC = () => {
                   aria-haspopup="menu"
                   aria-expanded={dropdownOpen}
                 >
-                  <button
-                    type="button"
+                  <div
+                    className="menuitem"
                     role="menuitem"
                     onClick={() => nav("/Favorites")}
                   >
                     찜목록
-                  </button>
-                  <button
-                    type="button"
+                  </div>
+                  <div
+                    className="menuitem"
                     role="menuitem"
                     onClick={() => nav("/EditProfile")}
                   >
                     회원정보
-                  </button>
-                  <button type="button" role="menuitem" onClick={handleLogout}>
+                  </div>
+                  <div
+                    className="menuitem"
+                    role="menuitem"
+                    onClick={handleLogout}
+                  >
                     로그아웃
-                  </button>
+                  </div>
                 </button>
               )}
             </div>

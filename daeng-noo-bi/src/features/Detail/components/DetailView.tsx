@@ -1,10 +1,10 @@
-import { PlaceDetail } from '../../../shared/api/petTourApi';
-import { PlaceImage } from '../api/fetchImages';
-import { DetailIntroResponse } from '../api/fetchDetailIntro';
-import ActionButtons from './ActionButtons/ActionButtons';
-import Map from '../components/Map';
-import IntroSection from './IntroSection';
-import ImageGallery from './ImageGallery/ImageGallery';
+import { PlaceDetail } from "../../../shared/api/petTourApi";
+import { PlaceImage } from "../api/fetchImages";
+import { DetailIntroResponse } from "../api/fetchDetailIntro";
+import ActionButtons from "./ActionButtons/ActionButtons";
+import Map from "../components/Map";
+import IntroSection from "./IntroSection";
+import ImageGallery from "./ImageGallery/ImageGallery";
 
 interface Props {
     place: PlaceDetail;

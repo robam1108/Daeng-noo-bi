@@ -1,7 +1,7 @@
 import "./PopularCard.scss";
 import React, { useEffect, useState, useRef } from "react";
 import type { RawPlace } from "../api/popularAPI";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 // RawPlace에 finalImage, addr1을 추가한 타입
 export interface Place extends RawPlace {
@@ -19,9 +19,7 @@ const RegionCard: React.FC<{ place: Place }> = ({ place }) => {
   }, [place]);
 
   return (
-    <Link
-      to={`/place/${place.contentid}`}
-    >
+    <Link to={`/place/${place.contentid}`}>
       <div
         ref={cardRef}
         className={`card ${isVisible ? "show" : ""}`}
@@ -30,6 +28,7 @@ const RegionCard: React.FC<{ place: Place }> = ({ place }) => {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
+        aria-labelledby="place"
       >
         <div className="info">
           <h4>{place.title}</h4>

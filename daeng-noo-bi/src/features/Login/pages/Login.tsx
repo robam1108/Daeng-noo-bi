@@ -50,8 +50,8 @@ const LoginPage: React.FC = () => {
     }
 
     try {
-      const userCredential = await login(email.trim(), password);
-      console.log("🎉 로그인 성공:", userCredential);
+      await login(email.trim(), password);
+      // console.log("🎉 로그인 성공:", userCredential);
       nav(fromPath, { replace: true });
     } catch (err: any) {
       console.error("Login Error ▶", err.code, err.message);
@@ -71,7 +71,7 @@ const LoginPage: React.FC = () => {
     setError(null);
     try {
       await loginWithGoogle();
-      console.log("🎉 구글 로그인 성공 (Context)");
+      // console.log("🎉 구글 로그인 성공 (Context)");
       nav("/");
     } catch (err: any) {
       console.error("Google Login Error ▶", err);
@@ -94,7 +94,12 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="login-page">
+    <section
+      className="login-page"
+      id="login-page"
+      role="login"
+      aria-labelledby="login-page"
+    >
       <form className="login-form" noValidate onSubmit={handleSubmit}>
         <h1 className="login-title">로그인</h1>
 
@@ -153,7 +158,7 @@ const LoginPage: React.FC = () => {
           onClose={() => setIsForgotOpen(false)}
         />
       </form>
-    </div>
+    </section>
   );
 };
 
