@@ -20,6 +20,8 @@ import {
   updateEmail as firebaseUpdateEmail,
   updatePassword as firebaseUpdatePassword,
   UserInfo,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
 } from "firebase/auth";
 import {
   doc,
@@ -59,6 +61,7 @@ interface AuthContextType {
   updateEmail: (newEmail: string) => Promise<void>;
   updatePassword: (newPassword: string) => Promise<void>;
   updateUserIcon: (iconNumber: number) => Promise<void>;
+  reauthenticate: (password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -245,6 +248,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setUser((prev) => (prev ? { ...prev, email: newEmail } : prev));
   };
 
+  // 비밀번호 재인증
+  const reauthenticate = async (password: string) => {
+    if (!auth.currentUser?.email) {
+      throw new Error("유저 정보가 없습니다.");
+    }
+    const cred = EmailAuthProvider.credential(auth.currentUser.email, password);
+    await reauthenticateWithCredential(auth.currentUser, cred);
+  };
+
   // 비밀번호 변경
   const updatePassword = async (newPassword: string) => {
     if (!auth.currentUser || !auth.currentUser.email)
@@ -287,6 +299,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         updateEmail,
         updatePassword,
         updateUserIcon,
+        reauthenticate
       }}
     >
       {children}
