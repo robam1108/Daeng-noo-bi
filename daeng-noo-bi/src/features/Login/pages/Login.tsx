@@ -50,7 +50,7 @@ const LoginPage: React.FC = () => {
     }
 
     try {
-      // const userCredential = await login(email.trim(), password);
+      await login(email.trim(), password);
       // console.log("🎉 로그인 성공:", userCredential);
       nav(fromPath, { replace: true });
     } catch (err: any) {
