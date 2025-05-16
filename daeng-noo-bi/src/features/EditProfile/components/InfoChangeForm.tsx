@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../../shared/context/AuthContext";
 import UserIconSelector from "./UserIconSelector/UserIconSelector";
 
@@ -9,6 +9,8 @@ const InfoChangeForm: React.FC = () => {
     const [nickname, setNickname] = useState(user!.nickname!);
     const [loading, setLoading] = useState(false);
     const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
+    const btnRef = useRef<HTMLButtonElement>(null);
 
     // 닉네임 입력이 바뀔 때마다 이전 성공 메시지 초기화
     useEffect(() => {
@@ -26,6 +28,7 @@ const InfoChangeForm: React.FC = () => {
         } catch (err) {
             console.error(err);
         } finally {
+            btnRef.current!.className = "verify-btn";
             setLoading(false);
         }
     };
@@ -43,14 +46,18 @@ const InfoChangeForm: React.FC = () => {
                         className="verify-input"
                         placeholder="새 닉네임 입력"
                         value={nickname}
-                        onChange={(e) => setNickname(e.target.value)}
+                        onChange={(e) => {
+                            btnRef.current!.className = "verify-btn active";
+                            setNickname(e.target.value)
+                        }}
                         disabled={loading}
                         aria-describedby="nick-msg"
                     />
                 </div>
                 <button
                     type="button"
-                    className="verify-btn"
+                    ref={btnRef}
+                    className='verify-btn'
                     onClick={handleChange}
                     disabled={
                         loading ||

@@ -10,6 +10,8 @@ const EmailChangeForm: React.FC = () => {
 
     // ref
     const emailRef = useRef<HTMLInputElement | null>(null);
+    const btnRef = useRef<HTMLButtonElement>(null);
+
 
     // 입력 및 인증 상태
     const [email, setEmail] = useState(user!.email);
@@ -110,6 +112,7 @@ const EmailChangeForm: React.FC = () => {
         if (verificationCode !== generatedCode) {
             setDupMsg("인증 코드가 일치하지 않습니다.");
             setDupType("error");
+            btnRef.current!.className = "verify-btn";
             return;
         }
 
@@ -168,7 +171,12 @@ const EmailChangeForm: React.FC = () => {
                             className="verify-input"
                             placeholder="인증코드 입력"
                             value={verificationCode}
-                            onChange={(e) => setVerificationCode(e.target.value)}
+                            onChange={(e) => {
+                                if (e.target.value.length == 4) {
+                                    btnRef.current!.className = "verify-btn active";
+                                    setVerificationCode(e.target.value)
+                                }
+                            }}
                             maxLength={4}
                             disabled={!isMailSent || isVerified}
                             aria-describedby="dup-msg"
@@ -177,6 +185,7 @@ const EmailChangeForm: React.FC = () => {
                     </div>
                     <button
                         type="button"
+                        ref={btnRef}
                         className="verify-btn"
                         onClick={handleVerifyAndUpdate}
                         disabled={!isMailSent || isVerified || verificationCode.length < 4}

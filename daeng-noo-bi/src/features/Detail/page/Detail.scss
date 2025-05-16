@@ -1,30 +1,20 @@
 .PlaceDetail {
     padding: 5rem 1.5rem;
-    max-width: 1200px; // 중앙 정렬 시 최대 너비 지정
-    margin: 0 auto; // 좌우 중앙 정렬
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 2rem; // 자식 요소들 사이 간격
+    gap: 2rem;
 
     /* 이미지 섹션 */
     .detail-img-section {
-        width: 100%; // 부모 너비만큼 꽉 채움
-
-        &>img {
-            width: 100%;
-            height: 500px; // 원본 비율 유지
-            object-fit: cover; // 영역에 맞춰 잘림 없이 채움
-            object-position: center;
-            /* 잘릴 때 중앙 부분이 보이도록 */
-            border-radius: 0.5rem;
-        }
+        width: 100%;
     }
 
-    /* 정보 섹션: 좌(info1) 우(info2) 배치 */
     .detail-info-section {
         display: flex;
-        align-items: flex-start; // 높이 맞춤 해제
-        gap: 3rem; // 좌우 간격
+        align-items: flex-start;
+        gap: 3rem;
 
         /* 좌측 텍스트 정보 */
         .info1 {
@@ -43,11 +33,9 @@
 
         /* 우측 카드형 정보 */
         .info2 {
-            /* 고정 너비 */
-            flex: 0 0 300px; // 원하는 너비로 조정
+            flex: 0 0 300px;
             margin-left: auto;
-
-            align-self: flex-start; // 세로로 늘어나는 것을 막음
+            align-self: flex-start;
             background: #fff;
             border: 1px solid #ddd;
             border-radius: 0.5rem;
@@ -66,14 +54,12 @@
 
                     .info-label {
                         width: 5rem;
-                        /* 라벨 영역 고정 폭 */
                         font-weight: bold;
                     }
 
                     .info-value {
                         flex: 1;
 
-                        /* 값 영역이 남은 공간 차지 */
                         a {
                             color: #328E6E;
                         }
@@ -81,7 +67,6 @@
                 }
             }
 
-            /* 버튼 박스 */
             .btn-box {
                 display: flex;
                 gap: 0.7rem;
@@ -91,8 +76,8 @@
                 button {
                     background: none;
                     border: 2px solid currentColor; // 텍스트 색과 같은 테두리
-                    border-radius: 50%; // 원형 테두리
-                    width: 36px; // 가로 세로 고정해서 완전한 원으로
+                    border-radius: 50%;
+                    width: 36px;
                     height: 36px;
                     display: flex;
                     align-items: center;
@@ -107,16 +92,21 @@
                     font-size: 20px;
 
                     &.HeartButton {
-                        color: #e74c3c; // 기본 아이콘 색
+                        color: #e74c3c;
                     }
 
                     &.share-button {
-                        color: #43bc4f; // 기본 아이콘 색
+                        color: #43bc4f;
                     }
 
                     &:hover {
-                        transform: scale(1.1); // 살짝 키워도 좋습니다
-                        border-color: currentColor; // 테두리 색도 currentColor 유지
+                        transform: scale(1.1);
+                        border-color: currentColor;
+                    }
+
+                    &:focus-visible {
+                        transform: scale(1.2);
+                        border-color: black;
                     }
                 }
             }

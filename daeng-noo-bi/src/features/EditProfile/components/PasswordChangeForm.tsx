@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../../shared/context/AuthContext";
 
 const PasswordChangeForm: React.FC = () => {
@@ -11,6 +11,8 @@ const PasswordChangeForm: React.FC = () => {
     // 메시지 상태
     const [error, setError] = useState<string | null>(null);
     const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
+    const btnRef = useRef<HTMLButtonElement>(null);
 
     // 실시간 검증
     useEffect(() => {
@@ -32,6 +34,7 @@ const PasswordChangeForm: React.FC = () => {
         if (newPw && confirmPw && newPw === confirmPw) {
             setError(null);
             setSuccessMsg("비밀번호가 일치합니다.");
+            btnRef.current!.className = "verify-btn active";
             return;
         }
         setError(null);
@@ -52,6 +55,7 @@ const PasswordChangeForm: React.FC = () => {
             setSuccessMsg(null);
         } finally {
             setLoading(false);
+            btnRef.current!.className = "verify-btn";
         }
     };
 
@@ -86,6 +90,7 @@ const PasswordChangeForm: React.FC = () => {
                 </div>
                 <button
                     type="button"
+                    ref={btnRef}
                     className="verify-btn"
                     onClick={handleChange}
                     disabled={
