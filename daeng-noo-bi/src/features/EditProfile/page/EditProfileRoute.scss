@@ -100,11 +100,17 @@
             margin-right: 8px;
             margin-bottom: 0px;
 
+            &:focus-within {
+                border-color: #67AE6E;
+            }
+
             .verify-input {
                 flex: 1;
                 border: none;
                 /* 이미 부모에서 border 있음 */
                 outline: none;
+
+
             }
 
             .verify-timer {
@@ -121,6 +127,15 @@
                 background: #ccc;
                 color: #888;
                 cursor: not-allowed;
+            }
+        }
+
+        .verify-btn.active {
+            background: #67AE6E;
+            color: #fff;
+
+            &:focus-visible {
+                border: 2px solid #10201b;
             }
         }
     }
@@ -144,8 +159,14 @@
 
     .requirePassword-btn {
         @extend .editProfile-btn;
+        background-color: #67AE6E;
+        color: #fff;
         width: 80%;
         align-self: center;
+
+        &:focus-visible {
+            border: 2px solid #10201b;
+        }
     }
 }
 
@@ -195,6 +216,13 @@
         .title {
             margin-bottom: 40px;
         }
+    }
+}
+
+// ── 노트북 (1025px ~ 1440px) ──
+@media (min-width: 1025px) and (max-width: 1440px) {
+    h1 {
+        margin: 30px 0 0 0;
     }
 }
 

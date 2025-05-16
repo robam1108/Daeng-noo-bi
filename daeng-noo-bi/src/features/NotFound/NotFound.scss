@@ -29,4 +29,15 @@
         text-align: center;
         border: none;
     }
+
+    // ── 모바일 (≤ 768px) ──
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 2rem;
+        }
+
+        button {
+            font-size: 1rem;
+        }
+    }
 }

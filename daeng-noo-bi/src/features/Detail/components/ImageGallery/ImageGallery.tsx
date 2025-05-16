@@ -71,6 +71,11 @@ const ImageGallery = ({ images, title, titleImgUrl }: Props) => {
                 alt={`${title} 사진(1)`}
                 src={display[0]}
                 loading="lazy"
+                tabIndex={0}
+                onKeyDown={e => {
+                    if (e.key === 'ArrowRight') goNext();
+                    if (e.key === 'ArrowLeft') goPrev();
+                }}
             />
 
             {/* 오른쪽 썸네일들 */}
@@ -82,7 +87,12 @@ const ImageGallery = ({ images, title, titleImgUrl }: Props) => {
                             src={url}
                             alt={`${title} 사진(${idx + 2})`}
                             loading="lazy"
+                            tabIndex={0}
                             onClick={() => jumpTo(currentIndex + idx + 1)}
+                            onKeyDown={e => {
+                                if (e.key === 'Enter' || e.key === ' ')
+                                    jumpTo(currentIndex + idx + 1);
+                            }}
                         />
                     </div>
                 ))}

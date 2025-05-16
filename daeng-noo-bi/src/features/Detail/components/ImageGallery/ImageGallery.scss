@@ -53,6 +53,10 @@
 
             transition: transform 0.3s ease;
         }
+
+        &:focus-visible {
+            border: 2px solid black;
+        }
     }
 
     &__thumbs {
@@ -84,8 +88,15 @@
             transform-origin: center;
         }
 
-        &:hover img {
-            transform: scale(1.2);
+        &:hover,
+        &:focus-visible {
+            img {
+                transform: scale(1.2);
+            }
+        }
+
+        &:focus-visible {
+            border: 2px solid black;
         }
     }
 

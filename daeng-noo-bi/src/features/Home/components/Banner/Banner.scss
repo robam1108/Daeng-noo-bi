@@ -108,12 +108,10 @@
                 h1 {
                     font-size: 3rem;
                     color: #fff;
-                    margin-bottom: 0.5rem;
-
                 }
 
                 p {
-                    margin-top: 2rem;
+                    margin-top: 2.5rem;
                     font-size: 2rem;
                     color: #eee;
                 }
@@ -182,6 +180,17 @@
                 width: 280px !important;
             }
 
+            .banner-info {
+                h1 {
+                    font-size: 2rem !important;
+                }
+
+                p {
+                    margin-top: 1rem !important;
+                    font-size: 1rem !important;
+                }
+            }
+
         }
     }
 
@@ -231,13 +240,24 @@
 
         .banner-image-wrapper {
             height: auto !important;
-        }
 
-        .banner-image {
-            width: 100%;
-            height: auto; // 원본 비율 유지
-            object-fit: contain; // 비율 유지하며 축소
-            margin: 0 auto; // 가로 중앙
+            .banner-image {
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+                margin: 0 auto;
+            }
+
+            .banner-info {
+                h1 {
+                    font-size: 1rem !important;
+                }
+
+                p {
+                    margin-top: 1rem !important;
+                    font-size: 1rem !important;
+                }
+            }
         }
     }
 }

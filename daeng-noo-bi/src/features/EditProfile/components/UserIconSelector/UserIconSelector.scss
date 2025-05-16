@@ -1,30 +1,51 @@
 .UserIconSelector {
     position: relative;
-    display: inline-block;
+    display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
     margin: 40px 0;
+    width: 100%;
 
-    .selected-icon {
-        width: 64px;
-        height: 64px;
+    label {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+    }
+
+    .icon-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border-radius: 50%;
-        border: 2px solid #ccc;
+        border: 3px solid #ccc;
+        width: 110px;
+        height: 110px;
+        overflow: hidden;
         cursor: pointer;
+
+        .selected-icon {
+            margin-top: 5px;
+            width: 85px;
+            height: 85px;
+        }
+
+        &:focus-visible,
+        &.active {
+            border: 3px solid #67AE6E;
+        }
     }
 
     .icon-list {
         position: absolute;
-        top: 50%;
-        left: calc(100% + 8px);
-        transform: translateY(-50%);
-        width: 330px;
+        top: calc(100% + 10px); // selected-icon 바로 아래에 위치
+        width: 100%;
         padding: 8px;
         background: #fff;
-        border: 2px solid #ccc;
+        border: 2px solid #67AE6E;
         border-radius: 5px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 999;
         overflow: hidden;
-        z-index: 10;
 
         .icon-swiper {
             .swiper-wrapper {
@@ -35,33 +56,37 @@
         .icon-slide {
             width: 64px !important;
             height: 64px !important;
-            flex: 0 0 auto;
-            border-radius: 50%;
-            border: 2px solid #ccc;
-            overflow: hidden;
 
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
+
+            .icon-button {
+                @extend.icon-wrapper;
+                width: 64px !important;
+                height: 64px !important;
+                flex: 0 0 auto;
+                border-radius: 50%;
+                border: 2px solid #ccc;
+                overflow: hidden;
                 cursor: pointer;
+
+                img {
+                    width: 40px;
+                    height: 40px;
+                    object-fit: contain;
+                }
+
+                &:focus-visible,
+                &.active {
+                    border: 2px solid #67AE6E;
+                }
             }
+
+
         }
     }
 
     // ── 태블릿 (769px ~ 1024px) ──
-    @media (min-width: 769px) and (max-width: 1024px) {
-        .icon-list {
-            left: 70px;
-            width: calc(100% - 70px);
-        }
-    }
+    @media (min-width: 769px) and (max-width: 1024px) {}
 
     // ── 모바일 (≤ 768px) ──
-    @media (max-width: 768px) {
-        .icon-list {
-            left: 70px;
-            width: calc(100% - 70px);
-        }
-    }
+    @media (max-width: 768px) {}
 }
