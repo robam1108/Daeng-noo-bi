@@ -8,11 +8,6 @@
   .home-section {
     display: flex;
     flex-direction: column;
-    outline: none;
-
-    &:focus-visible{
-      outline: 2px solid #90c67c;
-    }
 
     .home-header {
       display: flex;

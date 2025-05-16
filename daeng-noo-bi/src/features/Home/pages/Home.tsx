@@ -6,19 +6,11 @@ import RegionspotList from "../components/RegionspotList";
 import ThemespotList from "../components/ThemespotList";
 
 export default function Home() {
-  const popularRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    popularRef.current?.focus();
-  }, []);
-
   return (
     <div className="Home" id="home" role="home" aria-label="메인 홈페이지">
       <Banner />
       <section
         className="home-section section-popular"
-        ref={popularRef}
-        tabIndex={-1}
         aria-labelledby="popular-places"
       >
         <div className="home-header">
