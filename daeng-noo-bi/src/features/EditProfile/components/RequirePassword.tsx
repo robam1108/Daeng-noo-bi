@@ -1,14 +1,12 @@
-// src/components/ProfileEdit/RequirePassword.tsx
 import React, { useState, FormEvent } from 'react';
-import { getAuth, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
-import { useAuth } from "../../../shared/context/AuthContext"
+import { useAuth } from "../../../shared/context/AuthContext";
 
 interface RequirePasswordProps {
   children: React.ReactNode;
 }
 
 const RequirePassword: React.FC<RequirePasswordProps> = ({ children }) => {
-  const { user } = useAuth();
+  const { reauthenticate } = useAuth();
   const [password, setPassword] = useState('');
   const [verified, setVerified] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -16,28 +14,20 @@ const RequirePassword: React.FC<RequirePasswordProps> = ({ children }) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!user?.email) {
-      setError('유저 정보를 불러올 수 없습니다.');
-      return;
-    }
-
     setLoading(true);
     setError(null);
 
     try {
-      const auth = getAuth();
-      const credential = EmailAuthProvider.credential(user.email, password);
-      await reauthenticateWithCredential(auth.currentUser!, credential);
+      await reauthenticate(password);
       setVerified(true);
     } catch (err: any) {
       console.error(err);
-      setError('비밀번호가 올바르지 않습니다. 다시 시도해주세요.');
+      setError('비밀번호가 올바르지 않습니다.');
     } finally {
       setLoading(false);
     }
   };
 
-  // 재인증 전에는 폼만 보여준다
   if (!verified) {
     return (
       <div className="RequirePassword">
@@ -62,7 +52,6 @@ const RequirePassword: React.FC<RequirePasswordProps> = ({ children }) => {
     );
   }
 
-  // 재인증 성공 시, 자식 컴포넌트 렌더
   return <>{children}</>;
 };
 
