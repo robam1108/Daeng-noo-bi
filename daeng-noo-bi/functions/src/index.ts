@@ -1,4 +1,4 @@
-// import { onSchedule } from 'firebase-functions/v2/scheduler';
+import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { onRequest } from 'firebase-functions/v2/https';
 import * as admin from 'firebase-admin';
 import cors from 'cors';
@@ -6,13 +6,13 @@ import express from 'express';
 import * as nodemailer from 'nodemailer';
 import {
   fetchTourAPI,
-  // fetchRegionPlacesFromAPI,
-  // fetchThemePlacesFromAPI,
+  fetchRegionPlacesFromAPI,
+  fetchThemePlacesFromAPI,
 } from './fetchExternal';
 
 // Firebase 초기화
 admin.initializeApp();
-// const db = admin.firestore();
+const db = admin.firestore();
 
 // CORS 핸들러 (Express용)
 const corsHandler = cors({ origin: true });
@@ -89,4 +89,50 @@ export const sendVerificationCode = onRequest((req, res) => {
   });
 });
 
+import { REGION_CODES } from '../constants/regionConstants';
 
+REGION_CODES.forEach((region) => {
+  const functionName = `refreshRegion_${region.code}`;
+  exports[functionName] = onSchedule('0 18 * * *', async () => {
+    const page = 1;
+    try {
+      console.log(`▶️ [${functionName}] 시작 (지역 코드: ${region.code}, 페이지: ${page})`);
+      const places = await fetchRegionPlacesFromAPI(region.code, page);
+      if (places.length > 0) {
+        await db.doc(`regionPlaces/${region.code}_page_${page}`).set({
+          places,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+        console.log(`✅ [${functionName}] 캐시 저장 완료 (${places.length}개)`);
+      } else {
+        console.warn(`⚠️ [${functionName}] 빈 결과, 캐시 생략`);
+      }
+    } catch (err) {
+      console.error(`❌ [${functionName}] 오류 발생:`, err);
+    }
+  });
+});
+
+const themeKeys = ['nature', 'culture', 'adventure', 'shopping', 'food', 'accommodation'];
+
+themeKeys.forEach((key) => {
+  const functionName = `refreshTheme_${key}`;
+  exports[functionName] = onSchedule('0 18 * * *', async () => {
+    const page = 1;
+    try {
+      console.log(`▶️ [${functionName}] 시작 (테마 키: ${key}, 페이지: ${page})`);
+      const places = await fetchThemePlacesFromAPI(key, page);
+      if (places.length > 0) {
+        await db.doc(`themePlaces/${key}_page_${page}`).set({
+          places,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+        console.log(`✅ [${functionName}] 캐시 저장 완료 (${places.length}개)`);
+      } else {
+        console.warn(`⚠️ [${functionName}] 빈 결과, 캐시 생략`);
+      }
+    } catch (err) {
+      console.error(`❌ [${functionName}] 오류 발생:`, err);
+    }
+  });
+});

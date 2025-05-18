@@ -105,7 +105,7 @@ exports.sendVerificationCode = (0, https_1.onRequest)((req, res) => {
         }
     });
 });
-const regionConstants_1 = require("../../src/features/region/constants/regionConstants");
+const regionConstants_1 = require("../constants/regionConstants");
 regionConstants_1.REGION_CODES.forEach((region) => {
     const functionName = `refreshRegion_${region.code}`;
     exports[functionName] = (0, scheduler_1.onSchedule)('0 18 * * *', async () => {
