@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "dangnoobi"
-  }
+    "default":  "dang-noo-bi"
+  },
+  "targets": {},
+  "etags": {}
 }

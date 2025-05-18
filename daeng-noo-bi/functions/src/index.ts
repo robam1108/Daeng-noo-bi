@@ -1,11 +1,11 @@
 import { onSchedule } from 'firebase-functions/v2/scheduler';
-import { onRequest }   from 'firebase-functions/v2/https';
-import * as admin       from 'firebase-admin';
-import cors             from 'cors';
-import * as nodemailer  from 'nodemailer';
+import { onRequest } from 'firebase-functions/v2/https';
+import * as admin from 'firebase-admin';
+import cors from 'cors';
+import * as nodemailer from 'nodemailer';
 import {
   fetchRegionPlacesFromAPI,
-  fetchThemePlacesFromAPI
+  fetchThemePlacesFromAPI,
 } from './fetchExternal';
 
 // CORS 설정: 모든 출처 허용
@@ -15,8 +15,8 @@ const corsHandler = cors({ origin: true });
 admin.initializeApp();
 const db = admin.firestore();
 
-const gmailEmail = process.env.GMAIL_EMAIL  || '';
-const gmailPass  = process.env.GMAIL_PASS   || '';
+const gmailEmail = process.env.GMAIL_EMAIL || '';
+const gmailPass = process.env.GMAIL_PASS || '';
 
 // nodemailer transporter
 const mailTransporter = nodemailer.createTransport({
@@ -94,7 +94,7 @@ export const httpRefreshRegion = onRequest((req, res) => {
         places,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
-      res.send(`region ${areaCode}_${page} 캐시 갱신 완료`);
+      res.status(200).send(`region ${areaCode}_${page} 캐시 갱신 완료`);
     } catch (error) {
       console.error('httpRefreshRegion 실패:', error);
       res.status(500).send('캐시 갱신 중 오류가 발생했습니다.');
@@ -113,7 +113,7 @@ export const httpRefreshTheme = onRequest((req, res) => {
         places,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
-      res.send(`theme ${theme}_${page} 캐시 갱신 완료`);
+      res.status(200).send(`theme ${theme}_${page} 캐시 갱신 완료`);
     } catch (error) {
       console.error('httpRefreshTheme 실패:', error);
       res.status(500).send('캐시 갱신 중 오류가 발생했습니다.');
@@ -121,48 +121,39 @@ export const httpRefreshTheme = onRequest((req, res) => {
   });
 });
 
-// 이메일 인증 코드 발송 함수 (HTTP, 수동 CORS 설정)
+// // 이메일 인증 코드 발송 함수 (CORS 허용 및 Preflight 처리)
 export const sendVerificationCode = onRequest((req, res) => {
-  // 1) CORS 헤더 설정
-  res.setHeader("Access-Control-Allow-Origin",  "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  // 2) Preflight 처리
-  if (req.method === "OPTIONS") {
-    res.status(204).end();
-    return;  // ← 함수 종료, 값 반환 금지
-  }
-  if (req.method !== "POST") {
-    res.status(405).send("Method Not Allowed");
-    return;  // ← 함수 종료
-  }
-
-  // 3) 실제 POST 로직
   corsHandler(req, res, async () => {
+    // Preflight 요청 처리
+    if (req.method === 'OPTIONS') {
+      res.status(204).end();
+      return;
+    }
+    if (req.method !== 'POST') {
+      res.status(405).send('Method Not Allowed');
+      return;
+    }
+
     const { email, code } = req.body as { email: string; code: string };
-    const isDev = process.env.NODE_ENV !== "production"
-      || process.env.FUNCTIONS_EMULATOR === "true";
+    const isDev = process.env.NODE_ENV !== 'production' || process.env.FUNCTIONS_EMULATOR === 'true';
 
     if (isDev) {
       console.log(`[DEV] sendVerificationCode → ${email}: ${code}`);
-      res.json({ success: true, dev: true });
-      return;  // ← 여기서도 값 반환 금지
+      res.status(200).json({ success: true, dev: true });
+      return;
     }
 
     try {
       await mailTransporter.sendMail({
-        from:    `"Your App" <${gmailEmail}>`,
-        to:      email,
-        subject: "인증 코드입니다",
-        text:    `인증 코드: ${code}`,
+        from: `"Your App" <${gmailEmail}>`,
+        to: email,
+        subject: '인증 코드입니다',
+        text: `인증 코드: ${code}`,
       });
-      res.json({ success: true });
-      // 반환 없이 함수 종료
+      res.status(200).json({ success: true });
     } catch (err) {
-      console.error("sendVerificationCode 오류", err);
+      console.error('sendVerificationCode 오류', err);
       res.status(500).json({ success: false });
-      // 반환 없이 함수 종료
     }
   });
 });
