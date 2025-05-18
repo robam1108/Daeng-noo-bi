@@ -14,7 +14,7 @@ function getNextApiKey() {
 }
 
 const BASE_URL = import.meta.env.VITE_FUNCTIONS_BASE_URL  
-  ?? "https://us-central1-dang-noo-bi.cloudfunctions.net";
+  || "https://us-central1-dang-noo-bi.cloudfunctions.net";
 // const BASE_URL ="";
 
 export async function fetchTourAPI(
