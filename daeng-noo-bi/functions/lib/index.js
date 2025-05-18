@@ -39,26 +39,22 @@ admin.initializeApp();
 // const db = admin.firestore();
 // CORS 핸들러 (Express용)
 const corsHandler = (0, cors_1.default)({ origin: true });
-const app = (0, express_1.default)();
 const apiApp = (0, express_1.default)();
 // 모든 요청에 CORS 적용
 apiApp.use((0, cors_1.default)({ origin: true }));
-app.options("*", (0, cors_1.default)({ origin: true }));
 apiApp.get('/KorPetTourService/:operation', async (req, res) => {
-    const operation = req.params.operation;
-    const params = {};
-    for (const [key, value] of Object.entries(req.query)) {
-        if (typeof value === 'string')
-            params[key] = value;
-        else if (Array.isArray(value) && typeof value[0] === 'string')
-            params[key] = value[0];
-        else
-            params[key] = '';
-    }
     try {
-        // fetchTourAPI 호출: operation과 params만 전달하도록 수정
+        const operation = req.params.operation;
+        const params = {};
+        for (const [key, value] of Object.entries(req.query)) {
+            if (typeof value === 'string')
+                params[key] = value;
+            else if (Array.isArray(value) && typeof value[0] === 'string')
+                params[key] = value[0];
+            else
+                params[key] = '';
+        }
         const items = await (0, fetchExternal_1.fetchTourAPI)(operation, params);
-        res.set('Access-Control-Allow-Origin', '*');
         res.json({ response: { body: { items: { item: items } } } });
     }
     catch (err) {

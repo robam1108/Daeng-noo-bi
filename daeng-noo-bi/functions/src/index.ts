@@ -17,25 +17,21 @@ admin.initializeApp();
 // CORS 핸들러 (Express용)
 const corsHandler = cors({ origin: true });
 
-const app = express();
 const apiApp = express();
 // 모든 요청에 CORS 적용
 apiApp.use(cors({ origin: true }));
-app.options("*", cors({ origin: true }));
 
 apiApp.get('/KorPetTourService/:operation', async (req, res) => {
-  const operation = req.params.operation;
-  const params: Record<string,string> = {};
-  for (const [key, value] of Object.entries(req.query)) {
-    if (typeof value === 'string') params[key] = value;
-    else if (Array.isArray(value) && typeof value[0] === 'string') params[key] = value[0];
-    else params[key] = '';
-  }
-
   try {
-    // fetchTourAPI 호출: operation과 params만 전달하도록 수정
+    const operation = req.params.operation;
+    const params: Record<string, string> = {};
+    for (const [key, value] of Object.entries(req.query)) {
+      if (typeof value === 'string') params[key] = value;
+      else if (Array.isArray(value) && typeof value[0] === 'string') params[key] = value[0];
+      else params[key] = '';
+    }
+
     const items = await fetchTourAPI(operation, params);
-    res.set('Access-Control-Allow-Origin', '*');
     res.json({ response: { body: { items: { item: items } } } });
   } catch (err) {
     console.error('KorPetTourService proxy error:', err);
