@@ -17,6 +17,7 @@ const BASE_URL = import.meta.env.VITE_FUNCTIONS_BASE_URL!
   // 절대 URL이 안 들어왔을 때의 안전장치
   || "https://us-central1-dang-noo-bi.cloudfunctions.net";
 // const BASE_URL ="";
+console.log("🔥 BASE_URL:", BASE_URL);
 
 export async function fetchTourAPI(
   service: string,
