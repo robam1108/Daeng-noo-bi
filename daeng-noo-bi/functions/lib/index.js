@@ -26,8 +26,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.api = exports.sendVerificationCode = exports.httpRefreshTheme = exports.httpRefreshRegion = void 0;
-const scheduler_1 = require("firebase-functions/v2/scheduler");
+exports.sendVerificationCode = exports.api = void 0;
+// import { onSchedule } from 'firebase-functions/v2/scheduler';
 const https_1 = require("firebase-functions/v2/https");
 const admin = __importStar(require("firebase-admin"));
 const cors_1 = __importDefault(require("cors"));
@@ -36,9 +36,38 @@ const nodemailer = __importStar(require("nodemailer"));
 const fetchExternal_1 = require("./fetchExternal");
 // Firebase 초기화
 admin.initializeApp();
-const db = admin.firestore();
+// const db = admin.firestore();
 // CORS 핸들러 (Express용)
 const corsHandler = (0, cors_1.default)({ origin: true });
+const app = (0, express_1.default)();
+const apiApp = (0, express_1.default)();
+// 모든 요청에 CORS 적용
+apiApp.use((0, cors_1.default)({ origin: true }));
+app.options("*", (0, cors_1.default)({ origin: true }));
+apiApp.get('/KorPetTourService/:operation', async (req, res) => {
+    const operation = req.params.operation;
+    const params = {};
+    for (const [key, value] of Object.entries(req.query)) {
+        if (typeof value === 'string')
+            params[key] = value;
+        else if (Array.isArray(value) && typeof value[0] === 'string')
+            params[key] = value[0];
+        else
+            params[key] = '';
+    }
+    try {
+        // fetchTourAPI 호출: operation과 params만 전달하도록 수정
+        const items = await (0, fetchExternal_1.fetchTourAPI)(operation, params);
+        res.set('Access-Control-Allow-Origin', '*');
+        res.json({ response: { body: { items: { item: items } } } });
+    }
+    catch (err) {
+        console.error('KorPetTourService proxy error:', err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+// Express 앱을 Firebase Function으로 내보내기
+exports.api = (0, https_1.onRequest)(apiApp);
 const gmailEmail = process.env.GMAIL_EMAIL || '';
 const gmailPass = process.env.GMAIL_PASS || '';
 // nodemailer transporter
@@ -46,94 +75,7 @@ const mailTransporter = nodemailer.createTransport({
     service: 'gmail',
     auth: { user: gmailEmail, pass: gmailPass },
 });
-// 전국 지역 코드 리스트
-const REGION_CODES = [1, 2, 3, 4, 5, 6, 7, 8, 31, 32, 33, 34, 35, 36, 37, 38, 39];
-// 사용 중인 테마 키 리스트
-const THEME_KEYS = [
-    'nature',
-    'culture',
-    'adventure',
-    'shopping',
-    'food',
-    'accommodation',
-];
-// 지역별 페이지 캐시 갱신 스케줄러 생성
-REGION_CODES.forEach((areaCode) => {
-    const functionName = `refreshRegion_${areaCode}`;
-    exports[functionName] = (0, scheduler_1.onSchedule)('every 60 minutes', async () => {
-        const page = 1;
-        try {
-            console.log(`▶️ [${functionName}] 시작 (지역 코드: ${areaCode}, 페이지: ${page})`);
-            const places = await (0, fetchExternal_1.fetchRegionPlacesFromAPI)(areaCode, page);
-            await db.doc(`regionPlaces/${areaCode}_page_${page}`).set({
-                places,
-                updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-            });
-            console.log(`✅ [${functionName}] 완료`);
-        }
-        catch (error) {
-            console.error(`❌ [${functionName}] 실패:`, error);
-        }
-    });
-});
-// 테마별 페이지 캐시 갱신 스케줄러 생성
-THEME_KEYS.forEach((themeKey) => {
-    const functionName = `refreshTheme_${themeKey}`;
-    exports[functionName] = (0, scheduler_1.onSchedule)('every 60 minutes', async () => {
-        const page = 1;
-        try {
-            console.log(`▶️ [${functionName}] 시작 (테마: ${themeKey}, 페이지: ${page})`);
-            const places = await (0, fetchExternal_1.fetchThemePlacesFromAPI)(themeKey, page);
-            await db.doc(`themePlaces/${themeKey}_page_${page}`).set({
-                places,
-                updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-            });
-            console.log(`✅ [${functionName}] 완료`);
-        }
-        catch (error) {
-            console.error(`❌ [${functionName}] 실패:`, error);
-        }
-    });
-});
-// HTTP 엔드포인트: 지역 캐시 즉시 갱신 (CORS 허용)
-exports.httpRefreshRegion = (0, https_1.onRequest)((req, res) => {
-    corsHandler(req, res, async () => {
-        const areaCode = Number(req.query.code) || 1;
-        const page = Number(req.query.page) || 1;
-        try {
-            const places = await (0, fetchExternal_1.fetchRegionPlacesFromAPI)(areaCode, page);
-            await db.doc(`regionPlaces/${areaCode}_page_${page}`).set({
-                places,
-                updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-            });
-            res.status(200).send(`region ${areaCode}_${page} 캐시 갱신 완료`);
-        }
-        catch (error) {
-            console.error('httpRefreshRegion 실패:', error);
-            res.status(500).send('캐시 갱신 중 오류가 발생했습니다.');
-        }
-    });
-});
-// HTTP 엔드포인트: 테마 캐시 즉시 갱신 (CORS 허용)
-exports.httpRefreshTheme = (0, https_1.onRequest)((req, res) => {
-    corsHandler(req, res, async () => {
-        const theme = req.query.theme || 'nature';
-        const page = Number(req.query.page) || 1;
-        try {
-            const places = await (0, fetchExternal_1.fetchThemePlacesFromAPI)(theme, page);
-            await db.doc(`themePlaces/${theme}_page_${page}`).set({
-                places,
-                updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-            });
-            res.status(200).send(`theme ${theme}_${page} 캐시 갱신 완료`);
-        }
-        catch (error) {
-            console.error('httpRefreshTheme 실패:', error);
-            res.status(500).send('캐시 갱신 중 오류가 발생했습니다.');
-        }
-    });
-});
-// // 이메일 인증 코드 발송 함수 (CORS 허용 및 Preflight 처리)
+// 이메일 인증 코드 발송 함수 (CORS 허용 및 Preflight 처리)
 exports.sendVerificationCode = (0, https_1.onRequest)((req, res) => {
     corsHandler(req, res, async () => {
         // Preflight 요청 처리
@@ -167,31 +109,4 @@ exports.sendVerificationCode = (0, https_1.onRequest)((req, res) => {
         }
     });
 });
-const apiApp = (0, express_1.default)();
-// 모든 요청에 CORS 적용
-apiApp.use(corsHandler);
-apiApp.get('/KorPetTourService/:operation', async (req, res) => {
-    const operation = req.params.operation;
-    const params = {};
-    for (const [key, value] of Object.entries(req.query)) {
-        if (typeof value === 'string')
-            params[key] = value;
-        else if (Array.isArray(value) && typeof value[0] === 'string')
-            params[key] = value[0];
-        else
-            params[key] = '';
-    }
-    try {
-        // fetchTourAPI 호출: operation과 params만 전달하도록 수정
-        const items = await (0, fetchExternal_1.fetchTourAPI)(operation, params);
-        res.set('Access-Control-Allow-Origin', '*');
-        res.json({ response: { body: { items: { item: items } } } });
-    }
-    catch (err) {
-        console.error('KorPetTourService proxy error:', err);
-        res.status(500).send('Internal Server Error');
-    }
-});
-// Express 앱을 Firebase Function으로 내보내기
-exports.api = (0, https_1.onRequest)(apiApp);
 //# sourceMappingURL=index.js.map

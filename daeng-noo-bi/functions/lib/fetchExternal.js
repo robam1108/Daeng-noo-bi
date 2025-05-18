@@ -12,10 +12,10 @@ const API_BASE = 'https://api.visitkorea.or.kr/openapi/service/rest/KorPetTourSe
 exports.PAGE_SIZE = 9;
 // API 키 설정
 const KEYS = [
-    process.env.TOUR_API_KEY1 || "",
-    process.env.TOUR_API_KEY2 || "",
-    process.env.TOUR_API_KEY3 || "",
-].filter(k => k.length > 0);
+    process.env.TOUR_API_KEY1,
+    process.env.TOUR_API_KEY2,
+    process.env.TOUR_API_KEY3,
+];
 if (KEYS.length === 0) {
     throw new Error("No API keys configured. Set TOUR_API_KEY1, TOUR_API_KEY2, TOUR_API_KEY3 in Functions environment.");
 }

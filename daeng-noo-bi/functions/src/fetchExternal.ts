@@ -25,10 +25,10 @@ export interface Place extends RawPlace {
 
 // API 키 설정
 const KEYS: string[] = [
-  process.env.TOUR_API_KEY1 || "",
-  process.env.TOUR_API_KEY2 || "",
-  process.env.TOUR_API_KEY3 || "",
-].filter(k => k.length > 0);
+  process.env.TOUR_API_KEY1!,
+  process.env.TOUR_API_KEY2!,
+  process.env.TOUR_API_KEY3!,
+];
 
 if (KEYS.length === 0) {
   throw new Error(
