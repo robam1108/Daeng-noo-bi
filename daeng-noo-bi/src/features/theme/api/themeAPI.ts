@@ -112,13 +112,16 @@ const pageItems = uniq.slice(
   page * PAGE_SIZE
 );
 
+const toSecureUrl = (url?: string): string =>
+  url?.replace(/^http:\/\//, 'https://') ?? '';
+
 // 6) 이미지·주소 보완(detailCommon 호출 포함)
 const enriched: Place[] = await Promise.all(
   pageItems.map(async (p) => {
     // 6-1) 이미지 보완
     const finalImage =
-      p.firstimage ||
-      p.firstimage2 ||
+      toSecureUrl(p.firstimage) ||
+      toSecureUrl(p.firstimage2) ||
       FALLBACK_IMAGES[p.title] ||
       '/no-image.png';
 
