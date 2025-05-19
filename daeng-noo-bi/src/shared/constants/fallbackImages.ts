@@ -24,7 +24,7 @@ export const FALLBACK_IMAGES: Record<string, string> = {
   "에떼르모 펜션":"https://lh3.googleusercontent.com/proxy/LQsL86fP22LUTPkyS_Enip-1abnIaKSVQMT5QRy8GMWQqkyXtoCL_jB3qoBsTWNtZiaJw9_D_3Woq3jjJiGYrJXfaG2kT_v1jM5T",
   "러블리펫108 애견펜션":"https://img.einet.kr/P202006022/landscape/slides/10.jpg?v=1605484252",
   "섬뜰아래 호스텔(섬뜰아래 카페/캠핑장/펜션)":"https://tong.visitkorea.or.kr/cms/resource/89/3487789_image2_1.jpg",
-  "굴업도":"http://munhwai.com/PEG/16323862841573.jpg",
+  "굴업도":"https://isum.incheon.go.kr/resource/www/images/sub/img_island_info25.jpg",
   "옥토끼우주센터":"https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=dab65394-214d-40b4-bc67-dd16f487ca1f",
   "선녀바위해수욕장":"https://media-cdn.tripadvisor.com/media/photo-s/09/7f/3a/7e/caption.jpg",
   //대전
