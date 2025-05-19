@@ -1,9 +1,5 @@
 {
-  "version": 2,
   "rewrites": [
-    {
-      "source": "/KorPetTourService/:path*",
-      "destination": "https://us-central1-dang-noo-bi.cloudfunctions.net/KorPetTourService/:path*"
-    }
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
