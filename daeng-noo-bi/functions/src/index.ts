@@ -23,6 +23,7 @@ apiApp.use(cors({ origin: true }));
 
 apiApp.get('/KorPetTourService/:operation', async (req, res) => {
   try {
+    const service = 'KorPetTourService';
     const operation = req.params.operation;
     const params: Record<string, string> = {};
     for (const [key, value] of Object.entries(req.query)) {
@@ -31,7 +32,7 @@ apiApp.get('/KorPetTourService/:operation', async (req, res) => {
       else params[key] = '';
     }
 
-    const items = await fetchTourAPI(operation, params);
+    const items = await fetchTourAPI(service,operation, params);
     res.json({ response: { body: { items: { item: items } } } });
   } catch (err) {
     console.error('KorPetTourService proxy error:', err);

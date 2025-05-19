@@ -44,6 +44,7 @@ const apiApp = (0, express_1.default)();
 apiApp.use((0, cors_1.default)({ origin: true }));
 apiApp.get('/KorPetTourService/:operation', async (req, res) => {
     try {
+        const service = 'KorPetTourService';
         const operation = req.params.operation;
         const params = {};
         for (const [key, value] of Object.entries(req.query)) {
@@ -54,7 +55,7 @@ apiApp.get('/KorPetTourService/:operation', async (req, res) => {
             else
                 params[key] = '';
         }
-        const items = await (0, fetchExternal_1.fetchTourAPI)(operation, params);
+        const items = await (0, fetchExternal_1.fetchTourAPI)(service, operation, params);
         res.json({ response: { body: { items: { item: items } } } });
     }
     catch (err) {

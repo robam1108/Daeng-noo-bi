@@ -1,8 +1,8 @@
 //  @ts-ignore: no type declarations for node-fetch
 import fetch from 'node-fetch';
-// import * as functions from 'firebase-functions';
+import * as functions from 'firebase-functions';
 
-const API_BASE = 'https://api.visitkorea.or.kr/openapi/service/rest/KorPetTourService';
+// const API_BASE = 'https://api.visitkorea.or.kr/openapi/service/rest/KorPetTourService';
 // const API_KEY = process.env.TOUR_API_KEY!;
 export const PAGE_SIZE = 9;
 
@@ -24,53 +24,75 @@ export interface Place extends RawPlace {
 }
 
 // API 키 설정
-const KEYS: string[] = [
-  process.env.TOUR_API_KEY1!,
-  process.env.TOUR_API_KEY2!,
-  process.env.TOUR_API_KEY3!,
+const TOUR_API_KEYS = [
+  functions.config().tourapi.key1,
+  functions.config().tourapi.key2,
+  functions.config().tourapi.key3,
 ];
 
-if (KEYS.length === 0) {
-  throw new Error(
-    "No API keys configured. Set TOUR_API_KEY1, TOUR_API_KEY2, TOUR_API_KEY3 in Functions environment."
-  );
+let currentApiKeyIndex = 0;
+function getNextApiKey() {
+  const key = TOUR_API_KEYS[currentApiKeyIndex];
+  currentApiKeyIndex = (currentApiKeyIndex + 1) % TOUR_API_KEYS.length;
+  return key;
 }
 
-let currentKeyIndex = 0;
-function getNextKey(): string {
-  const key = KEYS[currentKeyIndex];
-  currentKeyIndex = (currentKeyIndex + 1) % KEYS.length;
-  return encodeURIComponent(key);
-}
+const BASE_URL = "https://apis.data.go.kr/B551011";
 
 // API 호출용 유틸 함수
 export async function fetchTourAPI(
+  service: string,
   operation: string,
   params: Record<string, string>
-): Promise<RawPlace[]> {
+): Promise<any[]> {
   let attempts = 0;
-  while (attempts < KEYS.length) {
-    const ServiceKey = getNextKey();
+  const maxAttempts = TOUR_API_KEYS.length;
+
+  while (attempts < maxAttempts) {
+    const ServiceKey = getNextApiKey();
     const qs = new URLSearchParams({
       ServiceKey,
-      MobileOS:  'ETC',
-      MobileApp: 'PetTourApp',
-      _type:     'json',
+      MobileOS: "ETC",
+      MobileApp: "PetTourApp",
+      _type: "json",
       ...params,
     }).toString();
-    const url = `${API_BASE}/${operation}?${qs}`;
+
+    const url = `${BASE_URL}/${service}/${operation}?${qs}`;
+    console.log("[fetchTourAPI] URL:", url);
+
     try {
-      const res  = await fetch(url);
+      const res = await fetch(url);
+      const ct = res.headers.get("Content-Type") || "";
+      console.log("[fetchTourAPI] ◀️ HTTP", res.status, res.statusText);
+
+      if (!ct.includes("application/json")) {
+        const text = await res.text();
+        console.warn("[fetchTourAPI] JSON 아닌 응답:", text);
+
+        if (text.includes("LIMITED_NUMBER_OF_SERVICE_REQUESTS_EXCEEDS_ERROR")) {
+          attempts++;
+          console.warn("[fetchTourAPI] 한도 초과 – 다음 키로 재시도합니다.");
+          continue;
+        }
+
+        console.error("[fetchTourAPI] 예기치 못한 응답, 빈 배열 반환");
+        return [];
+      }
+
       const json = await res.json();
-      const items = json.response?.body?.items?.item;
-      if (Array.isArray(items)) return items;
-      if (items) return [items];
-      return [];
+      console.log("[fetchTourAPI] ◀️ JSON 응답 전체:", JSON.stringify(json, null, 2));
+      return json.response?.body?.items?.item ?? [];
     } catch (e) {
-      console.error(`[fetchTourAPI] ${operation} error:`, e);
+      console.error(`[fetchTourAPI] 네트워크 오류 (키=${ServiceKey}):`, e);
       attempts++;
+      if (attempts < maxAttempts) {
+        console.warn("[fetchTourAPI] 네트워크 오류 – 다음 키로 재시도합니다.");
+      }
     }
   }
+
+  console.error("[fetchTourAPI] 모든 키 소진 – 빈 배열 반환");
   return [];
 }
 
@@ -78,7 +100,7 @@ export async function fetchTourAPI(
 export async function fetchPopularPlacesFromAPI(
   page = 1
 ): Promise<Place[]> {
-  const raw = await fetchTourAPI('locationBasedList', {
+  const raw = await fetchTourAPI('KorPetTourService','locationBasedList', {
     numOfRows: PAGE_SIZE.toString(),
     pageNo:    page.toString(),
     arrange:   'P',
@@ -99,7 +121,7 @@ export async function fetchRegionPlacesFromAPI(
   areaCode: number,
   page = 1
 ): Promise<Place[]> {
-  const raw: RawPlace[] = await fetchTourAPI('areaBasedList', {
+  const raw: RawPlace[] = await fetchTourAPI('KorPetTourService','areaBasedList', {
     numOfRows: PAGE_SIZE.toString(),
     pageNo:    page.toString(),
     arrange:   'P',
@@ -131,7 +153,7 @@ export async function fetchThemePlacesFromAPI(
   const configs = themeConfigMap[themeKey] || themeConfigMap['nature'];
   // 다중 요청 생성: 각 config마다, 같은 지역 전체를 대상으로 area-based 요청
   const calls = configs.flatMap(cfg =>
-    fetchTourAPI('areaBasedList', {
+    fetchTourAPI('KorPetTourService','areaBasedList', {
       numOfRows:     PAGE_SIZE.toString(),
       pageNo:        page.toString(),
       arrange:       'P',
