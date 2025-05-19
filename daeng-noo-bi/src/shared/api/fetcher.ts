@@ -13,11 +13,9 @@ function getNextApiKey() {
   return key;
 }
 
-const BASE_URL = import.meta.env.VITE_FUNCTIONS_BASE_URL!
-  // 절대 URL이 안 들어왔을 때의 안전장치
-  || "https://us-central1-dang-noo-bi.cloudfunctions.net/api";
+const BASE_URL = import.meta.env.VITE_FUNCTIONS_BASE_URL!;
 // const BASE_URL ="";
-console.log("🔥 BASE_URL:", BASE_URL);
+// console.log("🔥 BASE_URL:", BASE_URL);
 
 export async function fetchTourAPI(
   service: string,
@@ -37,11 +35,11 @@ export async function fetchTourAPI(
       ...params,
     }).toString();
     const url = `${BASE_URL}/${service}/${operation}?${qs}`;
-    console.log('[fetchTourAPI] URL:', url);
+    // console.log('[fetchTourAPI] URL:', url);
     try {
       const res = await fetch(url);
       const ct = res.headers.get("Content-Type") || "";
-      console.log("[fetchTourAPI] ◀️ HTTP", res.status, res.statusText);
+      // console.log("[fetchTourAPI] ◀️ HTTP", res.status, res.statusText);
 
       if (!ct.includes("application/json")) {
         const text = await res.text();
