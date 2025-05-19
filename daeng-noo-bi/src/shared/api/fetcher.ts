@@ -56,7 +56,7 @@ export async function fetchTourAPI(
       }
 
       const json = await res.json();
-      console.log("[fetchTourAPI] ◀️ JSON 응답 전체:", JSON.stringify(json, null, 2));
+      // console.log("[fetchTourAPI] ◀️ JSON 응답 전체:", JSON.stringify(json, null, 2));
       return json.response?.body?.items?.item ?? [];
     } catch (e) {
       console.error(`[fetchTourAPI] 네트워크 오류 (키=${ServiceKey}):`, e);
