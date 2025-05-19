@@ -6,7 +6,7 @@ interface PasswordChangeFormProps {
 }
 
 const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({ currentPw }) => {
-    const { updatePassword, reauthenticate } = useAuth();
+    const { updatePassword } = useAuth();
 
     const [newPw, setNewPw] = useState("");
     const [confirmPw, setConfirmPw] = useState("");
