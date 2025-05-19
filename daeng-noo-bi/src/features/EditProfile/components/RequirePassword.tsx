@@ -1,11 +1,11 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, ReactElement } from 'react';
 import { useAuth } from "../../../shared/context/AuthContext";
 
-interface RequirePasswordProps {
-  children: React.ReactNode;
+interface RequirePasswordProps<T> {
+  children: ReactElement<T>;
 }
 
-const RequirePassword: React.FC<RequirePasswordProps> = ({ children }) => {
+function RequirePassword<T extends { password: string }>({ children }: RequirePasswordProps<T>) {
   const { reauthenticate } = useAuth();
   const [password, setPassword] = useState('');
   const [verified, setVerified] = useState(false);
@@ -21,7 +21,6 @@ const RequirePassword: React.FC<RequirePasswordProps> = ({ children }) => {
       await reauthenticate(password);
       setVerified(true);
     } catch (err: any) {
-      console.error(err);
       setError('비밀번호가 올바르지 않습니다.');
     } finally {
       setLoading(false);
@@ -41,6 +40,7 @@ const RequirePassword: React.FC<RequirePasswordProps> = ({ children }) => {
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
+              disabled={loading}
             />
           </div>
           {error && <p className="error dup-msg">{error}</p>}
@@ -52,7 +52,7 @@ const RequirePassword: React.FC<RequirePasswordProps> = ({ children }) => {
     );
   }
 
-  return <>{children}</>;
+  return React.cloneElement(children, { password } as Partial<T>);
 };
 
 export default RequirePassword;

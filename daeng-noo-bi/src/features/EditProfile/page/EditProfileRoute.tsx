@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../shared/context/AuthContext";
 import RequirePassword from "../components/RequirePassword";
@@ -8,6 +9,8 @@ import "./EditProfileRoute.scss"
 export default function EditProfileRoute() {
     const { user } = useAuth();
     const nav = useNavigate();
+
+    const editProfileElement = <EditProfile password="" />;
 
     // 로그인 상태가 아니면 로그인 페이지로
     if (!user) {
@@ -27,7 +30,7 @@ export default function EditProfileRoute() {
         // 이메일/비번 로그인 유저는 비밀번호 확인 후 일반 폼
         return (
             <RequirePassword>
-                <EditProfile />
+                {editProfileElement}
             </RequirePassword>
         );
     }

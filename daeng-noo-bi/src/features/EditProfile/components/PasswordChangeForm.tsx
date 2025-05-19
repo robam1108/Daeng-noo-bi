@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../../shared/context/AuthContext";
 
-const PasswordChangeForm: React.FC = () => {
+interface PasswordChangeFormProps {
+    currentPw: string;
+}
+
+const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({ currentPw }) => {
     const { updatePassword, reauthenticate } = useAuth();
 
     const [newPw, setNewPw] = useState("");
     const [confirmPw, setConfirmPw] = useState("");
     const [loading, setLoading] = useState(false);
-    const lastPwRef = useRef<string>("");
+    const [lastPw, setLastPw] = useState(currentPw);
 
     // 메시지 상태
     const [error, setError] = useState<string | null>(null);
@@ -21,7 +25,6 @@ const PasswordChangeForm: React.FC = () => {
     const isLenOk = newPw.length >= 6;
     const isMatch = newPw !== "" && newPw === confirmPw;
     const isEnabled = isLenOk && isMatch && !loading;
-    const isDifferent = newPw !== lastPwRef.current;
 
     // 실시간 검증
     useEffect(() => {
@@ -39,8 +42,9 @@ const PasswordChangeForm: React.FC = () => {
             setSuccessMsg(null);
             return;
         }
-        if (!isDifferent && newPw) {
+        if (lastPw && newPw === currentPw) {
             setError("이전 비밀번호와 동일합니다.");
+            setSuccessMsg(null);
             return;
         }
         if (newPw && confirmPw && newPw === confirmPw) {
@@ -50,7 +54,7 @@ const PasswordChangeForm: React.FC = () => {
         }
         setError(null);
         setSuccessMsg(null);
-    }, [newPw, confirmPw, isDifferent]);
+    }, [newPw, confirmPw, lastPw]);
 
     useEffect(() => {
         function handleClickOutside(e: MouseEvent) {
@@ -74,20 +78,11 @@ const PasswordChangeForm: React.FC = () => {
         setLoading(true);
 
         try {
-            await reauthenticate(newPw);
-            setError("새 비밀번호가 기존 비밀번호와 같습니다.");
-            setNewPw("");
-            setConfirmPw("");
-            setShowActive(false);
-            setLoading(false);
-            return;
-        } catch {
-        }
-        try {
             await updatePassword(newPw);
             setSuccessMsg("비밀번호가 성공적으로 변경되었습니다.");
             setNewPw("");
             setConfirmPw("");
+            setLastPw(newPw);
         } catch (err: any) {
             console.error(err);
             setError(err.message || "비밀번호 변경 중 오류가 발생했습니다.");
