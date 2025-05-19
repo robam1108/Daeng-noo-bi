@@ -113,15 +113,15 @@ regionConstants_1.REGION_CODES.forEach((region) => {
         try {
             console.log(`▶️ [${functionName}] 시작 (지역 코드: ${region.code}, 페이지: ${page})`);
             const places = await (0, fetchExternal_1.fetchRegionPlacesFromAPI)(region.code, page);
+            await db.doc(`regionPlaces/${region.code}_page_${page}`).set({
+                places,
+                updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+            });
             if (places.length > 0) {
-                await db.doc(`regionPlaces/${region.code}_page_${page}`).set({
-                    places,
-                    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-                });
                 console.log(`✅ [${functionName}] 캐시 저장 완료 (${places.length}개)`);
             }
             else {
-                console.warn(`⚠️ [${functionName}] 빈 결과, 캐시 생략`);
+                console.warn(`⚠️ [${functionName}] 빈 결과지만 캐시 저장 완료`);
             }
         }
         catch (err) {
