@@ -34,7 +34,7 @@
     box-sizing: border-box;
 
     &:focus{
-      border-color: #67AE6E;
+      border-color: #50A274;
     }
   }
 
@@ -64,7 +64,7 @@
       .auth-btn {
         width: 110px;
         height: 45px;
-        background: #67AE6E;
+        background: #50A274;
         color: #fff;
         border: none;
         border-radius: 5px;
@@ -103,7 +103,7 @@
 
         .verify-timer {
           width: 50px;
-          color: #328E6E;
+          color: #2A795F;
           text-align: center;
         }
       }
@@ -111,7 +111,7 @@
       .verify-btn {
         width: 110px;
         height: 45px;
-        background: #67AE6E;
+        background: #50A274;
         color: #fff;
         border: none;
         border-radius: 5px;
@@ -137,14 +137,14 @@
     font-size: 14px;
     text-align: center;
 
-    &.success   { color: #67AE6E; }
+    &.success   { color: #50A274; }
     &.error { color: #e74c3c; }
   }
 
   /* 회원가입 버튼 */
   .signup-btn {
     @extend .signup-input;
-    background: #67AE6E;
+    background: #50A274;
     color: #fff;
     cursor: pointer;
     text-align: center;

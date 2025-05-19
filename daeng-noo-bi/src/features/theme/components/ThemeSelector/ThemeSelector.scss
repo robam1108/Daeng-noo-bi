@@ -49,10 +49,10 @@
     }
 
     &.active{
-      outline: 5px solid #328E6E;
+      outline: 5px solid #2A795F;
       transform: scale(1.05);
       .theme-title{
-        color: #328E6E;
+        color: #2A795F;
         font-weight: 600;
       } 
     }
@@ -138,7 +138,7 @@ display: none;
       aspect-ratio: 250 / 300;
 
       &.active{
-        outline: 3px solid #328E6E;
+        outline: 3px solid #2A795F;
       }
     }
   }

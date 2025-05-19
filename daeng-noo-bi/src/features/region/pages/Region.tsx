@@ -67,16 +67,12 @@ export default function Region() {
   };
 
   return (
-    <main
-      className="region-page"
-      role="region-page"
-      aria-label="지역별 여행지 페이지"
-    >
+    <main className="region-page" aria-label="지역별 여행지 페이지">
       <section className="regionSelector-section" aria-label="지역 선택 영역">
-        <h3 className="selector-title">
+        <h2 className="selector-title">
           <span className="selector-titleLine1">오늘은</span>
           <span className="selector-titleLine2">어디로 떠나볼까요?</span>
-        </h3>
+        </h2>
         <RegionSelector
           selected={selectedRegion}
           onChange={setSelectedRegion}
@@ -84,7 +80,7 @@ export default function Region() {
       </section>
 
       <section aria-labelledby="places-title" className="places-section">
-        <h2>{regionName}</h2>
+        <h3>{regionName}</h3>
         <RegionCardList places={places} />
       </section>
 
