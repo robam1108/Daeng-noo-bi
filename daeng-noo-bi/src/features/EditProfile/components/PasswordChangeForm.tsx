@@ -23,7 +23,7 @@ const PasswordChangeForm: React.FC<PasswordChangeFormProps> = ({ currentPw }) =>
 
 
     const isLenOk = newPw.length >= 6;
-    const isMatch = newPw !== "" && newPw === confirmPw;
+    const isMatch = newPw !== "" && newPw === confirmPw && lastPw !== newPw;
     const isEnabled = isLenOk && isMatch && !loading;
 
     // 실시간 검증
