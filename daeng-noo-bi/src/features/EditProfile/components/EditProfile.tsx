@@ -3,7 +3,11 @@ import { useAuth } from "../../../shared/context/AuthContext";
 import InfoChangeForm from "./InfoChangeForm";
 import PasswordChangeForm from "./PasswordChangeForm";
 
-export default function EditProfile() {
+interface EditProfileProps {
+  password: string;
+}
+
+const EditProfile: React.FC<EditProfileProps> = ({ password }) => {
   const { user } = useAuth();
   const nav = useNavigate();
 
@@ -19,8 +23,10 @@ export default function EditProfile() {
         <InfoChangeForm />
       </section>
       <section className="password-section">
-        <PasswordChangeForm />
+        <PasswordChangeForm currentPw={password} />
       </section>
     </div>
   );
 }
+
+export default EditProfile;
