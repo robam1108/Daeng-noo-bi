@@ -18,8 +18,8 @@ export interface PlaceDetail {
     finalImage: string;         // 보완된 이미지 URL
 }
 
-function toSecureUrl(url?: string): string | undefined {
-    if (!url) return undefined;
+function toSecureUrl(url?: string): string | null {
+    if (!url) return null;
     return url.startsWith('http://') ? url.replace('http://', 'https://') : url;
 }
 
