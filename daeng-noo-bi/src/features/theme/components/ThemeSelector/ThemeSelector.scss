@@ -143,3 +143,41 @@ display: none;
     }
   }
 }
+@media (max-width: 430px) {
+  .mobile-only {
+    display: inline;
+  }
+
+  .theme-page h1 {
+    .theme-pagetitleLine1{
+      font-size: 2rem;
+    }
+
+    .theme-pagetitleLine2 {
+    text-align: center;
+    line-height: 3.5rem;
+    font-size: 3rem;
+    }
+  }
+
+  .theme-selector-wrapper {
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    gap: 2rem 1rem;
+    
+    .theme-selector-button {
+      // width: 80%;
+      outline: 3px solid #fff;
+      max-width: 120px;
+      min-width: 100px;
+      margin: 0 auto;
+      aspect-ratio: 250 / 300;
+
+      &.active{
+        outline: 3px solid #2A795F;
+      }
+    }
+  }
+}
