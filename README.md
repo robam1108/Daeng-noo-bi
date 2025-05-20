@@ -1,23 +1,18 @@
-# 댕누비 (Daeng-Noo-Bi)
+<h1 align=center>
+ 댕누비 (Daeng-Noo-Bi)
+</h1>
+<div align=center>
+    <img src="https://github.com/robam1108/img/blob/main/daeng-noo-bi.gif"><br/>
+배포주소 : https://daeng-noo-bi.vercel.app/
+</div>
 
 ## 🐾 프로젝트 소개
 
 댕누비는 반려동물과 함께하는 관광지를 소개하는 웹사이트입니다. 한국관광공사의 공공 API를 활용하여 사용자들이 손쉽게 반려동물 친화적 관광지 정보를 얻고, 여행 계획을 세울 수 있도록 도와줍니다.
 
----
-
-## 📅 개발 기간
-
-* 개발 기간: 2025.04.24 \~ 2025.05.18 (배포 준비중)
-
----
-
-## 👩‍💻 개발자 소개 (역할분담 상세)
-
-| 이름   | 담당 업무                                                                                                                             |
-| ---- | --------------------------------------------------------------------------------------------------------------------------------- |
-| orinery | 와이어 프레임 제작, 전체 페이지 플로우 기획, 공공기관 API 테스트, Header UI 구현, 로그인 상태에 따라 메뉴 변경, 검색/필터 기능, 인기/지역/테마 페이지, 로그인/회원가입 페이지, Vercel 배포          |
-| robam | Vite + React 세팅, 라우팅 설계, 지도 API 테스트, Firebase 세팅, Footer 구현, 로딩/에러 UI 공통 컴포넌트, 메인 페이지, 상세 페이지, 찜 목록 페이지, 회원 정보 수정 페이지,  README 작성 |
+* 개발자: <a target="_blank" href="https://github.com/orinery">orinery</a> | <a target="_blank" href="https://github.com/robam1108">robam</a>
+* 상세 일정 및 업무 분배: <a href="https://www.notion.so/Daeng-Noo-bi-1df07f340efa8014b73dd0463e528c67?pvs=4" target="_blank">노션 링크</a>
+* 개발 기간: 2025.04.24 ~ 2025.05.20
 
 ---
 
@@ -34,23 +29,17 @@
 
 ### Frontend
 
-* React
-* TypeScript
-* SCSS
-* Vite
+[![My Skills](https://skillicons.dev/icons?i=react,vite,typescript,scss)](https://skillicons.dev)
 
 ### Backend
 
-* Firebase Authentication
-* Firebase Firestore
-* Vercel Serverless Functions
-* Nodemailer (이메일 인증)
+[![My Skills](https://skillicons.dev/icons?i=firebase,vercel)](https://skillicons.dev)
 
 ### API
 
-* 한국관광공사 공공 API
-* Naver Maps API
-* Naver Blog API
+<img src="https://img.shields.io/badge/한국관광공사API-2F80ED.svg?style=for-the-badge&logo=visual-studio-code&logoColor=22ABF3" /> 
+<img src="https://img.shields.io/badge/지도API-03C75A.svg?style=for-the-badge&logo=naver&logoColor=black" /> 
+<img src="https://img.shields.io/badge/블로그API-FFCD00.svg?style=for-the-badge&logo=kakao&logoColor=20232a" />
 
 ---
 
@@ -70,7 +59,7 @@
 ### 인기 페이지
 
 * 관광지 찜 인기순으로 정렬 및 표시
-* 관광지별 네이버 블로그 후기 연동
+* 관광지별 블로그 후기 연동
 
 ### 지역/테마 페이지
 
@@ -103,35 +92,35 @@
 ## 🗂 프로젝트 아키텍쳐
 
 ```
-Daeng-Noo-Bi
-├── api
-├── functions
-├── public
-└── src
-    ├── assets (정적 리소스)
-    ├── features (기능별 페이지 및 컴포넌트)
-    │   ├── Detail (상세 페이지)
-    │   ├── EditProfile (회원정보 수정 페이지)
-    │   ├── Favorites (찜목록 페이지)
-    │   ├── Home (메인 페이지)
-    │   ├── Login (로그인 페이지)
-    │   ├── NotFound 
-    │   ├── Popular (인기 페이지)
-    │   ├── region (지역별 관광지 페이지)
-    │   ├── SearchResults (검색 결과 페이지)
-    │   ├── Signup (회원가입 페이지)
-    │   └── theme (테마별 관광지 페이지)
-    └── shared
-        ├── api (공통 API 관련 로직)
-        ├── components (공통 컴포넌트)
-        ├── constants (상수 관리)
-        ├── context (상태 관리)
-        ├── hooks (커스텀 훅)
-        ├── utils (유틸리티 함수)
-        ├── App.scss
-        ├── App.tsx (메인 앱 진입점)
-        ├── firebase.ts (Firebase 초기화 설정)
-        └── index.scss
+DAENG-NOO-BI
+├── api/                       # 서버리스/백엔드 API 라우트 (Vercel 등)
+├── functions/                 # Firebase Functions 백엔드 코드
+├── public/                    # 정적 파일 (favicon, index.html 등)
+└── src/
+    ├── assets/                # 이미지, 폰트 등 정적 리소스
+    ├── features/              # 주요 기능별 페이지 및 해당 컴포넌트
+    │   ├── Detail/            # 관광지 상세 페이지
+    │   ├── EditProfile/       # 회원정보 수정
+    │   ├── Favorites/         # 찜목록
+    │   ├── Home/              # 메인(홈) 화면
+    │   ├── Login/             # 로그인
+    │   ├── NotFound/          # 404 에러 페이지
+    │   ├── Popular/           # 인기 관광지
+    │   ├── region/            # 지역별 관광지
+    │   ├── SearchResults/     # 검색 결과
+    │   ├── Signup/            # 회원가입
+    │   └── theme/             # 테마별 관광지
+    ├── shared/                # 전역(공통) 코드
+    │   ├── api/               # API 호출 함수/로직
+    │   ├── components/        # 공통 UI 컴포넌트
+    │   ├── constants/         # 상수/설정값
+    │   ├── context/           # React Context, 전역 상태 관리
+    │   ├── hooks/             # 커스텀 훅
+    │   ├── utils/             # 유틸 함수
+    │   ├── App.scss           # 전체 스타일
+    │   ├── App.tsx            # 앱 진입점 (최상위 컴포넌트)
+    │   ├── firebase.ts        # Firebase 초기화/설정
+    │   └── index.scss         # 전역 스타일
 ```
 
 ---
