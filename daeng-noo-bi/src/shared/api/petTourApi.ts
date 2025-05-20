@@ -10,8 +10,8 @@ export interface PlaceDetail {
     title?: string;             // 제목
     addr1?: string;             // 대표 주소
     addr2?: string;             // 추가 주소
-    firstimage?: string;        // API에서 내려주는 대표 이미지
-    firstimage2?: string;       // API에서 내려주는 두번째 이미지
+    firstimage?: string | null;        // API에서 내려주는 대표 이미지
+    firstimage2?: string | null;       // API에서 내려주는 두번째 이미지
     overview?: string;          // 개요
     tel?: string;               // 연락처
     homepage?: string;          // 홈페이지
