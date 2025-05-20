@@ -8,6 +8,10 @@ export interface PlaceImage {
     cpyrhtDivCd?: string    // 저작권 유형 (Type1:제1유형(출처표시-권장) ,Type3: 제3유형(제1유형+변경금지
 }
 
+function toSecureUrl(url?: string): string | undefined {
+    if (!url) return undefined;
+    return url.startsWith('http://') ? url.replace('http://', 'https://') : url;
+}
 
 export async function fetchPlaceImage(
     contentId: string
@@ -32,8 +36,8 @@ export async function fetchPlaceImage(
         const rawImages: PlaceImage[] = raw.map(img => ({
             contentid: img.contentid,
             imgname: img.imgname,
-            originimgurl: img.originimgurl,
-            smallimageurl: img.smallimageurl,
+            originimgurl: toSecureUrl(img.originimgurl),
+            smallimageurl: toSecureUrl(img.smallimageurl),
             cpyrhtDivCd: img.cpyrhtDivCd,
         }));
 

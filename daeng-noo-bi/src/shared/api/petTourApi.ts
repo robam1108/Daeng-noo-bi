@@ -18,6 +18,11 @@ export interface PlaceDetail {
     finalImage: string;         // 보완된 이미지 URL
 }
 
+function toSecureUrl(url?: string): string | undefined {
+    if (!url) return undefined;
+    return url.startsWith('http://') ? url.replace('http://', 'https://') : url;
+}
+
 /**
  * contentId 하나로 최소 요약 정보만 뽑아온다.
  * KorService 의 detailCommon 오퍼레이션을 사용하며,
@@ -67,8 +72,8 @@ export async function fetchPlaceDetail(
             title: raw.title,
             addr1: raw.addr1,
             addr2: raw.addr2,
-            firstimage: raw.firstimage,
-            firstimage2: raw.firstimage2,
+            firstimage: toSecureUrl(raw.firstimage),
+            firstimage2: toSecureUrl(raw.firstimage2),
             overview: raw.overview,
             tel: raw.tel,
             homepage: raw.homepage,
