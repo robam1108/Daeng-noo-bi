@@ -18,6 +18,11 @@ export interface PlaceDetail {
     finalImage: string;         // 보완된 이미지 URL
 }
 
+function toSecureUrl(url?: string): string | null {
+    if (!url) return null;
+    return url.startsWith('http://') ? url.replace('http://', 'https://') : url;
+}
+
 /**
  * contentId 하나로 최소 요약 정보만 뽑아온다.
  * KorService 의 detailCommon 오퍼레이션을 사용하며,

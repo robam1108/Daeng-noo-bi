@@ -3,11 +3,15 @@ import { fetchTourAPI } from "../../../shared/api/fetcher";
 export interface PlaceImage {
     contentid: string;
     imgname?: string;
-    originimgurl?: string;
-    smallimageurl?: string;
+    originimgurl?: string | null;
+    smallimageurl?: string | null;
     cpyrhtDivCd?: string    // 저작권 유형 (Type1:제1유형(출처표시-권장) ,Type3: 제3유형(제1유형+변경금지
 }
 
+function toSecureUrl(url?: string): string | null {
+    if (!url) return null;
+    return url.startsWith('http://') ? url.replace('http://', 'https://') : url;
+}
 
 export async function fetchPlaceImage(
     contentId: string
@@ -32,8 +36,8 @@ export async function fetchPlaceImage(
         const rawImages: PlaceImage[] = raw.map(img => ({
             contentid: img.contentid,
             imgname: img.imgname,
-            originimgurl: img.originimgurl,
-            smallimageurl: img.smallimageurl,
+            originimgurl: toSecureUrl(img.originimgurl),
+            smallimageurl: toSecureUrl(img.smallimageurl),
             cpyrhtDivCd: img.cpyrhtDivCd,
         }));
 
