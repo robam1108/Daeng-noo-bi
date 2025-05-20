@@ -59,6 +59,7 @@ interface AuthContextType {
   updatePassword: (newPassword: string) => Promise<void>;
   updateUserIcon: (iconNumber: number) => Promise<void>;
   reauthenticate: (password: string) => Promise<void>;
+  waitUntilUserReady: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -284,6 +285,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const waitUntilUserReady = async (timeout = 3000) => {
+    const start = Date.now();
+    while (!auth.currentUser || initializing) {
+      if (Date.now() - start > timeout) {
+        throw new Error("사용자 정보 로딩이 너무 오래 걸립니다.");
+      }
+      await new Promise((res) => setTimeout(res, 100));
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -301,6 +312,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         updatePassword,
         updateUserIcon,
         reauthenticate,
+        waitUntilUserReady,
       }}
     >
       {children}

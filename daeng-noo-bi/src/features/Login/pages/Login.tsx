@@ -13,7 +13,7 @@ interface LocationState {
 
 const LoginPage: React.FC = () => {
   const nav = useNavigate();
-  const { login, loginWithGoogle } = useAuth();
+  const { login, loginWithGoogle, waitUntilUserReady } = useAuth();
 
   const emailRef = useRef<HTMLInputElement | null>(null);
   const pwRef = useRef<HTMLInputElement | null>(null);
@@ -52,6 +52,7 @@ const LoginPage: React.FC = () => {
     try {
       await login(email.trim(), password);
       // console.log("🎉 로그인 성공:", userCredential);
+      await waitUntilUserReady();
       nav(fromPath, { replace: true });
     } catch (err: any) {
       console.error("Login Error ▶", err.code, err.message);
@@ -72,7 +73,8 @@ const LoginPage: React.FC = () => {
     try {
       await loginWithGoogle();
       // console.log("🎉 구글 로그인 성공 (Context)");
-      nav("/");
+      await waitUntilUserReady();
+      nav(fromPath, { replace: true });
     } catch (err: any) {
       console.error("Google Login Error ▶", err);
       setError("구글 로그인 중 오류가 발생했습니다.");
