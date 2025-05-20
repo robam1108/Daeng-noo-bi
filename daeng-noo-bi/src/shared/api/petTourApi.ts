@@ -60,8 +60,8 @@ export async function fetchPlaceDetail(
 
         // 3) 이미지 보완 로직
         const finalImage =
-            raw.firstimage ||
-            raw.firstimage2 ||
+            toSecureUrl(raw.firstimage) ||
+            toSecureUrl(raw.firstimage2) ||
             FALLBACK_IMAGES[raw.title || ''] ||
             '/no-image.png';
 
