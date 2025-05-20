@@ -19,15 +19,15 @@ export async function getCachedRegion(areaCode: number, page = 1) {
     const age = Date.now() - updatedAt.toMillis();
 
     if (age < TTL_MS) {
-      console.log(`✅[캐시 히트] regionPlaces/${areaCode}_page_${page} (age: ${Math.floor(age / 1000)}s)`);
+      // console.log(`✅[캐시 히트] regionPlaces/${areaCode}_page_${page} (age: ${Math.floor(age / 1000)}s)`);
       return places;
     }
-    console.log(`⚠️[캐시 만료] regionPlaces/${areaCode}_page_${page} (age: ${Math.floor(age / 1000)}s)`);
+    // console.log(`⚠️[캐시 만료] regionPlaces/${areaCode}_page_${page} (age: ${Math.floor(age / 1000)}s)`);
   } else {
-    console.log(`⚠️[캐시 없음] regionPlaces/${areaCode}_page_${page}`);
+    // console.log(`⚠️[캐시 없음] regionPlaces/${areaCode}_page_${page}`);
   }
 
-  console.log(`🔄 [API 호출] fetchRegionPlacesFromAPI(${areaCode}, ${page})`);
+  // console.log(`🔄 [API 호출] fetchRegionPlacesFromAPI(${areaCode}, ${page})`);
   const fresh = await fetchRegionPlacesFromAPI(areaCode, page);
   await setDoc(ref, { places: fresh, updatedAt: serverTimestamp() });
   return fresh;
@@ -46,16 +46,16 @@ export async function getCachedTheme(
     const age = Date.now() - updatedAt.toMillis();
 
     if (age < TTL_MS) {
-      console.log(`✅[캐시 히트] ${themeKey}_page_${page} (age ${Math.floor(age / 1000)}s)`);
+      // console.log(`✅[캐시 히트] ${themeKey}_page_${page} (age ${Math.floor(age / 1000)}s)`);
       return places;
     } else {
-      console.log(`⚠️[캐시 만료] ${themeKey}_page_${page} (age ${Math.floor(age / 1000)}s)`);
+      // console.log(`⚠️[캐시 만료] ${themeKey}_page_${page} (age ${Math.floor(age / 1000)}s)`);
     }
   } else {
-    console.log(`⚠️[캐시 없음] ${themeKey}_page_${page}`);
+    // console.log(`⚠️[캐시 없음] ${themeKey}_page_${page}`);
   }
 
-  console.log(`🔄[API 호출] fetchThemePlacesFromAPI(${themeKey}, ${page})`);
+  // console.log(`🔄[API 호출] fetchThemePlacesFromAPI(${themeKey}, ${page})`);
   const fresh = await fetchThemePlacesFromAPI(themeKey, page);
   await setDoc(ref, { places: fresh, updatedAt: serverTimestamp() });
   return fresh;
@@ -73,15 +73,15 @@ export async function getCachedPlaceDetail(contentId: string): Promise<PlaceDeta
     const age = Date.now() - updatedAt.toMillis();
 
     if (age < TTL_MS) {
-      console.log(`✅[캐시 히트] placeDetails/${contentId} (age: ${Math.floor(age / 1000)}s)`);
+      // console.log(`✅[캐시 히트] placeDetails/${contentId} (age: ${Math.floor(age / 1000)}s)`);
       return detail;
     }
-    console.log(`⚠️[캐시 만료] placeDetails/${contentId} (age: ${Math.floor(age / 1000)}s)`);
+    // console.log(`⚠️[캐시 만료] placeDetails/${contentId} (age: ${Math.floor(age / 1000)}s)`);
   } else {
-    console.log(`⚠️[캐시 없음] placeDetails/${contentId}`);
+    // console.log(`⚠️[캐시 없음] placeDetails/${contentId}`);
   }
 
-  console.log(`🔄 [API 호출] fetchPlaceDetailFromAPI(${contentId})`);
+  // console.log(`🔄 [API 호출] fetchPlaceDetailFromAPI(${contentId})`);
   const freshDetail = await fetchPlaceDetailFromAPI(contentId);
   await setDoc(ref, { detail: freshDetail, updatedAt: serverTimestamp() });
   return freshDetail!;
@@ -99,15 +99,15 @@ export async function getCachedPlaceImages(contentId: string): Promise<PlaceImag
     const age = Date.now() - updatedAt.toMillis();
 
     if (age < TTL_MS) {
-      console.log(`✅[캐시 히트] placeImages/${contentId} (age: ${Math.floor(age / 1000)}s)`);
+      // console.log(`✅[캐시 히트] placeImages/${contentId} (age: ${Math.floor(age / 1000)}s)`);
       return images;
     }
-    console.log(`⚠️[캐시 만료] placeImages/${contentId} (age: ${Math.floor(age / 1000)}s)`);
+    // console.log(`⚠️[캐시 만료] placeImages/${contentId} (age: ${Math.floor(age / 1000)}s)`);
   } else {
-    console.log(`⚠️[캐시 없음] placeImages/${contentId}`);
+    // console.log(`⚠️[캐시 없음] placeImages/${contentId}`);
   }
 
-  console.log(`🔄 [API 호출] fetchPlaceImageFromAPI(${contentId})`);
+  // console.log(`🔄 [API 호출] fetchPlaceImageFromAPI(${contentId})`);
   const freshImages = await fetchPlaceImageFromAPI(contentId);
   await setDoc(ref, { images: freshImages, updatedAt: serverTimestamp() });
   return freshImages!;
@@ -127,15 +127,15 @@ export async function getCachedDetailIntro(
     const data = snap.data() as { intro: DetailIntroResponse; updatedAt: Timestamp };
     const age = Date.now() - data.updatedAt.toMillis();
     if (age < TTL_MS) {
-      console.log(`✅[캐시 히트] detailIntros/${contentId}_${contentTypeId}`);
+      // console.log(`✅[캐시 히트] detailIntros/${contentId}_${contentTypeId}`);
       return data.intro;
     }
-    console.log(`⚠️[캐시 만료] detailIntros/${contentId}_${contentTypeId}`);
+    // console.log(`⚠️[캐시 만료] detailIntros/${contentId}_${contentTypeId}`);
   } else {
-    console.log(`⚠️[캐시 없음] detailIntros/${contentId}_${contentTypeId}`);
+    // console.log(`⚠️[캐시 없음] detailIntros/${contentId}_${contentTypeId}`);
   }
 
-  console.log(`🔄[API 호출] fetchDetailIntroFromAPI(${contentId}, ${contentTypeId})`);
+  // console.log(`🔄[API 호출] fetchDetailIntroFromAPI(${contentId}, ${contentTypeId})`);
   const freshIntro = await fetchDetailIntroFromAPI(contentId, contentTypeId);
   if (freshIntro) {
     await setDoc(ref, { intro: freshIntro, updatedAt: serverTimestamp() });

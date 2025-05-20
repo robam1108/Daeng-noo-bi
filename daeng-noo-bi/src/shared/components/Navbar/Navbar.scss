@@ -18,7 +18,7 @@ nav {
     .logo {
       display: flex;
       align-items: center;
-      color: #328E6E;
+      color: #2A795F;
       font-family: 'LeeSeoyun';
       font-size: 25px;
       text-decoration: none;
@@ -50,7 +50,7 @@ nav {
         }
 
         &.active {
-          color: #328E6E;
+          color: #2A795F;
         }
 
         &.dimmed {
@@ -72,13 +72,14 @@ nav {
       .login-btn{
         padding: 7.5px 15px;
         border-radius: 5px;
-        background-color: #90C67C;
+        background-color: #2A795F;
         color: white;
+        font-weight: 600;
         font-size: 1rem;
         cursor: pointer;
         
         &:hover,&:focus{
-          background-color: #67AE6E;
+        background-color: #4D9B6E;
         }
       }
 
@@ -107,7 +108,7 @@ nav {
             left: -7px;
             width: 40px;
             height: 40px;
-            border: 2px solid #90C67C;
+            border: 2px solid #50A274;
             border-radius: 50%; 
             pointer-events: none;
           }
@@ -170,6 +171,7 @@ nav {
 @media (min-width: 1025px) and (max-width: 1440px) {
   nav .navbar {
     width: 95%;
+    h1 {margin: 0px;}
     .menu { gap: 60px; }
   }
 }
@@ -264,7 +266,7 @@ nav {
         text-align: center;
         font-size: 1.2rem;
         .userName{
-          color: #328E6E;
+          color: #2A795F;
         }
       }
       /* 모바일용 로그인 메뉴 */
@@ -294,7 +296,7 @@ nav {
           }
 
           &:hover, &.active {
-              color: #328E6E;
+              color: #2A795F;
           }
         }
       }
@@ -318,7 +320,7 @@ nav {
             transition: color 0.2s;
 
             &:hover, &.active {
-              color: #328E6E;
+              color: #2A795F;
             }
             &.dimmed {
               opacity: 0.6;

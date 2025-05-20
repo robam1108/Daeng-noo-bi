@@ -97,7 +97,6 @@ const LoginPage: React.FC = () => {
     <section
       className="login-page"
       id="login-page"
-      role="login"
       aria-labelledby="login-page"
     >
       <form className="login-form" noValidate onSubmit={handleSubmit}>

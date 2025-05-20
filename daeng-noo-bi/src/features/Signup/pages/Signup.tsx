@@ -202,7 +202,7 @@ ${String(sec % 60).padStart(2, "0")}`;
   };
 
   return (
-    <section className="signup-page" role="signup" aria-labelledby="login-page">
+    <section className="signup-page" aria-labelledby="login-page">
       <form className="signup-form" onSubmit={handleSubmit} noValidate>
         <h1 className="signup-title">회원가입</h1>
         <p id="error-text" className="error-text" role="alert">

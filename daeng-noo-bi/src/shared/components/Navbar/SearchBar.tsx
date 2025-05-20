@@ -35,7 +35,12 @@ export default function SearchBar() {
         onKeyDown={handleKeyDown}
         aria-label="장소 검색"
       />
-      <button type="button" className="SearchButton" onClick={handleSearch}>
+      <button
+        type="button"
+        aria-label="장소 검색 버튼"
+        className="SearchButton"
+        onClick={handleSearch}
+      >
         <FontAwesomeIcon icon={faMagnifyingGlass as IconProp} />
       </button>
     </div>

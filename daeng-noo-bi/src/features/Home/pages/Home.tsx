@@ -6,7 +6,7 @@ import ThemespotList from "../components/ThemespotList";
 
 export default function Home() {
   return (
-    <div className="Home" id="home" role="home" aria-label="메인 홈페이지">
+    <div className="Home" id="home" aria-label="메인 홈페이지">
       <Banner />
       <section
         className="home-section section-popular"

@@ -37,7 +37,7 @@
 
       // 탭조작일때만 보임
       &:focus-visible {
-        outline: 2px solid  #67AE6E;
+        outline: 2px solid  #50A274;
         outline-offset: -2px;
         background: rgba(50, 142, 110, 0.1);
       }
@@ -50,7 +50,7 @@
         background-size: auto 1800%;
         background-repeat: no-repeat;
         background-position: center top;
-        background-color: #67AE6E;
+        background-color: #50A274;
         transition: all 0.3s ease;
 
         &:hover, &:focus {
@@ -61,12 +61,13 @@
 
       &.active {
         .region-icon {
-          outline: 3px solid #328E6E;
+          outline: 3px solid #2A795F;
           transform: scale(1.1);
         }
 
         .region-name {
-          color: #328E6E;
+          transform: scale(1.1);
+          color: #1F5C47;
         }
       }
 
@@ -236,6 +237,33 @@
           .region-icon {
             width: 70px;
             height: 70px;
+          }
+          .region-name {
+            font-size: 16px;
+          }
+        }
+        .custom-arrow {
+          display: none;
+        }
+        .swiper {
+          padding: 10px;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 430px) {
+    .region-selector-wrapper{
+      padding: 0px;
+      .region-selector {
+        padding: 0px;
+  
+        .region-button {
+          gap: 5px;
+          
+          .region-icon {
+            width: 50px;
+            height: 50px;
           }
           .region-name {
             font-size: 16px;

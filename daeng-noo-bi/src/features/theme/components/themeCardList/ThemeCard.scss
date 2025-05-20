@@ -59,3 +59,10 @@
     height: 200px;
   }
 }
+
+@media (max-width: 430px) {
+  .theme-card {
+    width: 150px;
+    height: 150px;
+  }
+}

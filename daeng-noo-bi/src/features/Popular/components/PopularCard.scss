@@ -42,7 +42,7 @@
     color: #fff;
     z-index: 2;
     
-    h4{
+    h2{
       font-size: 18px;
       font-weight: 400;
     }
@@ -55,8 +55,14 @@
 
   // ── 모바일 (≤ 768px) ──
   @media (max-width: 768px) {
-.card {
-  width: 200px;
-  height: 200px;
-}
+  .card {
+    width: 200px;
+    height: 200px;
   }
+}
+@media (max-width: 430px) {
+  .card {
+    width: 150px;
+    height: 150px;
+  }
+}

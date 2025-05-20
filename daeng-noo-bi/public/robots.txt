@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://daeng-noo-bi.vercel.app/sitemap.xml

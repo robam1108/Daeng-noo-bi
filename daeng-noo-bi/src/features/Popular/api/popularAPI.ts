@@ -52,13 +52,15 @@ export async function fetchPopularPlaces(page = 1): Promise<Place[]> {
     : result
     ? [result]
     : [];
+const toSecureUrl = (url?: string): string =>
+  url?.replace(/^http:\/\//, 'https://') ?? '';
 
   // 2) finalImage·addr1 보완
   const places: Place[] = raw.map(p => ({
     ...p,
     finalImage:
-      p.firstimage ||
-      p.firstimage2 ||
+      toSecureUrl(p.firstimage) ||
+      toSecureUrl(p.firstimage2) ||
       FALLBACK_IMAGES[p.title] ||
       '/images/no-image.png',
     addr1: p.addr1 || p.addr2 || '주소 정보 없음',

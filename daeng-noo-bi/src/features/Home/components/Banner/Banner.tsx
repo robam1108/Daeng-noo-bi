@@ -79,7 +79,7 @@ const Banner: React.FC = () => {
                         <SwiperSlide key={idx} className="banner-slide">
                             <a href={item.linkUrl} target="_blank" rel="noopener noreferrer" className="banner-link">
                                 <div className="banner-image-wrapper">
-                                    <img className="banner-image" src={item.imageUrl} alt={item.title} />
+                                    <img className="banner-image" src={item.imageUrl} alt={item.title} loading="eager" />
                                     <div className="banner-info">
                                         {item.title.split(' ').map((line, idx) => (
                                             <h1 key={idx}>{line}</h1>

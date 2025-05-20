@@ -88,11 +88,7 @@ export default function Theme() {
   };
 
   return (
-    <div
-      className="theme-page"
-      role="theme-page"
-      aria-label="테마별 여행지 페이지"
-    >
+    <section className="theme-page" aria-label="테마별 여행지 페이지">
       <h1 className="theme-title">
         <span className="theme-pagetitleLine1">힐링부터 모험까지,</span>
         <span className="theme-pagetitleLine2">
@@ -139,6 +135,6 @@ export default function Theme() {
       {!loading && !hasMore && places.length > 0 && (
         <div className="end-message">모든 테마 장소를 불러왔습니다.</div>
       )}
-    </div>
+    </section>
   );
 }

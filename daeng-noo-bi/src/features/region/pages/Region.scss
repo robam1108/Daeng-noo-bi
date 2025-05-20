@@ -11,7 +11,7 @@
     outline: none;
 
     .regionSelector-section:focus-visible {
-    outline: 3px solid #328E6E;
+    outline: 3px solid #2A795F;
     outline-offset: 4px;
   }
     .selector-title{
@@ -32,13 +32,13 @@
     }
     .selector-titleLine2{
         font-weight: 600;
-        color: #328E6E;
+        color: #2A795F;
     }
   }
 
   .places-section{
 
-    h2{
+    h3{
       font-family: 'GmarketSansMedium';
       font-size: 3.5rem;
       font-weight: 500;

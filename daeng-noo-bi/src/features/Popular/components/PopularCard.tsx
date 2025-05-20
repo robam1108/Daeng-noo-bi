@@ -31,7 +31,7 @@ const RegionCard: React.FC<{ place: Place }> = ({ place }) => {
         aria-labelledby="place"
       >
         <div className="info">
-          <h4>{place.title}</h4>
+          <h2>{place.title}</h2>
           <p>{place.addr1}</p>
         </div>
       </div>

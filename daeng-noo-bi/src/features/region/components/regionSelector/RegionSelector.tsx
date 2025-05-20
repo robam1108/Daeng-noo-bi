@@ -32,6 +32,14 @@ const RegionSelector = ({ selected, onChange }: RegionSelectorProps) => {
           }}
           grabCursor={true}
           breakpoints={{
+            390: {
+              slidesPerView: 5,
+              spaceBetween: 10,
+            },
+            430: {
+              slidesPerView: 5,
+              spaceBetween: 10,
+            },
             767: {
               slidesPerView: 8,
               spaceBetween: 20,

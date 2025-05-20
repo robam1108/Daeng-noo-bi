@@ -48,10 +48,13 @@ export async function fetchPetFriendlyPlacesByRegion(
     : [];
 
   // 3) 이미지 및 주소 보완
+const toSecureUrl = (url?: string): string =>
+  url?.replace(/^http:\/\//, 'https://') ?? '';
+
   const enriched: Place[] = await Promise.all(
     rawPlaces.map(async (p) => {
       // 1) 이미지 보완 (기존대로)
-      let img = p.firstimage || p.firstimage2 || '';
+      let img = toSecureUrl(p.firstimage) || toSecureUrl(p.firstimage2) || '';
       if (!img) {
         const imgRes = await fetchTourAPI(
           'KorPetTourService',

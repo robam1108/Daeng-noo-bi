@@ -22,7 +22,7 @@ const DetailView = ({
   onToggleFavorite,
 }: Props) => {
   return (
-    <div className="PlaceDetail" role="PlaceDetail" aria-label="상세 페이지">
+    <div className="PlaceDetail" aria-label="상세 페이지">
       <div className="detail-img-section">
         <ImageGallery
           images={images}
